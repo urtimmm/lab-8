@@ -176,7 +176,7 @@ button[type='submit'] {
 
 .btn:hover,
 button[type='submit']:hover {
-  background: darken(var(--primary-color), 10%);
+  background: #2980b9; /* Более темный синий цвет */
   transform: translateY(-2px);
 }
 
@@ -199,6 +199,13 @@ button[type='submit']:disabled {
   background: #7f8c8d;
 }
 
+/* Hover эффект для кнопки "в избранное" */
+.btn-secondary[data-action='fav']:hover {
+  background: #2980b9; /* Более темный синий для "в избранное" */
+  color: #fff;
+  transform: translateY(-2px);
+}
+
 .btn-danger {
   background: #e74c3c;
 }
@@ -215,9 +222,21 @@ button[type='submit']:disabled {
   background: darken(var(--secondary-color), 10%);
 }
 
+/* Специальные hover эффекты для кнопок каталога */
+.btn[data-action='details']:hover {
+  background: #2980b9; /* Более темный синий для "подробнее" */
+  transform: translateY(-2px);
+}
+
+.btn[data-action='cart']:hover {
+  background: #2980b9; /* Более темный синий для "в корзину" */
+  transform: translateY(-2px);
+}
+
 /* Специальный стиль для кнопки "Открыть карту в окне" */
 button[data-modal='mapModal']:hover {
-  background: #3498db !important;
+  background: #2980b9 !important; /* Более темный синий цвет */
+  transform: translateY(-2px); /* Эффект поднятия */
 }
 
 /* Сетка карточек */
@@ -1022,6 +1041,28 @@ body.dark-theme .btn-logout {
 
 body.dark-theme .btn-logout:hover {
   background: #b71c1c;
+}
+
+/* Hover эффекты для темной темы */
+body.dark-theme .btn:hover,
+body.dark-theme button[type='submit']:hover {
+  background: #4a90e2; /* Более темный синий для темной темы */
+}
+
+body.dark-theme .btn[data-action='details']:hover,
+body.dark-theme .btn[data-action='cart']:hover {
+  background: #4a90e2; /* Более темный синий для темной темы */
+}
+
+body.dark-theme .btn-secondary[data-action='fav']:hover {
+  background: #4a90e2; /* Более темный синий для темной темы */
+  color: #fff;
+}
+
+/* Hover эффект для кнопки "открыть карту в окне" в темной теме */
+body.dark-theme button[data-modal='mapModal']:hover {
+  background: #4a90e2 !important; /* Более темный синий для темной темы */
+  transform: translateY(-2px); /* Эффект поднятия */
 }
 
 /* ===== МОБИЛЬНОЕ МЕНЮ - АВТОРИЗАЦИЯ ===== */
