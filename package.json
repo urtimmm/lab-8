@@ -8,8 +8,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "json-server": "^1.0.0-beta.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urtimmm/lab-8.git"
+  },
+  "bugs": {
+    "url": "https://github.com/urtimmm/lab-8/issues"
+  },
+  "homepage": "https://github.com/urtimmm/lab-8#readme",
+  "description": ""
 }
