@@ -9,6 +9,35 @@ window.addEventListener('load', () => {
 
 let currentUser = null;
 
+// Функция управления видимостью кнопки "войти"
+function updateLoginButtonVisibility() {
+  const loginLink = document.getElementById('login-link');
+  const mobileLoginLink = document.getElementById('mobile-login-link');
+  const userIcon = document.getElementById('user-icon');
+  const logoutBtn = document.getElementById('logout-btn');
+  const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+  if (currentUser) {
+    // Пользователь авторизован - скрываем кнопку "войти"
+    if (loginLink) loginLink.style.display = 'none';
+    if (mobileLoginLink) mobileLoginLink.style.display = 'none';
+
+    // Показываем элементы для авторизованного пользователя
+    if (userIcon) userIcon.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'block';
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'block';
+  } else {
+    // Пользователь не авторизован - показываем кнопку "войти"
+    if (loginLink) loginLink.style.display = 'inline-block';
+    if (mobileLoginLink) mobileLoginLink.style.display = 'block';
+
+    // Скрываем элементы для авторизованного пользователя
+    if (userIcon) userIcon.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'none';
+  }
+}
+
 // Проверка авторизации
 function checkAuth() {
   const userData = localStorage.getItem('currentUser');
@@ -22,7 +51,11 @@ function checkAuth() {
 }
 
 async function loadOrders() {
-  if (!checkAuth()) return;
+  if (!checkAuth()) {
+    updateLoginButtonVisibility();
+    return;
+  }
+  updateLoginButtonVisibility();
 
   try {
     const res = await fetch(

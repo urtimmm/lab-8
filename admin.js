@@ -16,6 +16,38 @@ window.addEventListener('load', () => {
   if (p) setTimeout(() => p.setAttribute('hidden', ''), 250); // короткая задержка для красоты
 });
 
+// Функция управления видимостью кнопки "войти"
+function updateLoginButtonVisibility() {
+  const loginLink = document.getElementById('login-link');
+  const mobileLoginLink = document.getElementById('mobile-login-link');
+  const userIcon = document.getElementById('user-icon');
+  const logoutBtn = document.getElementById('logout-btn');
+  const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+  const userData = localStorage.getItem('currentUser');
+  const currentUser = userData ? JSON.parse(userData) : null;
+
+  if (currentUser) {
+    // Пользователь авторизован - скрываем кнопку "войти"
+    if (loginLink) loginLink.style.display = 'none';
+    if (mobileLoginLink) mobileLoginLink.style.display = 'none';
+
+    // Показываем элементы для авторизованного пользователя
+    if (userIcon) userIcon.style.display = 'block';
+    if (logoutBtn) logoutBtn.style.display = 'block';
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'block';
+  } else {
+    // Пользователь не авторизован - показываем кнопку "войти"
+    if (loginLink) loginLink.style.display = 'inline-block';
+    if (mobileLoginLink) mobileLoginLink.style.display = 'block';
+
+    // Скрываем элементы для авторизованного пользователя
+    if (userIcon) userIcon.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'none';
+  }
+}
+
 // Проверка доступа админа
 function checkAdminAccess() {
   const userData = localStorage.getItem('currentUser');
@@ -292,6 +324,7 @@ async function deleteUser(id) {
 }
 
 // Инициализация
+updateLoginButtonVisibility();
 if (checkAdminAccess()) {
   loadProducts();
   loadFeedback();
