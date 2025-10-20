@@ -1,7 +1,7 @@
-const productsAPI = 'http://localhost:3000/products';
-const feedbackAPI = 'http://localhost:3000/feedback';
-const usersAPI = 'http://localhost:3000/users';
-const ordersAPI = 'http://localhost:3000/orders';
+const productsAPI = 'http://localhost:3001/products';
+const feedbackAPI = 'http://localhost:3001/feedback';
+const usersAPI = 'http://localhost:3001/users';
+const ordersAPI = 'http://localhost:3001/orders';
 
 const formProd = document.getElementById('productForm');
 const productList = document.getElementById('productList');

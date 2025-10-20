@@ -433,6 +433,40 @@ function openProductDetails(p) {
   });
 })();
 
+/* ===== Отслеживание скролла для бургер меню ===== */
+(function () {
+  const burger = document.getElementById('burger');
+  if (!burger) return;
+
+  let ticking = false;
+  const scrollThreshold = 50; // Порог скролла в пикселях
+
+  const updateBurgerPosition = () => {
+    const scrollY = window.scrollY;
+
+    if (scrollY > scrollThreshold) {
+      burger.classList.add('scrolled');
+    } else {
+      burger.classList.remove('scrolled');
+    }
+
+    ticking = false;
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      requestAnimationFrame(updateBurgerPosition);
+      ticking = true;
+    }
+  };
+
+  // Инициализация при загрузке страницы
+  updateBurgerPosition();
+
+  // Добавляем обработчик скролла
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+
 /* ===== Экспорт хелперов ===== */
 window.openProductForm = openProductForm;
 window.openProductDetails = openProductDetails;

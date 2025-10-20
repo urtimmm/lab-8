@@ -37,56 +37,293 @@
   position: fixed;
   top: 14px;
   right: 16px;
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border: 0;
-  background: #2c3e50;
-  border-radius: 10px;
+  background: rgba(44, 62, 80, 0.3);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 6px;
-  padding: 10px;
+  align-items: center;
+  gap: 5px;
+  padding: 12px;
   z-index: 1010;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* Компактное состояние при скролле */
+.burger.scrolled {
+  top: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: rgba(44, 62, 80, 0.4);
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.3);
+  backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.burger:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+  background: rgba(52, 73, 94, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.burger:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
+}
+
 .burger span {
   display: block;
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
+  width: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #fff 0%, #ecf0f1 100%);
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+/* Полоски в компактном состоянии */
+.burger.scrolled span {
+  width: 18px;
+  height: 2.5px;
+}
+
+.burger span:nth-child(1) {
+  transform-origin: center;
+}
+
+.burger span:nth-child(2) {
+  transform-origin: center;
+}
+
+.burger span:nth-child(3) {
+  transform-origin: center;
+}
+
+/* Анимация при активном состоянии */
 .burger.active {
-  transform: rotate(90deg);
+  transform: rotate(45deg) scale(1.1);
+  background: rgba(231, 76, 60, 0.4);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+  border-color: rgba(231, 76, 60, 0.6);
+}
+
+.burger.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+  background: linear-gradient(90deg, #fff 0%, #f8f9fa 100%);
+}
+
+.burger.active span:nth-child(2) {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.burger.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+  background: linear-gradient(90deg, #fff 0%, #f8f9fa 100%);
+}
+
+/* Эффект пульсации при наведении */
+.burger::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.burger:hover::before {
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+}
+
+/* Дополнительные эффекты для бургер меню */
+.burger:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+.burger:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
+}
+
+/* Эффект свечения при активном состоянии */
+.burger.active::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  opacity: 0.2;
+  animation: glow-active 1.5s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes glow-active {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+
+/* Улучшенная анимация для мобильного меню */
+.mobile-menu a {
+  animation: slideInRight 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.mobile-menu a:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.mobile-menu a:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.mobile-menu a:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.mobile-menu a:nth-child(4) {
+  animation-delay: 0.25s;
+}
+.mobile-menu a:nth-child(5) {
+  animation-delay: 0.3s;
+}
+.mobile-menu a:nth-child(6) {
+  animation-delay: 0.35s;
+}
+.mobile-menu a:nth-child(7) {
+  animation-delay: 0.4s;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Эффект для оверлея */
+.overlay {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.overlay.show {
+  backdrop-filter: saturate(60%) blur(4px);
 }
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: -320px;
-  width: 300px;
+  right: -350px;
+  width: 320px;
   height: 100dvh;
-  background: #1f2a36;
+  background: linear-gradient(135deg, #1f2a36 0%, #2c3e50 100%);
   color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 80px 24px 24px;
-  gap: 14px;
+  padding: 90px 24px 24px;
+  gap: 8px;
   z-index: 1000;
-  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.3);
-  transition: right 0.35s ease;
+  box-shadow: -15px 0 50px rgba(0, 0, 0, 0.4);
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
+
+.mobile-menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    135deg,
+    rgba(52, 73, 94, 0.8) 0%,
+    rgba(44, 62, 80, 0.6) 100%
+  );
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .mobile-menu a {
   color: #fff;
   text-decoration: none;
-  padding: 10px 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  padding: 14px 16px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
 }
+
+.mobile-menu a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
 .mobile-menu a:hover {
-  background: #2c3e50;
+  background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+  transform: translateX(8px);
+  box-shadow: 0 4px 12px rgba(52, 73, 94, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
 }
+
+.mobile-menu a:hover::before {
+  left: 100%;
+}
+
+.mobile-menu a:active {
+  transform: translateX(4px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
 .mobile-menu.open {
   right: 0;
 }
@@ -502,5 +739,83 @@ body.locked {
   }
   .counters .counter {
     font-size: 28px;
+  }
+
+  /* Адаптивные стили для бургер меню */
+  .burger {
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+  }
+
+  .burger span {
+    width: 18px;
+    height: 2.5px;
+  }
+
+  /* Компактное состояние на мобильных */
+  .burger.scrolled {
+    top: 6px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+
+  .burger.scrolled span {
+    width: 16px;
+    height: 2px;
+  }
+
+  .mobile-menu {
+    width: 280px;
+    right: -300px;
+    padding: 80px 20px 20px;
+  }
+
+  .mobile-menu a {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 480px) {
+  .burger {
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+  }
+
+  .burger span {
+    width: 16px;
+    height: 2px;
+  }
+
+  .mobile-menu {
+    width: 260px;
+    right: -280px;
+    padding: 70px 16px 16px;
+  }
+
+  .mobile-menu a {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  /* Компактное состояние на очень маленьких экранах */
+  .burger.scrolled {
+    top: 4px;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .burger.scrolled span {
+    width: 14px;
+    height: 1.5px;
   }
 }

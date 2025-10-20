@@ -47,6 +47,12 @@
       "name": "maruser321",
       "email": "user@example.com",
       "password": "User123!"
+    },
+    {
+      "id": "508d",
+      "name": "test",
+      "email": "uteleviz@gmail.com",
+      "password": "qwerty12345"
     }
   ],
   "products": [
@@ -105,8 +111,48 @@
       "image": "./img/products/ganteli.jpg"
     }
   ],
-  "cart": [],
-  "favorites": [],
+  "cart": [
+    {
+      "id": "6444",
+      "userId": "508d",
+      "productId": "4",
+      "title": "Куртка зимняя мужская",
+      "price": 299,
+      "image": "./img/products/hooded-jacket.jpg",
+      "quantity": 1,
+      "addedAt": "2025-10-20T21:28:10.251Z"
+    },
+    {
+      "id": "090e",
+      "userId": "508d",
+      "productId": "5",
+      "title": "Книга: Мастер и Маргарита",
+      "price": 35,
+      "image": "./img/products/maste-margarita.jpg",
+      "quantity": 1,
+      "addedAt": "2025-10-20T21:28:15.597Z"
+    }
+  ],
+  "favorites": [
+    {
+      "id": "c08f",
+      "userId": "508d",
+      "productId": "4",
+      "title": "Куртка зимняя мужская",
+      "price": 299,
+      "image": "./img/products/hooded-jacket.jpg",
+      "addedAt": "2025-10-20T21:28:08.524Z"
+    },
+    {
+      "id": "274a",
+      "userId": "508d",
+      "productId": "5",
+      "title": "Книга: Мастер и Маргарита",
+      "price": 35,
+      "image": "./img/products/maste-margarita.jpg",
+      "addedAt": "2025-10-20T21:28:16.232Z"
+    }
+  ],
   "orders": [],
   "feedback": [
     {

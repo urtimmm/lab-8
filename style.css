@@ -1107,38 +1107,62 @@ body.dark-theme .btn-logout:hover {
 }
 #theme-switch {
   margin-right: 40px;
-  padding: 6px 10px;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: rgba(44, 62, 80, 0.3);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 18px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #theme-switch:hover {
-  background: rgba(108, 123, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+  background: rgba(52, 73, 94, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+#theme-switch:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
 }
 
 /* Стили для мобильной кнопки переключения темы */
 #mobile-theme-btn {
-  padding: 10px 14px;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: rgba(44, 62, 80, 0.3);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 16px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 10px rgba(44, 62, 80, 0.2);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #mobile-theme-btn:hover {
-  background: rgba(108, 123, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+  background: rgba(52, 73, 94, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+#mobile-theme-btn:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
 }
 
 /* Стили для контейнера мобильной кнопки темы */

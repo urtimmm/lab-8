@@ -1,8 +1,8 @@
 // ===== login.js с поддержкой i18n =====
 
-const loginForm = document.getElementById("loginForm");
-const loginError = document.getElementById("loginError");
-const usersAPI = "http://localhost:3000/users";
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+const usersAPI = 'http://localhost:3001/users';
 
 // Функция получения перевода
 function getI18n(key, fallback = '') {
@@ -17,48 +17,60 @@ window.addEventListener('load', () => {
 });
 
 // ===== Обработчик формы входа =====
-loginForm.addEventListener("submit", async (e) => {
+loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  loginError.textContent = "";
+  loginError.textContent = '';
 
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
 
-  console.log("Попытка входа:", email);
+  console.log('Попытка входа:', email);
 
   try {
     const res = await fetch(`${usersAPI}?email=${encodeURIComponent(email)}`);
 
     if (!res.ok) {
-      loginError.textContent = getI18n('login-error-server', 'Ошибка сервера. Проверьте, запущен ли json-server');
-      console.error("Статус ответа:", res.status);
+      loginError.textContent = getI18n(
+        'login-error-server',
+        'Ошибка сервера. Проверьте, запущен ли json-server'
+      );
+      console.error('Статус ответа:', res.status);
       return;
     }
 
     const users = await res.json();
-    console.log("Найдено пользователей:", users.length);
+    console.log('Найдено пользователей:', users.length);
 
     if (users.length === 0) {
-      loginError.textContent = getI18n('login-error-not-found', 'Пользователь с таким email не найден!');
+      loginError.textContent = getI18n(
+        'login-error-not-found',
+        'Пользователь с таким email не найден!'
+      );
       return;
     }
 
     const user = users[0];
-    console.log("Пользователь:", user.email, "Роль:", user.role);
+    console.log('Пользователь:', user.email, 'Роль:', user.role);
 
     if (user.password !== password) {
-      loginError.textContent = getI18n('login-error-password', 'Неверный пароль!');
+      loginError.textContent = getI18n(
+        'login-error-password',
+        'Неверный пароль!'
+      );
       return;
     }
 
     // Сохранение пользователя
-    localStorage.setItem("currentUser", JSON.stringify({
-      id: user.id,
-      email: user.email,
-      nickname: user.nickname,
-      role: user.role,
-      fio: user.fio
-    }));
+    localStorage.setItem(
+      'currentUser',
+      JSON.stringify({
+        id: user.id,
+        email: user.email,
+        nickname: user.nickname,
+        role: user.role,
+        fio: user.fio,
+      })
+    );
 
     // Используем toast если доступен, иначе alert
     const successMsg = getI18n('login-success', 'Успешный вход!');
@@ -70,27 +82,32 @@ loginForm.addEventListener("submit", async (e) => {
 
     // Перенаправление в зависимости от роли
     setTimeout(() => {
-      if (user.role === "admin") {
-        window.location.href = "admin.html";
+      if (user.role === 'admin') {
+        window.location.href = 'admin.html';
       } else {
-        window.location.href = "catalog.html";
+        window.location.href = 'catalog.html';
       }
     }, 500);
-
   } catch (error) {
-    loginError.textContent = getI18n('login-error-connection', 'Ошибка подключения к серверу. Проверьте консоль.');
-    console.error("Ошибка:", error);
+    loginError.textContent = getI18n(
+      'login-error-connection',
+      'Ошибка подключения к серверу. Проверьте консоль.'
+    );
+    console.error('Ошибка:', error);
   }
 });
 
 // ===== Проверка авторизации при загрузке =====
-window.addEventListener("DOMContentLoaded", () => {
-  const currentUser = localStorage.getItem("currentUser");
+window.addEventListener('DOMContentLoaded', () => {
+  const currentUser = localStorage.getItem('currentUser');
   if (currentUser) {
     const user = JSON.parse(currentUser);
-    const confirmMsg = getI18n('login-already-logged', 'Вы уже авторизованы. Перейти в каталог?');
+    const confirmMsg = getI18n(
+      'login-already-logged',
+      'Вы уже авторизованы. Перейти в каталог?'
+    );
     if (confirm(confirmMsg)) {
-      window.location.href = "catalog.html";
+      window.location.href = 'catalog.html';
     }
   }
 });

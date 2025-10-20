@@ -2,9 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================== catalog.js ==================
   // Исправленная версия с корректной работой i18n
 
-  const productsAPI = 'http://localhost:3000/products';
-  const favAPI = 'http://localhost:3000/favorites';
-  const cartAPI = 'http://localhost:3000/cart';
+  const productsAPI = 'http://localhost:3001/products';
+  const favAPI = 'http://localhost:3001/favorites';
+  const cartAPI = 'http://localhost:3001/cart';
 
   // Переводы продуктов (для английского языка)
   const productTranslations = {
@@ -131,15 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const notify = {
     ok: (m) => {
       const msg = typeof m === 'string' ? getI18n(m, m) : m;
-      window.toast?.success ? toast.success(msg) : alert(msg);
+      window.toast?.success ? window.toast.success(msg) : alert(msg);
     },
     info: (m) => {
       const msg = typeof m === 'string' ? getI18n(m, m) : m;
-      window.toast?.info ? toast.info(msg) : alert(msg);
+      window.toast?.info ? window.toast.info(msg) : alert(msg);
     },
     err: (m) => {
       const msg = typeof m === 'string' ? getI18n(m, m) : m;
-      window.toast?.error ? toast.error(msg) : alert(msg);
+      window.toast?.error ? window.toast.error(msg) : alert(msg);
     },
   };
 
@@ -147,16 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadProducts() {
     try {
       const res = await fetch(productsAPI);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       allProducts = await res.json();
       renderCategories();
       applyFilters();
     } catch (e) {
+      console.error('Ошибка загрузки товаров:', e);
       catalogEl.innerHTML = `<p>${getI18n(
         'load-error',
         'Ошибка загрузки каталога'
-      )}</p>`;
-      console.error(e);
+      )}: ${e.message}</p>`;
     }
   }
 
@@ -281,13 +281,20 @@ document.addEventListener('DOMContentLoaded', () => {
   catalogEl.addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
-    const id = +btn.dataset.id;
-    const product = allProducts.find((p) => p.id === id);
+
+    const id = btn.dataset.id;
+
+    // Ищем товар как строку и как число
+    let product =
+      allProducts.find((p) => p.id == id) ||
+      allProducts.find((p) => p.id === id) ||
+      allProducts.find((p) => p.id === +id);
+
     if (!product) return;
 
     if (btn.dataset.action === 'details') {
       if (window.openProductDetails) {
-        openProductDetails(product);
+        window.openProductDetails(product);
       } else {
         const title = getProductText(id, 'title');
         const description = getProductText(id, 'description');
@@ -531,11 +538,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Call the function after DOM is loaded (add this line below the function definition)
-
   loadProducts();
   initActiveNav();
-});
-
-document.addEventListener('click', (e) => {
-  console.log('CLICK:', e.target);
 });

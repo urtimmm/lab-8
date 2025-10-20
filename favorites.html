@@ -128,7 +128,7 @@
     <script src="favorites.js"></script>
 
     <script>
-      const favAPI = 'http://localhost:3000/favorites';
+      const favAPI = 'http://localhost:3001/favorites';
       const favDiv = document.getElementById('favorites');
 
       async function loadFavorites() {
@@ -170,7 +170,7 @@
           quantity: 1,
         };
 
-        await fetch('http://localhost:3000/cart', {
+        await fetch('http://localhost:3001/cart', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item),
