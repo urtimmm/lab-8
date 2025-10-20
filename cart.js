@@ -1,5 +1,3 @@
-const cartAPI = 'http://localhost:3001/cart';
-const ordersAPI = 'http://localhost:3001/orders';
 const cartDiv = document.getElementById('cart');
 const totalDiv = document.getElementById('total');
 
@@ -26,100 +24,143 @@ function checkAuth() {
   return true;
 }
 
-async function loadCart() {
+// Функции для работы с LocalStorage
+function getCartFromStorage() {
+  const cart = localStorage.getItem('cart');
+  return cart ? JSON.parse(cart) : [];
+}
+
+function saveCartToStorage(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function getOrdersFromStorage() {
+  const orders = localStorage.getItem('orders');
+  return orders ? JSON.parse(orders) : [];
+}
+
+function saveOrdersToStorage(orders) {
+  localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function loadCart() {
   if (!checkAuth()) return;
 
-  const res = await fetch(`${cartAPI}?userId=${currentUser.id}`);
-  const data = await res.json();
-  let total = 0;
+  try {
+    const allCart = getCartFromStorage();
+    const userCart = allCart.filter((item) => item.userId === currentUser.id);
+    let total = 0;
 
-  cartDiv.innerHTML = data.length
-    ? data
-        .map((p) => {
-          total += p.price * p.quantity;
-          return `
+    cartDiv.innerHTML = userCart.length
+      ? userCart
+          .map((p) => {
+            total += p.price * p.quantity;
+            return `
       <div class="card">
         <img src="${p.image}" alt="${p.title}">
         <h3>${p.title}</h3>
         <p>${p.price} × ${p.quantity} = <b class="price">${(
-            p.price * p.quantity
-          ).toFixed(2)} BYN</b></p>
+              p.price * p.quantity
+            ).toFixed(2)} BYN</b></p>
         <div class="actions">
-          <button onclick="changeQty(${p.id}, ${p.quantity + 1})">+</button>
-          <button onclick="changeQty(${p.id}, ${p.quantity - 1})">-</button>
-          <button onclick="removeCart(${
+          <button onclick="changeQty('${p.id}', ${p.quantity + 1})">+</button>
+          <button onclick="changeQty('${p.id}', ${p.quantity - 1})">-</button>
+          <button onclick="removeCart('${
             p.id
-          })" class="btn-danger">Удалить</button>
+          }')" class="btn-danger">Удалить</button>
         </div>
       </div>
     `;
-        })
-        .join('')
-    : '<p>❌ Корзина пуста</p>';
+          })
+          .join('')
+      : '<p>❌ Корзина пуста</p>';
 
-  totalDiv.textContent = 'Итого: ' + total.toFixed(2) + ' BYN';
-  totalDiv.style.display = data.length ? 'block' : 'none';
+    totalDiv.textContent = 'Итого: ' + total.toFixed(2) + ' BYN';
+    totalDiv.style.display = userCart.length ? 'block' : 'none';
+  } catch (error) {
+    cartDiv.innerHTML = '<p>Ошибка загрузки корзины</p>';
+    console.error(error);
+  }
 }
 
-async function changeQty(id, qty) {
+function changeQty(id, qty) {
   if (qty <= 0) return removeCart(id);
 
-  await fetch(`${cartAPI}/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ quantity: qty }),
-  });
-  loadCart();
+  try {
+    const allCart = getCartFromStorage();
+    const itemIndex = allCart.findIndex((item) => item.id === id);
+
+    if (itemIndex !== -1) {
+      allCart[itemIndex].quantity = qty;
+      saveCartToStorage(allCart);
+      loadCart();
+    }
+  } catch (error) {
+    alert('❌ Ошибка при изменении количества');
+    console.error(error);
+  }
 }
 
-async function removeCart(id) {
+function removeCart(id) {
   if (!confirm('Удалить товар из корзины?')) return;
 
-  await fetch(`${cartAPI}/${id}`, { method: 'DELETE' });
-  loadCart();
+  try {
+    const allCart = getCartFromStorage();
+    const updatedCart = allCart.filter((item) => item.id !== id);
+    saveCartToStorage(updatedCart);
+    loadCart();
+  } catch (error) {
+    alert('❌ Ошибка при удалении товара');
+    console.error(error);
+  }
 }
 
-async function checkout() {
+function checkout() {
   if (!currentUser) {
     alert('Необходима авторизация!');
     return;
   }
 
-  const res = await fetch(`${cartAPI}?userId=${currentUser.id}`);
-  const cartItems = await res.json();
-
-  if (!cartItems.length) {
-    alert('Корзина пуста!');
-    return;
-  }
-
-  const order = {
-    userId: currentUser.id,
-    userName: currentUser.nickname || currentUser.fio.first,
-    userEmail: currentUser.email,
-    date: new Date().toISOString(),
-    items: cartItems.map((item) => ({
-      productId: item.productId,
-      title: item.title,
-      price: item.price,
-      quantity: item.quantity,
-      image: item.image,
-    })),
-    total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    status: 'pending',
-  };
-
   try {
-    await fetch(ordersAPI, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(order),
-    });
+    const allCart = getCartFromStorage();
+    const cartItems = allCart.filter((item) => item.userId === currentUser.id);
+
+    if (!cartItems.length) {
+      alert('Корзина пуста!');
+      return;
+    }
+
+    const order = {
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 4), // Генерируем уникальный ID
+      userId: currentUser.id,
+      userName:
+        currentUser.nickname || currentUser.fio?.first || currentUser.name,
+      userEmail: currentUser.email,
+      date: new Date().toISOString(),
+      items: cartItems.map((item) => ({
+        productId: item.productId,
+        title: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+      })),
+      total: cartItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      ),
+      status: 'pending',
+    };
+
+    // Сохраняем заказ
+    const allOrders = getOrdersFromStorage();
+    allOrders.push(order);
+    saveOrdersToStorage(allOrders);
 
     // Очищаем корзину пользователя
-    for (let item of cartItems) {
-      await fetch(`${cartAPI}/${item.id}`, { method: 'DELETE' });
-    }
+    const updatedCart = allCart.filter(
+      (item) => item.userId !== currentUser.id
+    );
+    saveCartToStorage(updatedCart);
 
     alert('✅ Заказ успешно оформлен!');
     loadCart();

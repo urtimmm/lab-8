@@ -3,8 +3,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Исправленная версия с корректной работой i18n
 
   const productsAPI = 'http://localhost:3001/products';
-  const favAPI = 'http://localhost:3001/favorites';
-  const cartAPI = 'http://localhost:3001/cart';
+
+  // Функции для работы с LocalStorage
+  function getFavoritesFromStorage() {
+    const favorites = localStorage.getItem('favorites');
+    return favorites ? JSON.parse(favorites) : [];
+  }
+
+  function saveFavoritesToStorage(favorites) {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+
+  function getCartFromStorage() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+  }
+
+  function saveCartToStorage(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
 
   // Переводы продуктов (для английского языка)
   const productTranslations = {
@@ -313,33 +330,31 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        const r = await fetch(
-          `${cartAPI}?userId=${currentUser.id}&productId=${product.id}`
+        const allCart = getCartFromStorage();
+        const existingItem = allCart.find(
+          (item) =>
+            item.userId === currentUser.id && item.productId === product.id
         );
-        if (!r.ok) throw new Error('Fetch error');
-        const exist = await r.json();
-        if (exist.length) {
-          const it = exist[0];
-          await fetch(`${cartAPI}/${it.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ quantity: it.quantity + 1 }),
-          });
+
+        if (existingItem) {
+          // Увеличиваем количество
+          existingItem.quantity += 1;
         } else {
-          await fetch(cartAPI, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: currentUser.id,
-              productId: product.id,
-              title: getProductText(product.id, 'title'),
-              price: product.price,
-              image: product.image,
-              quantity: 1,
-              addedAt: new Date().toISOString(),
-            }),
-          });
+          // Добавляем новый товар
+          const cartItem = {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+            userId: currentUser.id,
+            productId: product.id,
+            title: getProductText(product.id, 'title'),
+            price: product.price,
+            image: product.image,
+            quantity: 1,
+            addedAt: new Date().toISOString(),
+          };
+          allCart.push(cartItem);
         }
+
+        saveCartToStorage(allCart);
         notify.ok(getI18n('cart-added', 'Добавлено в корзину'));
       } catch (err) {
         console.error(err);
@@ -353,26 +368,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       try {
-        const r = await fetch(
-          `${favAPI}?userId=${currentUser.id}&productId=${product.id}`
+        const allFavorites = getFavoritesFromStorage();
+        const existingItem = allFavorites.find(
+          (item) =>
+            item.userId === currentUser.id && item.productId === product.id
         );
-        if (!r.ok) throw new Error('Fetch error');
-        const exist = await r.json();
-        if (exist.length) {
+
+        if (existingItem) {
           notify.info(getI18n('fav-exists', 'Уже в избранном'));
         } else {
-          await fetch(favAPI, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              userId: currentUser.id,
-              productId: product.id,
-              title: getProductText(product.id, 'title'),
-              price: product.price,
-              image: product.image,
-              addedAt: new Date().toISOString(),
-            }),
-          });
+          const favItem = {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+            userId: currentUser.id,
+            productId: product.id,
+            title: getProductText(product.id, 'title'),
+            price: product.price,
+            image: product.image,
+            addedAt: new Date().toISOString(),
+          };
+          allFavorites.push(favItem);
+          saveFavoritesToStorage(allFavorites);
           notify.ok(getI18n('fav-added', 'Добавлено в избранное'));
         }
       } catch (err) {

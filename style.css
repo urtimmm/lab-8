@@ -199,13 +199,6 @@ button[type='submit']:disabled {
   background: #7f8c8d;
 }
 
-/* Hover эффект для кнопки "в избранное" */
-.btn-secondary[data-action='fav']:hover {
-  background: #2980b9; /* Более темный синий для "в избранное" */
-  color: #fff;
-  transform: translateY(-2px);
-}
-
 .btn-danger {
   background: #e74c3c;
 }
@@ -995,8 +988,8 @@ button[data-modal='mapModal']:hover {
 
 /* Кнопка "Выйти" */
 .btn-logout {
-  padding: 8px 16px;
-  background: #e74c3c;
+  padding: 8px 20px;
+  background: #6c757d;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -1004,13 +997,13 @@ button[data-modal='mapModal']:hover {
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
 }
 
 .btn-logout:hover {
-  background: #c0392b;
+  background: #5a6268;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.5);
 }
 
 /* Иконка профиля */
@@ -1036,11 +1029,13 @@ body.dark-theme .btn-login:hover {
 }
 
 body.dark-theme .btn-logout {
-  background: #d32f2f;
+  background: #6c757d;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.4);
 }
 
 body.dark-theme .btn-logout:hover {
-  background: #b71c1c;
+  background: #5a6268;
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.6);
 }
 
 /* Hover эффекты для темной темы */
@@ -1052,11 +1047,6 @@ body.dark-theme button[type='submit']:hover {
 body.dark-theme .btn[data-action='details']:hover,
 body.dark-theme .btn[data-action='cart']:hover {
   background: #4a90e2; /* Более темный синий для темной темы */
-}
-
-body.dark-theme .btn-secondary[data-action='fav']:hover {
-  background: #4a90e2; /* Более темный синий для темной темы */
-  color: #fff;
 }
 
 /* Hover эффект для кнопки "открыть карту в окне" в темной теме */
