@@ -870,6 +870,65 @@ button[data-modal='mapModal']:hover {
   transform: translateY(-2px);
 }
 
+/* Языковые кнопки */
+.lang-switcher {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+}
+
+/* Отступ сверху для мобильного переключателя языков */
+.lang-switcher.mobile {
+  margin-top: 8px;
+}
+
+.lang-switcher button {
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  background: transparent;
+  color: #e7ebff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Эффект при наведении */
+.lang-switcher button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #6c7bff, #9e6cff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.lang-switcher button:hover {
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
+}
+
+.lang-switcher button:hover::before {
+  opacity: 0.3;
+}
+
+.lang-switcher button.active {
+  background: linear-gradient(90deg, #6c7bff, #9e6cff);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(110, 100, 255, 0.4);
+}
+
 /* Адаптив для jakor */
 @media (max-width: 640px) {
   .jakor__nav {

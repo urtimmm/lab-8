@@ -13,6 +13,7 @@ var i18ObjLocal = {
     'nav-about': 'О нас',
     'nav-gallery': 'Галерея',
     'nav-contacts': 'Контакты',
+    'nav-lang': 'Язык',
 
     // Каталог
     'catalog-title': 'Каталог товаров',
@@ -25,6 +26,7 @@ var i18ObjLocal = {
     'map-title': 'Мы на карте',
     'map-modal-btn': 'Открыть карту в окне',
     'theme-toggle': 'Сменить тему',
+    language: 'Язык',
     'gal-random': 'Случайное изображение',
     'gal-volume': 'Громкость',
     'gal-video-btn': 'Видео',
@@ -91,6 +93,7 @@ var i18ObjLocal = {
     'nav-about': 'About Us',
     'nav-gallery': 'Gallery',
     'nav-contacts': 'Contacts',
+    'nav-lang': 'Language',
 
     // Catalog
     'catalog-title': 'Product Catalog',
@@ -103,6 +106,7 @@ var i18ObjLocal = {
     'map-title': 'Our Location',
     'map-modal-btn': 'Open Map in Window',
     'theme-toggle': 'Toggle Theme',
+    language: 'Language',
     'gal-random': 'Random Image',
     'gal-volume': 'Volume',
     'gal-video-btn': 'Video',
@@ -220,6 +224,7 @@ window.getLocalStorage = function () {
   if (savedLang) {
     window.lang = savedLang;
     window.getTranslate(window.lang);
+    window.updateLangDisplay(window.lang);
   }
   var savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
@@ -274,6 +279,33 @@ var mobileThemeBtn = document.getElementById('mobile-theme-btn');
 if (themeBtn) themeBtn.addEventListener('click', window.toggleTheme);
 if (mobileThemeBtn)
   mobileThemeBtn.addEventListener('click', window.toggleTheme);
+
+// === ЯЗЫК ===
+
+// Обновление отображения активного языка
+window.updateLangDisplay = function (currentLang) {
+  document
+    .querySelectorAll('.lang-switcher button[data-lang]')
+    .forEach(function (btn) {
+      btn.classList.toggle('active', btn.dataset.lang === currentLang);
+    });
+};
+
+// Обработчик переключения языка
+window.handleLangSwitch = function (e) {
+  var btn = e.target.closest('button[data-lang]');
+  if (!btn || btn.dataset.lang === window.lang) return;
+
+  var newLang = btn.dataset.lang;
+  console.log('Language switch clicked:', newLang);
+
+  window.getTranslate(newLang);
+  window.updateLangDisplay(newLang);
+  window.setLocalStorage();
+};
+
+// Глобальный обработчик кликов для языка
+document.addEventListener('click', window.handleLangSwitch);
 
 // === ИНИЦИАЛИЗАЦИЯ ===
 
