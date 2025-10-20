@@ -979,6 +979,9 @@ button[data-modal='mapModal']:hover {
   font-size: 14px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
 }
 
 .btn-login:hover {
@@ -989,7 +992,7 @@ button[data-modal='mapModal']:hover {
 /* Кнопка "Выйти" */
 .btn-logout {
   padding: 8px 20px;
-  background: #6c757d;
+  background: #5a5e62;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -998,6 +1001,9 @@ button[data-modal='mapModal']:hover {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+  display: inline-block;
+  text-align: center;
+  min-width: 80px;
 }
 
 .btn-logout:hover {
@@ -1113,6 +1119,7 @@ body.dark-theme button[data-modal='mapModal']:hover {
   .btn-logout {
     padding: 6px 14px;
     font-size: 13px;
+    min-width: 70px;
   }
 
   #user-icon {
@@ -1130,6 +1137,7 @@ body.dark-theme button[data-modal='mapModal']:hover {
   .btn-logout {
     padding: 5px 10px;
     font-size: 12px;
+    min-width: 60px;
   }
 
   #user-icon {
