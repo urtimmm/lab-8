@@ -1,0 +1,123 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "fio": {
+        "first": "Иван",
+        "last": "Иванов",
+        "middle": "Иванович"
+      },
+      "email": "admin@myshop.com",
+      "phone": "+375291234567",
+      "birthdate": "1990-01-15",
+      "nickname": "admin",
+      "role": "admin",
+      "password": "Admin123!",
+      "registeredAt": "2025-01-01T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "fio": {
+        "first": "Мария",
+        "last": "Петрова",
+        "middle": "Сергеевна"
+      },
+      "email": "user@example.com",
+      "phone": "+375297654321",
+      "birthdate": "1995-05-20",
+      "nickname": "maruser321",
+      "role": "client",
+      "password": "User123!",
+      "registeredAt": "2025-01-15T12:00:00.000Z"
+    },
+    {
+      "id": "8914",
+      "name": "Сергей",
+      "email": "log@mail.ru",
+      "password": "123456"
+    },
+    {
+      "id": "385a",
+      "name": "Сергей",
+      "email": "s.chikita@mail.ru",
+      "password": "1234"
+    },
+    {
+      "id": "8ac0",
+      "name": "maruser321",
+      "email": "user@example.com",
+      "password": "User123!"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "title": "Samsung Galaxy S24 Smartphone",
+      "description": "Flagship smartphone with excellent camera",
+      "price": 2499,
+      "category": "Electronics",
+      "rating": 4.8,
+      "image": "./img/products/s-l1600.jpg"
+    },
+    {
+      "id": "2",
+      "title": "Lenovo IdeaPad Laptop",
+      "description": "Powerful laptop for work and study",
+      "price": 1899,
+      "category": "Electronics",
+      "rating": 4.5,
+      "image": "./img/products/LenovoIdeaPad.jpg"
+    },
+    {
+      "id": "3",
+      "title": "Sony WH-1000XM5 Headphones",
+      "description": "Wireless headphones with noise cancellation",
+      "price": 899,
+      "category": "Electronics",
+      "rating": 4.9,
+      "image": "./img/products/SonyWH-1000XM5.jpg"
+    },
+    {
+      "id": "4",
+      "title": "Men's Winter Jacket",
+      "description": "Warm and stylish jacket",
+      "price": 299,
+      "category": "Clothing",
+      "rating": 4.3,
+      "image": "./img/products/hooded-jacket.jpg"
+    },
+    {
+      "id": "5",
+      "title": "Book: Master and Margarita",
+      "description": "Classic of Russian literature",
+      "price": 35,
+      "category": "Books",
+      "rating": 5,
+      "image": "./img/products/maste-margarita.jpg"
+    },
+    {
+      "id": "6",
+      "title": "10 kg Dumbbells (pair)",
+      "description": "For home workouts",
+      "price": 89,
+      "category": "Sports",
+      "rating": 4.6,
+      "image": "./img/products/ganteli.jpg"
+    }
+  ],
+  "cart": [],
+  "favorites": [],
+  "orders": [],
+  "feedback": [
+    {
+      "id": "1",
+      "productId": 1,
+      "productTitle": "Смартфон Samsung Galaxy S24",
+      "userId": 2,
+      "userName": "maruser321",
+      "text": "Отличный смартфон! Камера просто супер, батарея держит целый день активного использования. Рекомендую!",
+      "rating": 5,
+      "date": "2025-01-20T14:30:00.000Z"
+    }
+  ]
+}

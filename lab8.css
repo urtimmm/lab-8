@@ -1,0 +1,460 @@
+/* === Прелоадер === */
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: #0b1220;
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  z-index: 9999;
+  transition: opacity 0.4s ease;
+}
+.preloader[hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
+.preloader__spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #fff;
+  animation: spin 1s linear infinite;
+}
+.preloader__text {
+  color: #fff;
+  opacity: 0.85;
+  letter-spacing: 0.08em;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === Бургер и мобильное меню === */
+.burger {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: #2c3e50;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  z-index: 1010;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.burger span {
+  display: block;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.burger.active {
+  transform: rotate(90deg);
+}
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 300px;
+  height: 100dvh;
+  background: #1f2a36;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 80px 24px 24px;
+  gap: 14px;
+  z-index: 1000;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.3);
+  transition: right 0.35s ease;
+}
+.mobile-menu a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.mobile-menu a:hover {
+  background: #2c3e50;
+}
+.mobile-menu.open {
+  right: 0;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: saturate(60%) blur(2px);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.overlay[hidden] {
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+}
+.overlay.show {
+  opacity: 1;
+}
+body.locked {
+  overflow: hidden;
+}
+
+/* === Слайдер === */
+.slider {
+  position: relative;
+  max-width: 1100px;
+  margin: 24px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #111;
+}
+.slider__track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.slide {
+  min-width: 100%;
+  user-select: none;
+}
+.slide img {
+  display: block;
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+}
+.slider__ctrl {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+}
+.slider__prev {
+  left: 12px;
+}
+.slider__next {
+  right: 12px;
+}
+.slider__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  z-index: 2;
+}
+.slider__dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+}
+.slider__dots button.active {
+  background: #fff;
+}
+
+/* === Parallax === */
+.parallax {
+  position: relative;
+  height: 800px;
+  overflow: hidden;
+  background: #0b1220;
+  color: #e7ebff;
+}
+.parallax__layer {
+  position: absolute;
+  inset: auto;
+  will-change: transform;
+  pointer-events: none;
+}
+.parallax__back {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+}
+.parallax__mid {
+  height: 200px;
+  bottom: 80px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: 30%;
+  opacity: 0.8;
+}
+.parallax__front {
+  height: 200px;
+  bottom: 200px;
+  left: 55%;
+  transform: translateX(-55%);
+  width: 50%;
+}
+.parallax__reverse {
+  height: 200px;
+  top: 120px;
+  left: 70%;
+  width: 220px;
+  opacity: 0.75;
+}
+.parallax__content {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+.counters {
+  display: flex;
+  gap: 24px;
+  margin-top: 18px;
+}
+.counters .counter {
+  font-size: 40px;
+  font-weight: 800;
+}
+
+/* === Галерея === */
+.gallery {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+.gallery__controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.gallery__viewport {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+.gallery__viewport img {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  transition: opacity 0.35s ease;
+}
+.gal-video {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  cursor: pointer;
+}
+.vol {
+  margin-left: auto;
+}
+
+/* === Карта === */
+.map {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+.map__wrap {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+}
+.map iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* === Тосты === */
+.toasts {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1050;
+}
+.toast {
+  min-width: 260px;
+  max-width: 360px;
+  background: #111;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  animation: toast-in 0.2s ease;
+}
+.toast--success {
+  background: #1f6f4a;
+}
+.toast--info {
+  background: #224e7a;
+}
+.toast--error {
+  background: #7a2222;
+}
+.toast__close {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Модалки === */
+.modals {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  pointer-events: none;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal__card {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 720px;
+  width: calc(100% - 32px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+.modal__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  background: #2c3e50;
+  color: #fff;
+}
+.modal__body {
+  padding: 0;
+  height: 80vh; /* или 100%, если модалка сама адаптируется */
+}
+.modal__foot {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 12px 18px;
+  background: #f7f7f8;
+}
+.modal__close {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Reveal-анимация */
+/* ===== Reveal-анимация (эффект появления при прокрутке) ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  filter: blur(6px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 1s ease-out;
+  will-change: opacity, transform, filter;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Дополнительное сияние при появлении */
+.reveal.visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.25),
+    transparent 70%
+  );
+  opacity: 0;
+  animation: glow 1.5s ease-out;
+  pointer-events: none;
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+/* Мобилка */
+@media (max-width: 640px) {
+  .slide img {
+    height: 260px;
+  }
+  .parallax {
+    height: 420px;
+  }
+  .counters {
+    gap: 16px;
+  }
+  .counters .counter {
+    font-size: 28px;
+  }
+}

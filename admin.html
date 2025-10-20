@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Фавикон -->
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+
+    <!-- Для iOS (опционально) -->
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+
+    <!-- Глобальные стили поверх твоего style.css -->
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html">Каталог</a>
+        <a href="admin.html" class="active">Админ</a>
+        <a href="#" id="logoutLink">Выход</a>
+      </nav>
+    </header>
+
+    <header>
+      <h1>⚙️ Админ-панель</h1>
+    </header>
+
+    <main class="container">
+      <!-- Управление товарами -->
+      <section class="block">
+        <h2>Управление товарами</h2>
+        <form id="productForm" class="form">
+          <label
+            >Название*
+            <input type="text" id="prodTitle" required />
+          </label>
+          <label
+            >Описание*
+            <textarea id="prodDesc" required></textarea>
+          </label>
+          <label
+            >Цена*
+            <input type="number" id="prodPrice" step="0.01" required />
+          </label>
+          <label
+            >Категория*
+            <select id="prodCategory" required>
+              <option value="Электроника">Электроника</option>
+              <option value="Одежда">Одежда</option>
+              <option value="Книги">Книги</option>
+              <option value="Спорт">Спорт</option>
+              <option value="Дом и сад">Дом и сад</option>
+              <option value="Разное">Разное</option>
+            </select>
+          </label>
+          <label
+            >URL изображения
+            <input type="url" id="prodImage" placeholder="https://..." />
+          </label>
+          <button type="submit" class="btn">Добавить товар</button>
+        </form>
+
+        <h3>Список товаров</h3>
+        <div id="productList" class="list"></div>
+      </section>
+
+      <!-- Управление отзывами -->
+      <section class="block">
+        <h2>Управление отзывами</h2>
+        <div id="feedbackList" class="list"></div>
+      </section>
+
+      <!-- Управление пользователями -->
+      <section class="block">
+        <h2>Управление пользователями</h2>
+        <div id="usersList" class="list"></div>
+      </section>
+
+      <!-- Статистика заказов -->
+      <section class="block">
+        <h2>Статистика заказов</h2>
+        <div id="orderStats" class="stats-grid"></div>
+      </section>
+    </main>
+
+    <script src="admin.js"></script>
+  </body>
+</html>

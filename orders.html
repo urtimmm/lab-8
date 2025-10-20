@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Заказы</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Фавикон -->
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+
+    <!-- Для iOS (опционально) -->
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+
+    <!-- Глобальные стили поверх твоего style.css -->
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html">Каталог</a>
+        <a href="favorites.html">Избранное</a>
+        <a href="cart.html">Корзина</a>
+        <a href="orders.html" class="active">Заказы</a>
+        <a href="feedback.html">Отзывы</a>
+        <a href="admin.html">Админ</a>
+        <a href="register.html">Регистрация</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>История заказов</h1>
+      <div id="orders" class="list"></div>
+    </main>
+
+    <script src="orders.js"></script>
+    <script>
+      const ordersAPI = "http://localhost:3000/orders";
+      const ordersDiv = document.getElementById("orders");
+
+      async function loadOrders() {
+        const res = await fetch(ordersAPI);
+        const data = await res.json();
+
+        ordersDiv.innerHTML = data.length
+          ? data
+              .map(
+                (order) => `
+        <div class="card">
+          <div>
+            <h3>Заказ №${order.id}</h3>
+            <p>Дата: ${new Date(order.date).toLocaleString()}</p>
+            <p>Сумма: <b class="price">${order.total} BYN</b></p>
+          </div>
+          <div class="order-items">
+            ${order.items
+              .map(
+                (i) => `
+              <div class="order-item">
+                <img src="${i.image}" alt="">
+                <span>${i.title} — ${i.quantity} шт. × ${i.price} BYN</span>
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `
+              )
+              .join("")
+          : "<p>❌ Заказов пока нет</p>";
+      }
+
+      loadOrders();
+    </script>
+  </body>
+</html>

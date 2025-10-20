@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="nav-catalog">Каталог</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lab8.css" />
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+
+      <nav>
+        <a href="catalog.html" class="active" data-i18n="nav-catalog"
+          >Каталог</a
+        >
+        <a href="favorites.html" data-i18n="nav-favorites">Избранное</a>
+        <a href="cart.html" data-i18n="nav-cart">Корзина</a>
+        <a href="orders.html" data-i18n="nav-orders">Заказы</a>
+        <a href="feedback.html" data-i18n="nav-feedback">Отзывы</a>
+        <a href="admin.html" data-i18n="nav-admin">Админ</a>
+        <a href="register.html" data-i18n="nav-register">Регистрация</a>
+
+        <!-- Блок авторизации -->
+        <div
+          id="user-controls"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+          "
+        >
+          <a
+            href="login.html"
+            id="login-link"
+            class="btn-login"
+            style="display: inline-block"
+          >
+            <span data-i18n="nav-login">Войти</span>
+          </a>
+
+          <div
+            id="user-icon"
+            style="cursor: pointer; font-size: 24px; display: none"
+            title="Профиль"
+          >
+            👤
+          </div>
+          <button
+            id="logout-btn"
+            class="btn-logout"
+            style="display: none"
+            data-i18n="logout"
+          >
+            Выйти
+          </button>
+        </div>
+      </nav>
+
+      <button id="theme-switch" aria-label="Смена темы" title="Сменить тему">
+        ☀️
+      </button>
+    </header>
+
+    <div class="jakor">
+      <nav class="jakor__nav">
+        <div class="jakor-left">
+          <a href="#catalog" class="smooth active" data-i18n="nav-catalog"
+            >Каталог</a
+          >
+          <a href="#heroSlider" class="smooth" data-i18n="nav-promo">Промо</a>
+          <a href="#about" class="smooth" data-i18n="nav-about">О нас</a>
+          <a href="#gallery" class="smooth" data-i18n="nav-gallery">Галерея</a>
+          <a href="#map" class="smooth" data-i18n="nav-contacts">Контакты</a>
+        </div>
+        <div class="jakor-right">
+          <div id="language-switch" class="lang-switcher desktop">
+            <button id="lang-ru" data-lang="ru" class="active">ru</button>
+            <button id="lang-en" data-lang="en">en</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <main class="container">
+      <h1 data-i18n="catalog-title">Каталог товаров</h1>
+
+      <div class="controls">
+        <input
+          type="text"
+          id="search"
+          data-i18n-placeholder="search-placeholder"
+          placeholder="Поиск..."
+        />
+        <select id="sort">
+          <option value="" data-i18n="sort-default">Сортировка</option>
+          <option value="price" data-i18n="sort-price">По цене</option>
+          <option value="title" data-i18n="sort-title">По названию</option>
+          <option value="rating" data-i18n="sort-rating">По рейтингу</option>
+        </select>
+        <div id="categories" class="categories"></div>
+      </div>
+
+      <div id="catalog" class="grid"></div>
+      <div id="pagination" class="pagination"></div>
+
+      <section class="slider" id="heroSlider" aria-label="Промо">
+        <button class="slider__ctrl slider__prev" aria-label="Назад">‹</button>
+        <div class="slider__track">
+          <div class="slide">
+            <img src="./img/products/LenovoIdeaPad.jpg" alt="Слайд 1" />
+          </div>
+          <div class="slide">
+            <img src="./img/products/SonyWH-1000XM5.jpg" alt="Слайд 2" />
+          </div>
+          <div class="slide">
+            <img src="./img/products/maste-margarita.jpg" alt="Слайд 3" />
+          </div>
+          <div class="slide">
+            <img src="./img/products/s-l1600.jpg" alt="Слайд 4" />
+          </div>
+        </div>
+        <button class="slider__ctrl slider__next" aria-label="Вперёд">›</button>
+        <div class="slider__dots"></div>
+      </section>
+
+      <section class="parallax reveal" id="about">
+        <div
+          class="parallax__layer parallax__back"
+          style="background-image: url('img/back.jpg')"
+        ></div>
+        <img
+          class="parallax__layer parallax__mid"
+          src="./img/parralax/mid.png"
+          alt=""
+          width="50px"
+        />
+        <img
+          class="parallax__layer parallax__front"
+          src="./img/parralax/front.png"
+          alt=""
+          width="50px"
+        />
+        <img
+          class="parallax__layer parallax__reverse"
+          src="./img/parralax/reverse.png"
+          alt=""
+          width="50px"
+        />
+        <div class="parallax__content">
+          <h2 id="about-title" data-i18n="about-title" style="color: #e7ebff">
+            О нас
+          </h2>
+          <div class="counters">
+            <div class="counter" data-target="2500">0</div>
+            <div class="counter" data-target="120">0</div>
+            <div class="counter" data-target="98">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery reveal" id="gallery">
+        <h2 data-i18n="gallery-title">Медиагалерея</h2>
+        <div class="gallery__controls">
+          <button class="gal-btn" data-action="random" data-i18n="gal-random">
+            Случайное изображение
+          </button>
+          <button class="gal-btn" data-action="playpause" aria-pressed="false">
+            ▶︎/❚❚
+          </button>
+          <label class="vol" data-i18n="gal-volume"
+            >Громкость
+            <input
+              id="galVolume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.7"
+            />
+          </label>
+        </div>
+        <div class="gallery__viewport">
+          <img id="galImage" src="img/gallery/1.jpg" alt="Галерея" />
+          <button
+            id="galVideoBtn"
+            class="gal-video"
+            aria-label="Запустить видео"
+            data-i18n="gal-video-btn"
+          >
+            Видео
+          </button>
+        </div>
+      </section>
+
+      <section class="map reveal" id="map">
+        <h2 data-i18n="map-title">Мы на карте</h2>
+        <div class="map__wrap">
+          <iframe
+            title="Карта"
+            loading="lazy"
+            src="https://yandex.ru/map-widget/v1/?um=constructor%3A14894972997b2b25aab49bc2b59e963c58fa0c98fc9bb734cba3279e78010465&amp;source=constructor"
+          ></iframe>
+        </div>
+        <button class="btn" data-modal="mapModal" data-i18n="map-modal-btn">
+          Открыть карту в окне
+        </button>
+      </section>
+    </main>
+
+    <button
+      class="burger"
+      id="burger"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Открыть меню"
+    >
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mobileMenu" class="mobile-menu" aria-hidden="true">
+      <a href="catalog.html" data-i18n="nav-catalog">Каталог</a>
+      <a href="favorites.html" data-i18n="nav-favorites">Избранное</a>
+      <a href="cart.html" data-i18n="nav-cart">Корзина</a>
+      <a href="orders.html" data-i18n="nav-orders">Заказы</a>
+      <a href="feedback.html" data-i18n="nav-feedback">Отзывы</a>
+      <a href="admin.html" data-i18n="nav-admin">Админ</a>
+      <a href="register.html" data-i18n="nav-register">Регистрация</a>
+
+      <!-- Авторизация в мобильном меню -->
+      <div class="mobile-auth">
+        <a href="login.html" id="mobile-login-link" style="display: none">
+          <span data-i18n="nav-login">Войти</span>
+        </a>
+        <button id="mobile-logout-btn" style="display: none" data-i18n="logout">
+          Выйти
+        </button>
+      </div>
+
+      <div class="mobile-controls">
+        <div id="mobile-theme-switch" class="control-item">
+          <span data-i18n="theme-toggle">Сменить тему</span>
+          <button id="mobile-theme-btn" aria-label="Смена темы">☀️</button>
+        </div>
+        <div id="mobile-language-switch" class="control-item">
+          <span data-i18n="language">Язык</span>
+          <div class="lang-switcher mobile">
+            <button data-lang="ru" class="active">ru</button>
+            <button data-lang="en">en</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div id="overlay" class="overlay" hidden></div>
+
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+    <div id="modals" class="modals"></div>
+
+    <script src="translate.js"></script>
+    <script src="lab8.js"></script>
+    <script src="catalog.js"></script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Избранное</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Фавикон -->
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+
+    <!-- Для iOS (опционально) -->
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+
+    <!-- Глобальные стили поверх твоего style.css -->
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html">Каталог</a>
+        <a href="favorites.html" class="active">Избранное</a>
+        <a href="cart.html">Корзина</a>
+        <a href="orders.html">Заказы</a>
+        <a href="feedback.html">Отзывы</a>
+        <a href="admin.html">Админ</a>
+        <a href="register.html">Регистрация</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Избранные товары</h1>
+      <div id="favorites" class="grid"></div>
+    </main>
+
+    <script src="favorites.js"></script>
+
+    <script>
+      const favAPI = "http://localhost:3000/favorites";
+      const favDiv = document.getElementById("favorites");
+
+      async function loadFavorites() {
+        const res = await fetch(favAPI);
+        const data = await res.json();
+        favDiv.innerHTML = data.length
+          ? data
+              .map(
+                (p) => `
+        <div class="card">
+          <img src="${p.image}">
+          <h3>${p.title}</h3>
+          <p class="price">${p.price} BYN</p>
+          <div class="actions">
+            <button onclick="removeFav(${p.id})" class="btn-danger">Удалить</button>
+            <button onclick="addToCart(${p.id})" class="btn">🛒 В корзину</button>
+          </div>
+        </div>
+      `
+              )
+              .join("")
+          : "<p>❌ Избранное пусто</p>";
+      }
+
+      async function removeFav(id) {
+        await fetch(`${favAPI}/${id}`, { method: "DELETE" });
+        loadFavorites();
+      }
+
+      async function addToCart(id) {
+        const res = await fetch(`${favAPI}/${id}`);
+        const product = await res.json();
+
+        const item = {
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          image: product.image,
+          quantity: 1,
+        };
+
+        await fetch("http://localhost:3000/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(item),
+        });
+
+        alert("✅ Добавлено в корзину!");
+      }
+
+      loadFavorites();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="login-title">Авторизация</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="lab8.css" />
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+  </head>
+  <body>
+    <!-- Прелоадер -->
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text" data-i18n="loading">Загрузка…</div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html" data-i18n="nav-catalog">Каталог</a>
+        <a href="login.html" class="active" data-i18n="nav-login">Вход</a>
+        <a href="register.html" data-i18n="nav-register">Регистрация</a>
+      </nav>
+
+      <!-- Кнопка смены темы -->
+      <button id="theme-switch" aria-label="Смена темы" title="Сменить тему">☀️</button>
+    </header>
+
+    <!-- Якорное меню с языками -->
+    <div class="jakor">
+      <nav class="jakor__nav">
+        <div class="jakor-left">
+          <a href="catalog.html" class="smooth" data-i18n="nav-catalog">Каталог</a>
+          <a href="login.html" class="smooth active" data-i18n="nav-login">Вход</a>
+          <a href="register.html" class="smooth" data-i18n="nav-register">Регистрация</a>
+        </div>
+        <div class="jakor-right">
+          <div id="language-switch" class="lang-switcher desktop">
+            <button data-lang="ru" class="active">ru</button>
+            <button data-lang="en">en</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Контент -->
+    <main class="container">
+      <div class="auth-container">
+        <h1 data-i18n="login-heading">Вход в систему</h1>
+
+        <form id="loginForm" class="form">
+          <label>
+            <span data-i18n="login-email">Email*</span>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              required 
+              data-i18n-placeholder="login-email-placeholder"
+              placeholder="example@mail.com"
+            />
+          </label>
+
+          <label>
+            <span data-i18n="login-password">Пароль*</span>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              required 
+              data-i18n-placeholder="login-password-placeholder"
+              placeholder="Введите пароль"
+            />
+          </label>
+
+          <div id="loginError" class="error"></div>
+
+          <button type="submit" class="btn" data-i18n="login-btn">Войти</button>
+        </form>
+
+        <p class="auth-link">
+          <span data-i18n="login-no-account">Нет аккаунта?</span>
+          <a href="register.html" data-i18n="login-register-link">Зарегистрируйтесь</a>
+        </p>
+      </div>
+    </main>
+
+    <!-- Бургер-меню -->
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Мобильное меню -->
+    <nav id="mobileMenu" class="mobile-menu" aria-hidden="true">
+      <a href="catalog.html" data-i18n="nav-catalog">Каталог</a>
+      <a href="login.html" data-i18n="nav-login">Вход</a>
+      <a href="register.html" data-i18n="nav-register">Регистрация</a>
+
+      <div class="mobile-controls">
+        <div class="control-item">
+          <span data-i18n="theme-toggle">Сменить тему</span>
+          <button id="mobile-theme-btn" aria-label="Смена темы">☀️</button>
+        </div>
+        <div class="control-item">
+          <span data-i18n="language">Язык</span>
+          <div class="lang-switcher mobile">
+            <button data-lang="ru" class="active">ru</button>
+            <button data-lang="en">en</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <!-- Тосты -->
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Скрипты -->
+    <script src="translate.js"></script>
+    <script src="lab8.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>

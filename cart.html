@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Корзина</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Фавикон -->
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+
+    <!-- Для iOS (опционально) -->
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+
+    <!-- Глобальные стили поверх твоего style.css -->
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html">Каталог</a>
+        <a href="favorites.html">Избранное</a>
+        <a href="cart.html" class="active">Корзина</a>
+        <a href="orders.html">Заказы</a>
+        <a href="feedback.html">Отзывы</a>
+        <a href="admin.html">Админ</a>
+        <a href="register.html">Регистрация</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Корзина</h1>
+      <div id="cart" class="grid"></div>
+      <div class="total" id="total"></div>
+      <button onclick="checkout()" class="btn">Оформить заказ</button>
+    </main>
+
+    <script src="cart.js"></script>
+    <script>
+      const cartAPI = "http://localhost:3000/cart";
+      const ordersAPI = "http://localhost:3000/orders";
+      const cartDiv = document.getElementById("cart");
+      const totalDiv = document.getElementById("total");
+
+      async function loadCart() {
+        const res = await fetch(cartAPI);
+        const data = await res.json();
+        let total = 0;
+
+        cartDiv.innerHTML = data.length
+          ? data
+              .map((p) => {
+                total += p.price * p.quantity;
+                return `
+          <div class="card">
+            <img src="${p.image}">
+            <h3>${p.title}</h3>
+            <p>${p.price} × ${p.quantity} = <b class="price">${
+                  p.price * p.quantity
+                } BYN</b></p>
+            <div class="actions">
+              <button onclick="changeQty(${p.id}, ${p.quantity + 1})">+</button>
+              <button onclick="changeQty(${p.id}, ${p.quantity - 1})">-</button>
+              <button onclick="removeCart(${
+                p.id
+              })" class="btn-danger">Удалить</button>
+            </div>
+          </div>
+        `;
+              })
+              .join("")
+          : "<p>❌ Корзина пуста</p>";
+
+        totalDiv.textContent = "Итого: " + total + " BYN";
+      }
+
+      async function changeQty(id, qty) {
+        if (qty <= 0) return removeCart(id);
+        await fetch(`${cartAPI}/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ quantity: qty }),
+        });
+        loadCart();
+      }
+
+      async function removeCart(id) {
+        await fetch(`${cartAPI}/${id}`, { method: "DELETE" });
+        loadCart();
+      }
+
+      async function checkout() {
+        const res = await fetch(cartAPI);
+        const cartItems = await res.json();
+
+        if (!cartItems.length) {
+          alert("Корзина пуста!");
+          return;
+        }
+
+        const order = {
+          id: Date.now(),
+          date: new Date().toISOString(),
+          items: cartItems,
+          total: cartItems.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+          ),
+        };
+
+        await fetch(ordersAPI, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(order),
+        });
+
+        for (let item of cartItems) {
+          await fetch(`${cartAPI}/${item.id}`, { method: "DELETE" });
+        }
+
+        alert("✅ Заказ оформлен!");
+        loadCart();
+      }
+
+      loadCart();
+    </script>
+  </body>
+</html>

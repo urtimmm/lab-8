@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Отзывы</title>
+    <link rel="stylesheet" href="style.css" />
+    <!-- Фавикон -->
+    <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
+
+    <!-- Для iOS (опционально) -->
+    <link rel="apple-touch-icon" href="./img/favicon-180.png" />
+
+    <!-- Глобальные стили поверх твоего style.css -->
+    <link rel="stylesheet" href="app.css" />
+  </head>
+  <body>
+    <div id="preloader" class="preloader" aria-hidden="true">
+      <div class="preloader__spinner"></div>
+      <div class="preloader__text">Загрузка…</div>
+    </div>
+
+    <header class="navbar">
+      <div class="logo">🛍️ MyShop</div>
+      <nav>
+        <a href="catalog.html">Каталог</a>
+        <a href="favorites.html">Избранное</a>
+        <a href="cart.html">Корзина</a>
+        <a href="orders.html">Заказы</a>
+        <a href="feedback.html" class="active">Отзывы</a>
+        <a href="admin.html">Админ</a>
+        <a href="register.html">Регистрация</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <h1>Отзывы</h1>
+
+      <form id="feedbackForm" class="form">
+        <label>Имя*<input type="text" id="name" required /></label>
+        <label>Отзыв*<textarea id="message" required></textarea></label>
+        <button type="submit" class="btn">Оставить отзыв</button>
+      </form>
+
+      <div id="feedbackList" class="list"></div>
+    </main>
+
+    <script src="feedback.js"></script>
+    <script>
+      const feedbackAPI = "http://localhost:3000/feedback";
+      const form = document.getElementById("feedbackForm");
+      const list = document.getElementById("feedbackList");
+
+      async function loadFeedback() {
+        const res = await fetch(feedbackAPI);
+        const data = await res.json();
+        list.innerHTML = data.length
+          ? data
+              .map(
+                (f) => `
+        <div class="card">
+          <h3>${f.name}</h3>
+          <p>${f.message}</p>
+          <small>${new Date(f.date).toLocaleString()}</small>
+        </div>
+      `
+              )
+              .join("")
+          : "<p>Пока отзывов нет</p>";
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const feedback = {
+          name: document.getElementById("name").value,
+          message: document.getElementById("message").value,
+          date: new Date().toISOString(),
+        };
+        await fetch(feedbackAPI, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(feedback),
+        });
+        form.reset();
+        loadFeedback();
+      });
+
+      loadFeedback();
+    </script>
+  </body>
+</html>
