@@ -26,22 +26,24 @@
       </nav>
 
       <!-- Кнопка смены темы -->
-      <button id="theme-switch" aria-label="Смена темы" title="Сменить тему">☀️</button>
+      <button id="theme-switch" aria-label="Смена темы" title="Сменить тему">
+        ☀️
+      </button>
     </header>
 
     <!-- Якорное меню с языками -->
     <div class="jakor">
       <nav class="jakor__nav">
         <div class="jakor-left">
-          <a href="catalog.html" class="smooth" data-i18n="nav-catalog">Каталог</a>
-          <a href="login.html" class="smooth active" data-i18n="nav-login">Вход</a>
-          <a href="register.html" class="smooth" data-i18n="nav-register">Регистрация</a>
-        </div>
-        <div class="jakor-right">
-          <div id="language-switch" class="lang-switcher desktop">
-            <button data-lang="ru" class="active">ru</button>
-            <button data-lang="en">en</button>
-          </div>
+          <a href="catalog.html" class="smooth" data-i18n="nav-catalog"
+            >Каталог</a
+          >
+          <a href="login.html" class="smooth active" data-i18n="nav-login"
+            >Вход</a
+          >
+          <a href="register.html" class="smooth" data-i18n="nav-register"
+            >Регистрация</a
+          >
         </div>
       </nav>
     </div>
@@ -54,10 +56,10 @@
         <form id="loginForm" class="form">
           <label>
             <span data-i18n="login-email">Email*</span>
-            <input 
-              type="email" 
-              id="loginEmail" 
-              required 
+            <input
+              type="email"
+              id="loginEmail"
+              required
               data-i18n-placeholder="login-email-placeholder"
               placeholder="example@mail.com"
             />
@@ -65,10 +67,10 @@
 
           <label>
             <span data-i18n="login-password">Пароль*</span>
-            <input 
-              type="password" 
-              id="loginPassword" 
-              required 
+            <input
+              type="password"
+              id="loginPassword"
+              required
               data-i18n-placeholder="login-password-placeholder"
               placeholder="Введите пароль"
             />
@@ -81,13 +83,21 @@
 
         <p class="auth-link">
           <span data-i18n="login-no-account">Нет аккаунта?</span>
-          <a href="register.html" data-i18n="login-register-link">Зарегистрируйтесь</a>
+          <a href="register.html" data-i18n="login-register-link"
+            >Зарегистрируйтесь</a
+          >
         </p>
       </div>
     </main>
 
     <!-- Бургер-меню -->
-    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Открыть меню">
+    <button
+      class="burger"
+      id="burger"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Открыть меню"
+    >
       <span></span><span></span><span></span>
     </button>
 
@@ -101,13 +111,6 @@
         <div class="control-item">
           <span data-i18n="theme-toggle">Сменить тему</span>
           <button id="mobile-theme-btn" aria-label="Смена темы">☀️</button>
-        </div>
-        <div class="control-item">
-          <span data-i18n="language">Язык</span>
-          <div class="lang-switcher mobile">
-            <button data-lang="ru" class="active">ru</button>
-            <button data-lang="en">en</button>
-          </div>
         </div>
       </div>
     </nav>

@@ -4,7 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 /* CSS переменные для тем */
@@ -160,7 +160,7 @@ textarea {
 
 /* Кнопки */
 .btn,
-button[type="submit"] {
+button[type='submit'] {
   width: 100%;
   margin-top: 15px;
   padding: 14px;
@@ -175,13 +175,13 @@ button[type="submit"] {
 }
 
 .btn:hover,
-button[type="submit"]:hover {
+button[type='submit']:hover {
   background: darken(var(--primary-color), 10%);
   transform: translateY(-2px);
 }
 
 .btn:disabled,
-button[type="submit"]:disabled {
+button[type='submit']:disabled {
   background: #bdc3c7;
   cursor: not-allowed;
   transform: none;
@@ -568,7 +568,7 @@ button[type="submit"]:disabled {
   cursor: pointer;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   width: auto;
   margin: 0;
   cursor: pointer;
@@ -725,7 +725,7 @@ button[type="submit"]:disabled {
   }
 
   .btn,
-  button[type="submit"] {
+  button[type='submit'] {
     padding: 12px;
     font-size: 15px;
   }
@@ -783,7 +783,7 @@ button[type="submit"]:disabled {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between; /* Выравнивание: лево - ссылки, право - язык */
+  justify-content: center; /* Выравнивание по центру */
   align-items: center;
   gap: 24px;
   flex-wrap: wrap;
@@ -817,12 +817,6 @@ button[type="submit"]:disabled {
   box-shadow: 0 4px 12px rgba(110, 100, 255, 0.4);
 }
 
-.jakor-right {
-  display: flex;
-  align-items: center;
-  margin-left: auto; /* Отталкивает язык вправо */
-}
-
 .jakor__nav .jakor-btn {
   appearance: none;
   border: none;
@@ -844,54 +838,6 @@ button[type="submit"]:disabled {
   transform: translateY(-2px);
 }
 
-/* Языковые кнопки */
-.lang-switcher {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  padding: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-}
-
-.lang-switcher button {
-  padding: 8px 16px;
-  border: 2px solid transparent;
-  background: transparent;
-  color: #e7ebff;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Эффект при наведении */
-.lang-switcher button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, #6c7bff, #9e6cff);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
-}
-
-.lang-switcher button:hover {
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
-}
-
-.lang-switcher button:hover::before {
-  opacity: 0.3;
-}
-
 /* Адаптив для jakor */
 @media (max-width: 640px) {
   .jakor__nav {
@@ -907,11 +853,6 @@ button[type="submit"]:disabled {
   .jakor__nav a {
     font-size: 14px;
     padding: 8px 12px;
-  }
-
-  .jakor-right {
-    margin-left: 0;
-    order: 2; /* Язык ниже ссылок на мобильных */
   }
 }
 /* ===== СТИЛИ ДЛЯ КНОПОК АВТОРИЗАЦИИ ===== */
@@ -1074,5 +1015,5 @@ body.dark-theme .btn-logout:hover {
   }
 }
 #theme-switch {
-  margin-right: 30px; 
+  margin-right: 30px;
 }
