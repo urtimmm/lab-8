@@ -380,7 +380,8 @@ body.locked {
 .modal__card {
   background: #fff;
   border-radius: 16px;
-  max-width: 720px;
+  max-width: 75vw;
+  max-height: 85vh;
   width: calc(100% - 32px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -395,7 +396,7 @@ body.locked {
 }
 .modal__body {
   padding: 0;
-  height: 80vh; /* или 100%, если модалка сама адаптируется */
+  height: 90vh; /* увеличенная высота для карты */
 }
 .modal__foot {
   display: flex;

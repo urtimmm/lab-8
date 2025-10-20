@@ -215,6 +215,11 @@ button[type='submit']:disabled {
   background: darken(var(--secondary-color), 10%);
 }
 
+/* Специальный стиль для кнопки "Открыть карту в окне" */
+button[data-modal='mapModal']:hover {
+  background: #3498db !important;
+}
+
 /* Сетка карточек */
 .grid {
   display: grid;
