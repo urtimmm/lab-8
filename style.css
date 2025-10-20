@@ -263,12 +263,18 @@ button[data-modal='mapModal']:hover {
   margin: 10px 0;
 }
 
+/* Темная тема для всех параграфов в карточках */
+.dark-theme .card p {
+  color: #e0e0e0;
+}
+
 /* Контейнер для описания товара */
 .card-description {
   height: 60px; /* Фиксированная высота */
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3; /* Ограничиваем до 3 строк */
+  line-clamp: 3; /* Стандартное свойство для совместимости */
   -webkit-box-orient: vertical;
   margin: 10px 0;
 }
@@ -277,6 +283,11 @@ button[data-modal='mapModal']:hover {
   margin: 0;
   color: #555;
   line-height: 1.6;
+}
+
+/* Темная тема для описания карточек */
+.dark-theme .card-description p {
+  color: #e0e0e0;
 }
 
 .price {
