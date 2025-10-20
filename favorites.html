@@ -3,16 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Избранное</title>
+    <title data-i18n="nav-favorites">Избранное</title>
     <link rel="stylesheet" href="style.css" />
-    <!-- Фавикон -->
+    <link rel="stylesheet" href="lab8.css" />
     <link rel="icon" href="./img/favicon-180.png" type="image/svg+xml" />
-
-    <!-- Для iOS (опционально) -->
     <link rel="apple-touch-icon" href="./img/favicon-180.png" />
-
-    <!-- Глобальные стили поверх твоего style.css -->
-    <link rel="stylesheet" href="app.css" />
   </head>
   <body>
     <div id="preloader" class="preloader" aria-hidden="true">
@@ -22,15 +17,58 @@
 
     <header class="navbar">
       <div class="logo">🛍️ MyShop</div>
+
       <nav>
-        <a href="catalog.html">Каталог</a>
-        <a href="favorites.html" class="active">Избранное</a>
-        <a href="cart.html">Корзина</a>
-        <a href="orders.html">Заказы</a>
-        <a href="feedback.html">Отзывы</a>
-        <a href="admin.html">Админ</a>
-        <a href="register.html">Регистрация</a>
+        <a href="catalog.html" data-i18n="nav-catalog">Каталог</a>
+        <a href="favorites.html" class="active" data-i18n="nav-favorites"
+          >Избранное</a
+        >
+        <a href="cart.html" data-i18n="nav-cart">Корзина</a>
+        <a href="orders.html" data-i18n="nav-orders">Заказы</a>
+        <a href="feedback.html" data-i18n="nav-feedback">Отзывы</a>
+        <a href="admin.html" data-i18n="nav-admin">Админ</a>
+        <a href="register.html" data-i18n="nav-register">Регистрация</a>
+
+        <!-- Блок авторизации -->
+        <div
+          id="user-controls"
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+          "
+        >
+          <a
+            href="login.html"
+            id="login-link"
+            class="btn-login"
+            style="display: inline-block"
+          >
+            <span data-i18n="nav-login">Войти</span>
+          </a>
+
+          <div
+            id="user-icon"
+            style="cursor: pointer; font-size: 24px; display: none"
+            title="Профиль"
+          >
+            👤
+          </div>
+          <button
+            id="logout-btn"
+            class="btn-logout"
+            style="display: none"
+            data-i18n="logout"
+          >
+            Выйти
+          </button>
+        </div>
       </nav>
+
+      <button id="theme-switch" aria-label="Смена темы" title="Сменить тему">
+        ☀️
+      </button>
     </header>
 
     <main class="container">
@@ -38,11 +76,60 @@
       <div id="favorites" class="grid"></div>
     </main>
 
+    <button
+      class="burger"
+      id="burger"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+      aria-label="Открыть меню"
+    >
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mobileMenu" class="mobile-menu" aria-hidden="true">
+      <a href="catalog.html" data-i18n="nav-catalog">Каталог</a>
+      <a href="favorites.html" data-i18n="nav-favorites">Избранное</a>
+      <a href="cart.html" data-i18n="nav-cart">Корзина</a>
+      <a href="orders.html" data-i18n="nav-orders">Заказы</a>
+      <a href="feedback.html" data-i18n="nav-feedback">Отзывы</a>
+      <a href="admin.html" data-i18n="nav-admin">Админ</a>
+      <a href="register.html" data-i18n="nav-register">Регистрация</a>
+
+      <!-- Авторизация в мобильном меню -->
+      <div class="mobile-auth">
+        <a href="login.html" id="mobile-login-link" style="display: none">
+          <span data-i18n="nav-login">Войти</span>
+        </a>
+        <button id="mobile-logout-btn" style="display: none" data-i18n="logout">
+          Выйти
+        </button>
+      </div>
+
+      <div class="mobile-controls">
+        <div id="mobile-theme-switch" class="control-item">
+          <span data-i18n="theme-toggle">Сменить тему</span>
+          <button id="mobile-theme-btn" aria-label="Смена темы">☀️</button>
+        </div>
+        <div id="mobile-language-switch" class="control-item">
+          <span data-i18n="language">Язык</span>
+          <div class="lang-switcher mobile">
+            <button data-lang="ru" class="active">ru</button>
+            <button data-lang="en">en</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div id="overlay" class="overlay" hidden></div>
+
+    <div id="toasts" class="toasts" aria-live="polite" aria-atomic="true"></div>
+    <div id="modals" class="modals"></div>
+
+    <script src="translate.js"></script>
+    <script src="lab8.js"></script>
     <script src="favorites.js"></script>
 
     <script>
-      const favAPI = "http://localhost:3000/favorites";
-      const favDiv = document.getElementById("favorites");
+      const favAPI = 'http://localhost:3000/favorites';
+      const favDiv = document.getElementById('favorites');
 
       async function loadFavorites() {
         const res = await fetch(favAPI);
@@ -62,12 +149,12 @@
         </div>
       `
               )
-              .join("")
-          : "<p>❌ Избранное пусто</p>";
+              .join('')
+          : '<p>❌ Избранное пусто</p>';
       }
 
       async function removeFav(id) {
-        await fetch(`${favAPI}/${id}`, { method: "DELETE" });
+        await fetch(`${favAPI}/${id}`, { method: 'DELETE' });
         loadFavorites();
       }
 
@@ -83,13 +170,13 @@
           quantity: 1,
         };
 
-        await fetch("http://localhost:3000/cart", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        await fetch('http://localhost:3000/cart', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(item),
         });
 
-        alert("✅ Добавлено в корзину!");
+        alert('✅ Добавлено в корзину!');
       }
 
       loadFavorites();
