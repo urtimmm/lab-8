@@ -258,6 +258,22 @@ button[type='submit']:disabled {
   margin: 10px 0;
 }
 
+/* Контейнер для описания товара */
+.card-description {
+  height: 60px; /* Фиксированная высота */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Ограничиваем до 3 строк */
+  -webkit-box-orient: vertical;
+  margin: 10px 0;
+}
+
+.card-description p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
 .price {
   color: #27ae60;
   font-weight: bold;

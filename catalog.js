@@ -2,100 +2,100 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================== catalog.js ==================
   // Исправленная версия с корректной работой i18n
 
-  const productsAPI = "http://localhost:3000/products";
-  const favAPI = "http://localhost:3000/favorites";
-  const cartAPI = "http://localhost:3000/cart";
+  const productsAPI = 'http://localhost:3000/products';
+  const favAPI = 'http://localhost:3000/favorites';
+  const cartAPI = 'http://localhost:3000/cart';
 
   // Переводы продуктов (для английского языка)
   const productTranslations = {
-    '1': {
+    1: {
       ru: {
         title: 'Смартфон Samsung Galaxy S24',
-        description: 'Флагманский смартфон с отличной камерой'
+        description: 'Флагманский смартфон с отличной камерой',
       },
       en: {
         title: 'Samsung Galaxy S24 Smartphone',
-        description: 'Flagship smartphone with excellent camera'
-      }
+        description: 'Flagship smartphone with excellent camera',
+      },
     },
-    '2': {
+    2: {
       ru: {
         title: 'Ноутбук Lenovo IdeaPad',
-        description: 'Производительный ноутбук для работы и учебы'
+        description: 'Производительный ноутбук для работы и учебы',
       },
       en: {
         title: 'Lenovo IdeaPad Laptop',
-        description: 'Powerful laptop for work and study'
-      }
+        description: 'Powerful laptop for work and study',
+      },
     },
-    '3': {
+    3: {
       ru: {
         title: 'Наушники Sony WH-1000XM5',
-        description: 'Беспроводные наушники с шумоподавлением'
+        description: 'Беспроводные наушники с шумоподавлением',
       },
       en: {
         title: 'Sony WH-1000XM5 Headphones',
-        description: 'Wireless headphones with noise cancellation'
-      }
+        description: 'Wireless headphones with noise cancellation',
+      },
     },
-    '4': {
+    4: {
       ru: {
         title: 'Куртка зимняя мужская',
-        description: 'Теплая и стильная куртка'
+        description: 'Теплая и стильная куртка',
       },
       en: {
         title: "Men's Winter Jacket",
-        description: 'Warm and stylish jacket'
-      }
+        description: 'Warm and stylish jacket',
+      },
     },
-    '5': {
+    5: {
       ru: {
         title: 'Книга: Мастер и Маргарита',
-        description: 'Классика русской литературы'
+        description: 'Классика русской литературы',
       },
       en: {
         title: 'Book: Master and Margarita',
-        description: 'Classic of Russian literature'
-      }
+        description: 'Classic of Russian literature',
+      },
     },
-    '6': {
+    6: {
       ru: {
         title: 'Гантели 10 кг (пара)',
-        description: 'Для домашних тренировок'
+        description: 'Для домашних тренировок',
       },
       en: {
         title: '10 kg Dumbbells (pair)',
-        description: 'For home workouts'
-      }
-    }
+        description: 'For home workouts',
+      },
+    },
   };
 
   // Переводы категорий из db.json в ключи i18n
   const categoryMapping = {
-    'Electronics': 'category-electronics',
-    'Clothing': 'category-clothing',
-    'Books': 'category-books',
-    'Sports': 'category-sports'
+    Electronics: 'category-electronics',
+    Clothing: 'category-clothing',
+    Books: 'category-books',
+    Sports: 'category-sports',
   };
 
   // DOM элементы
-  const catalogEl = document.getElementById("catalog");
-  const categoriesEl = document.getElementById("categories");
-  const paginationEl = document.getElementById("pagination");
-  const searchEl = document.getElementById("search");
-  const sortEl = document.getElementById("sort");
+  const catalogEl = document.getElementById('catalog');
+  const categoriesEl = document.getElementById('categories');
+  const paginationEl = document.getElementById('pagination');
+  const searchEl = document.getElementById('search');
+  const sortEl = document.getElementById('sort');
 
   // Состояние
   let allProducts = [];
   let view = [];
   let page = 1;
   const perPage = 8;
-  let currentCategory = "";
+  let currentCategory = '';
 
   // Авторизация
   let currentUser = null;
   (function readAuth() {
-    const u = localStorage.getItem("currentUser");
+    const u = localStorage.getItem('currentUser');
     if (u) currentUser = JSON.parse(u);
   })();
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fallback: ищем в allProducts
     const numericId = parseInt(id);
-    const jsonProduct = allProducts.find(p => parseInt(p.id) === numericId);
+    const jsonProduct = allProducts.find((p) => parseInt(p.id) === numericId);
     return jsonProduct?.[field] || '';
   }
 
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     err: (m) => {
       const msg = typeof m === 'string' ? getI18n(m, m) : m;
       window.toast?.error ? toast.error(msg) : alert(msg);
-    }
+    },
   };
 
   // Загрузка товаров
@@ -152,41 +152,48 @@ document.addEventListener('DOMContentLoaded', () => {
       renderCategories();
       applyFilters();
     } catch (e) {
-      catalogEl.innerHTML = `<p>${getI18n('load-error', 'Ошибка загрузки каталога')}</p>`;
+      catalogEl.innerHTML = `<p>${getI18n(
+        'load-error',
+        'Ошибка загрузки каталога'
+      )}</p>`;
       console.error(e);
     }
   }
 
   // Рендер категорий
   function renderCategories() {
-    const cats = Array.from(new Set(allProducts.map(p => p.category).filter(Boolean)));
+    const cats = Array.from(
+      new Set(allProducts.map((p) => p.category).filter(Boolean))
+    );
 
     // Кнопка "Все"
     const allButton = `
-    <button data-cat="" class="${currentCategory === '' ? "active" : ""}">
+    <button data-cat="" class="${currentCategory === '' ? 'active' : ''}">
       ${getI18n('category-all', 'Все')}
     </button>
   `;
 
     // Кнопки категорий
-    const catButtons = cats.map(c => {
-      const catKey = categoryMapping[c] || 'category-all';
-      return `
-      <button data-cat="${c}" class="${currentCategory === c ? "active" : ""}">
+    const catButtons = cats
+      .map((c) => {
+        const catKey = categoryMapping[c] || 'category-all';
+        return `
+      <button data-cat="${c}" class="${currentCategory === c ? 'active' : ''}">
         ${getI18n(catKey, c)}
       </button>
     `;
-    }).join("");
+      })
+      .join('');
 
     categoriesEl.innerHTML = allButton + catButtons;
   }
 
   // Применение фильтров
   function applyFilters() {
-    const q = (searchEl?.value || "").trim().toLowerCase();
+    const q = (searchEl?.value || '').trim().toLowerCase();
     const currentLang = window.lang || 'ru';
 
-    view = allProducts.filter(p => {
+    view = allProducts.filter((p) => {
       const byCat = !currentCategory || p.category === currentCategory;
 
       if (!q) return byCat;
@@ -199,18 +206,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return byCat && byText;
     });
 
-    const s = sortEl?.value || "";
-    if (s === "price") {
+    const s = sortEl?.value || '';
+    if (s === 'price') {
       view.sort((a, b) => a.price - b.price);
     }
-    if (s === "title") {
+    if (s === 'title') {
       view.sort((a, b) => {
         const titleA = getProductText(a.id, 'title');
         const titleB = getProductText(b.id, 'title');
         return titleA.localeCompare(titleB);
       });
     }
-    if (s === "rating") {
+    if (s === 'rating') {
       view.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
@@ -227,11 +234,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const from = (page - 1) * perPage;
     const items = view.slice(from, from + perPage);
 
-    catalogEl.innerHTML = items.map(p => `
+    catalogEl.innerHTML =
+      items
+        .map(
+          (p) => `
     <div class="card reveal" data-id="${p.id}">
       <img src="${p.image}" alt="${getProductText(p.id, 'title')}">
       <h3>${getProductText(p.id, 'title')}</h3>
-      <p>${getProductText(p.id, 'description') || ""}</p>
+      <div class="card-description">
+        <p>${getProductText(p.id, 'description') || ''}</p>
+      </div>
       <span class="price">${(p.price || 0).toFixed(2)} BYN</span>
       <div class="actions">
         <button class="btn" data-action="details" data-id="${p.id}">
@@ -245,56 +257,71 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
       </div>
     </div>
-  `).join("") || `<p>${getI18n('no-items', 'Ничего не найдено')}</p>`;
+  `
+        )
+        .join('') || `<p>${getI18n('no-items', 'Ничего не найдено')}</p>`;
 
-    paginationEl.innerHTML = Array.from({ length: pages }, (_, i) => `
-    <button data-page="${i + 1}" class="${i + 1 === page ? 'active' : ''}">${i + 1}</button>
-  `).join("");
+    paginationEl.innerHTML = Array.from(
+      { length: pages },
+      (_, i) => `
+    <button data-page="${i + 1}" class="${i + 1 === page ? 'active' : ''}">${
+        i + 1
+      }</button>
+  `
+    ).join('');
 
     requestAnimationFrame(() => {
-      document.querySelectorAll(".reveal").forEach(el => el.classList.add("visible"));
+      document
+        .querySelectorAll('.reveal')
+        .forEach((el) => el.classList.add('visible'));
     });
   }
 
   // Обработчик кликов по карточкам
-  catalogEl.addEventListener("click", async (e) => {
-    const btn = e.target.closest("[data-action]");
+  catalogEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-action]');
     if (!btn) return;
     const id = +btn.dataset.id;
-    const product = allProducts.find(p => p.id === id);
+    const product = allProducts.find((p) => p.id === id);
     if (!product) return;
 
-    if (btn.dataset.action === "details") {
+    if (btn.dataset.action === 'details') {
       if (window.openProductDetails) {
         openProductDetails(product);
       } else {
         const title = getProductText(id, 'title');
         const description = getProductText(id, 'description');
         const priceLabel = getI18n('price-label', 'Цена');
-        notify.info(`${title}\n${description}\n${priceLabel}: ${(product.price || 0).toFixed(2)} BYN`);
+        notify.info(
+          `${title}\n${description}\n${priceLabel}: ${(
+            product.price || 0
+          ).toFixed(2)} BYN`
+        );
       }
     }
 
-    if (btn.dataset.action === "cart") {
+    if (btn.dataset.action === 'cart') {
       if (!currentUser) {
         notify.err(getI18n('auth-required', 'Нужна авторизация'));
         return;
       }
       try {
-        const r = await fetch(`${cartAPI}?userId=${currentUser.id}&productId=${product.id}`);
+        const r = await fetch(
+          `${cartAPI}?userId=${currentUser.id}&productId=${product.id}`
+        );
         if (!r.ok) throw new Error('Fetch error');
         const exist = await r.json();
         if (exist.length) {
           const it = exist[0];
           await fetch(`${cartAPI}/${it.id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ quantity: it.quantity + 1 })
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity: it.quantity + 1 }),
           });
         } else {
           await fetch(cartAPI, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               userId: currentUser.id,
               productId: product.id,
@@ -302,8 +329,8 @@ document.addEventListener('DOMContentLoaded', () => {
               price: product.price,
               image: product.image,
               quantity: 1,
-              addedAt: new Date().toISOString()
-            })
+              addedAt: new Date().toISOString(),
+            }),
           });
         }
         notify.ok(getI18n('cart-added', 'Добавлено в корзину'));
@@ -313,29 +340,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (btn.dataset.action === "fav") {
+    if (btn.dataset.action === 'fav') {
       if (!currentUser) {
         notify.err(getI18n('auth-required', 'Нужна авторизация'));
         return;
       }
       try {
-        const r = await fetch(`${favAPI}?userId=${currentUser.id}&productId=${product.id}`);
+        const r = await fetch(
+          `${favAPI}?userId=${currentUser.id}&productId=${product.id}`
+        );
         if (!r.ok) throw new Error('Fetch error');
         const exist = await r.json();
         if (exist.length) {
           notify.info(getI18n('fav-exists', 'Уже в избранном'));
         } else {
           await fetch(favAPI, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               userId: currentUser.id,
               productId: product.id,
               title: getProductText(product.id, 'title'),
               price: product.price,
               image: product.image,
-              addedAt: new Date().toISOString()
-            })
+              addedAt: new Date().toISOString(),
+            }),
           });
           notify.ok(getI18n('fav-added', 'Добавлено в избранное'));
         }
@@ -347,25 +376,27 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Обработчик пагинации
-  paginationEl.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-page]");
+  paginationEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-page]');
     if (!btn) return;
     page = +btn.dataset.page;
     render();
   });
 
   // Обработчик категорий
-  categoriesEl.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-cat]");
+  categoriesEl.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-cat]');
     if (!b) return;
-    currentCategory = b.dataset.cat || "";
-    categoriesEl.querySelectorAll("button").forEach(x => x.classList.toggle("active", x === b));
+    currentCategory = b.dataset.cat || '';
+    categoriesEl
+      .querySelectorAll('button')
+      .forEach((x) => x.classList.toggle('active', x === b));
     applyFilters();
   });
 
   // Обработчики поиска и сортировки
-  searchEl?.addEventListener("input", () => applyFilters());
-  sortEl?.addEventListener("change", () => applyFilters());
+  searchEl?.addEventListener('input', () => applyFilters());
+  sortEl?.addEventListener('change', () => applyFilters());
 
   // КРИТИЧЕСКИ ВАЖНО: Функция для перерендера после смены языка
   window.reRenderCatalog = function () {
@@ -396,11 +427,21 @@ document.addEventListener('DOMContentLoaded', () => {
         title: getI18n('profile-title', 'Профиль'),
         body: `
         <form id="user-form">
-          <label>${getI18n('name', 'Имя')}: <input id="user-name" value="${user.fio || user.name || ''}"></label>
-          <label>${getI18n('email', 'Email')}: <input id="user-email" value="${user.email || ''}"></label>
-          <label>${getI18n('nickname', 'Ник')}: <input id="user-nickname" value="${user.nickname || ''}"></label>
+          <label>${getI18n('name', 'Имя')}: <input id="user-name" value="${
+          user.fio || user.name || ''
+        }"></label>
+          <label>${getI18n('email', 'Email')}: <input id="user-email" value="${
+          user.email || ''
+        }"></label>
+          <label>${getI18n(
+            'nickname',
+            'Ник'
+          )}: <input id="user-nickname" value="${user.nickname || ''}"></label>
           <button type="submit">${getI18n('save', 'Сохранить')}</button>
-          <button type="button" id="reset-settings">${getI18n('reset', 'Сброс настроек')}</button>
+          <button type="button" id="reset-settings">${getI18n(
+            'reset',
+            'Сброс настроек'
+          )}</button>
         </form>
       `,
       });
@@ -411,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ...user,
           fio: document.getElementById('user-name').value,
           email: document.getElementById('user-email').value,
-          nickname: document.getElementById('user-nickname').value
+          nickname: document.getElementById('user-nickname').value,
         };
         localStorage.setItem('currentUser', JSON.stringify(updated));
         currentUser = updated;
@@ -421,37 +462,46 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.closeModal) closeModal();
       });
 
-      document.getElementById('reset-settings')?.addEventListener('click', () => {
-        if (confirm(getI18n('reset', 'Сброс настроек'))) {
-          localStorage.clear();
-          location.reload();
-        }
-      });
+      document
+        .getElementById('reset-settings')
+        ?.addEventListener('click', () => {
+          if (confirm(getI18n('reset', 'Сброс настроек'))) {
+            localStorage.clear();
+            location.reload();
+          }
+        });
     } else {
-      alert(`${getI18n('profile-title', 'Профиль')}\n${getI18n('name', 'Имя')}: ${user.fio || user.name || ''}\n${getI18n('email', 'Email')}: ${user.email || ''}`);
+      alert(
+        `${getI18n('profile-title', 'Профиль')}\n${getI18n('name', 'Имя')}: ${
+          user.fio || user.name || ''
+        }\n${getI18n('email', 'Email')}: ${user.email || ''}`
+      );
     }
   });
 
-
   function initActiveNav() {
-    const sections = document.querySelectorAll('#catalog, #heroSlider, #about, #gallery, #map');
+    const sections = document.querySelectorAll(
+      '#catalog, #heroSlider, #about, #gallery, #map'
+    );
     const navLinks = document.querySelectorAll('.jakor__nav a.smooth');
 
     const observerOptions = {
       root: null, // Use the viewport as the root
       rootMargin: '0px 0px -50% 0px', // Trigger when the section reaches the upper half of the viewport
-      threshold: 0.1 // At least 10% of the section must be visible to trigger
+      threshold: 0.1, // At least 10% of the section must be visible to trigger
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           // Remove 'active' from all nav links
-          navLinks.forEach(link => link.classList.remove('active'));
+          navLinks.forEach((link) => link.classList.remove('active'));
 
           // Add 'active' to the matching link
           const id = entry.target.getAttribute('id');
-          const activeLink = document.querySelector(`.jakor__nav a[href="#${id}"]`);
+          const activeLink = document.querySelector(
+            `.jakor__nav a[href="#${id}"]`
+          );
           if (activeLink) {
             activeLink.classList.add('active');
           }
@@ -460,8 +510,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, observerOptions);
 
     // Observe each section/element
-    sections.forEach(section => {
-      if (section) { // Safety check in case an ID is missing
+    sections.forEach((section) => {
+      if (section) {
+        // Safety check in case an ID is missing
         observer.observe(section);
       }
     });
@@ -469,16 +520,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle initial state based on URL hash (e.g., if page loads with #about)
     const hash = window.location.hash;
     if (hash) {
-      const targetLink = document.querySelector(`.jakor__nav a[href="${hash}"]`);
+      const targetLink = document.querySelector(
+        `.jakor__nav a[href="${hash}"]`
+      );
       if (targetLink) {
-        navLinks.forEach(link => link.classList.remove('active'));
+        navLinks.forEach((link) => link.classList.remove('active'));
         targetLink.classList.add('active');
       }
     }
   }
 
   // Call the function after DOM is loaded (add this line below the function definition)
-
 
   loadProducts();
   initActiveNav();

@@ -1,15 +1,14 @@
-const productsAPI = "http://localhost:3000/products";
-const feedbackAPI = "http://localhost:3000/feedback";
-const usersAPI = "http://localhost:3000/users";
-const ordersAPI = "http://localhost:3000/orders";
+const productsAPI = 'http://localhost:3000/products';
+const feedbackAPI = 'http://localhost:3000/feedback';
+const usersAPI = 'http://localhost:3000/users';
+const ordersAPI = 'http://localhost:3000/orders';
 
-const formProd = document.getElementById("productForm");
-const productList = document.getElementById("productList");
-const feedbackList = document.getElementById("feedbackList");
-const usersList = document.getElementById("usersList");
-const orderStats = document.getElementById("orderStats");
-const logoutLink = document.getElementById("logoutLink");
-
+const formProd = document.getElementById('productForm');
+const productList = document.getElementById('productList');
+const feedbackList = document.getElementById('feedbackList');
+const usersList = document.getElementById('usersList');
+const orderStats = document.getElementById('orderStats');
+const logoutLink = document.getElementById('logoutLink');
 
 // ===== Прелоадер =====
 window.addEventListener('load', () => {
@@ -19,17 +18,17 @@ window.addEventListener('load', () => {
 
 // Проверка доступа админа
 function checkAdminAccess() {
-  const userData = localStorage.getItem("currentUser");
+  const userData = localStorage.getItem('currentUser');
   if (!userData) {
-    alert("Необходима авторизация!");
-    window.location.href = "login.html";
+    alert('Необходима авторизация!');
+    window.location.href = 'login.html';
     return false;
   }
 
   const user = JSON.parse(userData);
-  if (user.role !== "admin") {
-    alert("Доступ запрещен! Только для администраторов.");
-    window.location.href = "catalog.html";
+  if (user.role !== 'admin') {
+    alert('Доступ запрещен! Только для администраторов.');
+    window.location.href = 'catalog.html';
     return false;
   }
 
@@ -37,11 +36,11 @@ function checkAdminAccess() {
 }
 
 // Выход
-logoutLink.addEventListener("click", (e) => {
+logoutLink.addEventListener('click', (e) => {
   e.preventDefault();
-  if (confirm("Выйти из системы?")) {
-    localStorage.removeItem("currentUser");
-    window.location.href = "login.html";
+  if (confirm('Выйти из системы?')) {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
   }
 });
 
@@ -50,22 +49,32 @@ async function loadProducts() {
   try {
     const res = await fetch(productsAPI);
     const data = await res.json();
-    productList.innerHTML = data.map(p => `
+    productList.innerHTML = data
+      .map(
+        (p) => `
       <div class="card admin-card">
         <div>
           <h3>${p.title}</h3>
-          <p>${p.description}</p>
+          <div class="card-description">
+            <p>${p.description}</p>
+          </div>
           <p class="price">${p.price} BYN</p>
           <small>Категория: ${p.category} | Рейтинг: ${p.rating || 0}</small>
         </div>
         <div class="actions">
-          <button onclick="editProduct(${p.id})" class="btn-edit">Редактировать</button>
-          <button onclick="deleteProduct(${p.id})" class="btn-danger">Удалить</button>
+          <button onclick="editProduct(${
+            p.id
+          })" class="btn-edit">Редактировать</button>
+          <button onclick="deleteProduct(${
+            p.id
+          })" class="btn-danger">Удалить</button>
         </div>
       </div>
-    `).join("");
+    `
+      )
+      .join('');
   } catch (error) {
-    productList.innerHTML = "<p>Ошибка загрузки товаров</p>";
+    productList.innerHTML = '<p>Ошибка загрузки товаров</p>';
   }
 }
 
@@ -74,19 +83,27 @@ async function loadFeedback() {
   try {
     const res = await fetch(feedbackAPI);
     const data = await res.json();
-    feedbackList.innerHTML = data.map(f => `
+    feedbackList.innerHTML = data
+      .map(
+        (f) => `
       <div class="card">
         <div>
           <h4>Товар: ${f.productTitle || `ID ${f.productId}`}</h4>
           <p>${f.text}</p>
-          <small>Пользователь: ${f.userName} | Оценка: ${'⭐'.repeat(f.rating)}</small>
+          <small>Пользователь: ${f.userName} | Оценка: ${'⭐'.repeat(
+          f.rating
+        )}</small>
           <small>Дата: ${new Date(f.date).toLocaleDateString('ru-RU')}</small>
         </div>
-        <button onclick="deleteFeedback(${f.id})" class="btn-danger">Удалить</button>
+        <button onclick="deleteFeedback(${
+          f.id
+        })" class="btn-danger">Удалить</button>
       </div>
-    `).join("");
+    `
+      )
+      .join('');
   } catch (error) {
-    feedbackList.innerHTML = "<p>Ошибка загрузки отзывов</p>";
+    feedbackList.innerHTML = '<p>Ошибка загрузки отзывов</p>';
   }
 }
 
@@ -95,24 +112,32 @@ async function loadUsers() {
   try {
     const res = await fetch(usersAPI);
     const data = await res.json();
-    usersList.innerHTML = data.map(u => `
+    usersList.innerHTML = data
+      .map(
+        (u) => `
       <div class="card">
         <div>
           <h4>${u.nickname || u.email}</h4>
           <p>${u.fio.last} ${u.fio.first} ${u.fio.middle || ''}</p>
           <small>Email: ${u.email} | Телефон: ${u.phone}</small><br>
-          <small>Роль: <strong>${u.role === 'admin' ? 'Администратор' : 'Клиент'}</strong></small>
+          <small>Роль: <strong>${
+            u.role === 'admin' ? 'Администратор' : 'Клиент'
+          }</strong></small>
         </div>
         <div class="actions">
           <button onclick="toggleRole(${u.id}, '${u.role}')" class="btn-edit">
             ${u.role === 'admin' ? 'Сделать клиентом' : 'Сделать админом'}
           </button>
-          <button onclick="deleteUser(${u.id})" class="btn-danger">Удалить</button>
+          <button onclick="deleteUser(${
+            u.id
+          })" class="btn-danger">Удалить</button>
         </div>
       </div>
-    `).join("");
+    `
+      )
+      .join('');
   } catch (error) {
-    usersList.innerHTML = "<p>Ошибка загрузки пользователей</p>";
+    usersList.innerHTML = '<p>Ошибка загрузки пользователей</p>';
   }
 }
 
@@ -124,7 +149,8 @@ async function loadOrderStats() {
 
     const totalOrders = orders.length;
     const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
-    const avgOrderValue = totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : 0;
+    const avgOrderValue =
+      totalOrders > 0 ? (totalRevenue / totalOrders).toFixed(2) : 0;
 
     orderStats.innerHTML = `
       <div class="stat-card">
@@ -141,46 +167,48 @@ async function loadOrderStats() {
       </div>
     `;
   } catch (error) {
-    orderStats.innerHTML = "<p>Ошибка загрузки статистики</p>";
+    orderStats.innerHTML = '<p>Ошибка загрузки статистики</p>';
   }
 }
 
 // Добавление товара
-formProd.addEventListener("submit", async (e) => {
+formProd.addEventListener('submit', async (e) => {
   e.preventDefault();
   const newProd = {
-    title: document.getElementById("prodTitle").value,
-    description: document.getElementById("prodDesc").value,
-    price: parseFloat(document.getElementById("prodPrice").value),
-    category: document.getElementById("prodCategory").value,
+    title: document.getElementById('prodTitle').value,
+    description: document.getElementById('prodDesc').value,
+    price: parseFloat(document.getElementById('prodPrice').value),
+    category: document.getElementById('prodCategory').value,
     rating: 0,
-    image: document.getElementById("prodImage").value || "https://via.placeholder.com/300x200?text=No+Image"
+    image:
+      document.getElementById('prodImage').value ||
+      'https://via.placeholder.com/300x200?text=No+Image',
   };
 
   try {
     await fetch(productsAPI, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newProd)
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProd),
     });
-    alert("✅ Товар добавлен!");
+    alert('✅ Товар добавлен!');
     loadProducts();
     formProd.reset();
   } catch (error) {
-    alert("❌ Ошибка при добавлении товара");
+    alert('❌ Ошибка при добавлении товара');
   }
 });
 
 // Удаление товара
 async function deleteProduct(id) {
-  if (!confirm("Удалить этот товар?")) return;
+  if (!confirm('Удалить этот товар?')) return;
 
   try {
-    await fetch(`${productsAPI}/${id}`, { method: "DELETE" });
-    alert("✅ Товар удален!");
+    await fetch(`${productsAPI}/${id}`, { method: 'DELETE' });
+    alert('✅ Товар удален!');
     loadProducts();
   } catch (error) {
-    alert("❌ Ошибка при удалении");
+    alert('❌ Ошибка при удалении');
   }
 }
 
@@ -189,34 +217,34 @@ async function editProduct(id) {
   const res = await fetch(`${productsAPI}/${id}`);
   const product = await res.json();
 
-  const newPrice = prompt("Введите новую цену:", product.price);
+  const newPrice = prompt('Введите новую цену:', product.price);
   if (newPrice === null) return;
 
   product.price = parseFloat(newPrice);
 
   try {
     await fetch(`${productsAPI}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(product)
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product),
     });
-    alert("✅ Товар обновлен!");
+    alert('✅ Товар обновлен!');
     loadProducts();
   } catch (error) {
-    alert("❌ Ошибка при обновлении");
+    alert('❌ Ошибка при обновлении');
   }
 }
 
 // Удаление отзыва
 async function deleteFeedback(id) {
-  if (!confirm("Удалить этот отзыв?")) return;
+  if (!confirm('Удалить этот отзыв?')) return;
 
   try {
-    await fetch(`${feedbackAPI}/${id}`, { method: "DELETE" });
-    alert("✅ Отзыв удален!");
+    await fetch(`${feedbackAPI}/${id}`, { method: 'DELETE' });
+    alert('✅ Отзыв удален!');
     loadFeedback();
   } catch (error) {
-    alert("❌ Ошибка при удалении");
+    alert('❌ Ошибка при удалении');
   }
 }
 
@@ -224,7 +252,14 @@ async function deleteFeedback(id) {
 async function toggleRole(id, currentRole) {
   const newRole = currentRole === 'admin' ? 'client' : 'admin';
 
-  if (!confirm(`Изменить роль пользователя на "${newRole === 'admin' ? 'Администратор' : 'Клиент'}"?`)) return;
+  if (
+    !confirm(
+      `Изменить роль пользователя на "${
+        newRole === 'admin' ? 'Администратор' : 'Клиент'
+      }"?`
+    )
+  )
+    return;
 
   try {
     const res = await fetch(`${usersAPI}/${id}`);
@@ -232,27 +267,27 @@ async function toggleRole(id, currentRole) {
     user.role = newRole;
 
     await fetch(`${usersAPI}/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(user)
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
     });
-    alert("✅ Роль изменена!");
+    alert('✅ Роль изменена!');
     loadUsers();
   } catch (error) {
-    alert("❌ Ошибка при изменении роли");
+    alert('❌ Ошибка при изменении роли');
   }
 }
 
 // Удаление пользователя
 async function deleteUser(id) {
-  if (!confirm("Удалить этого пользователя?")) return;
+  if (!confirm('Удалить этого пользователя?')) return;
 
   try {
-    await fetch(`${usersAPI}/${id}`, { method: "DELETE" });
-    alert("✅ Пользователь удален!");
+    await fetch(`${usersAPI}/${id}`, { method: 'DELETE' });
+    alert('✅ Пользователь удален!');
     loadUsers();
   } catch (error) {
-    alert("❌ Ошибка при удалении");
+    alert('❌ Ошибка при удалении');
   }
 }
 
