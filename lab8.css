@@ -188,35 +188,46 @@ body.locked {
   inset: auto;
   will-change: transform;
   pointer-events: none;
+  transition: transform 0.1s ease-out;
 }
 .parallax__back {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   opacity: 0.6;
+  transform: scale(
+    1.1
+  ); /* Небольшое увеличение для лучшего эффекта параллакса */
 }
 .parallax__mid {
-  height: 200px;
-  bottom: 80px;
+  height: auto;
+  max-height: 250px;
+  bottom: 220px;
   left: 20%;
   transform: translateX(-50%);
   width: 30%;
   opacity: 0.8;
+  object-fit: contain;
 }
 .parallax__front {
-  height: 200px;
-  bottom: 200px;
+  height: auto;
+  max-height: 350px;
+  bottom: 300px;
   left: 55%;
   transform: translateX(-55%);
-  width: 50%;
+  width: 40%;
+  object-fit: contain;
 }
 .parallax__reverse {
-  height: 200px;
-  top: 120px;
+  height: auto;
+  max-height: 250px;
+  top: 130px;
   left: 70%;
-  width: 220px;
+  width: 30%;
   opacity: 0.75;
+  object-fit: contain;
 }
 .parallax__content {
   position: relative;
@@ -419,7 +430,7 @@ body.locked {
 
 /* Дополнительное сияние при появлении */
 .reveal.visible::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(
@@ -443,6 +454,25 @@ body.locked {
   }
 }
 
+/* Планшеты */
+@media (max-width: 1024px) and (min-width: 641px) {
+  .parallax {
+    height: 600px;
+  }
+  .parallax__mid {
+    max-height: 150px;
+    width: 28%;
+  }
+  .parallax__front {
+    max-height: 150px;
+    width: 45%;
+  }
+  .parallax__reverse {
+    max-height: 150px;
+    width: 180px;
+  }
+}
+
 /* Мобилка */
 @media (max-width: 640px) {
   .slide img {
@@ -450,6 +480,21 @@ body.locked {
   }
   .parallax {
     height: 420px;
+  }
+  .parallax__mid {
+    max-height: 120px;
+    width: 25%;
+    bottom: 40px;
+  }
+  .parallax__front {
+    max-height: 120px;
+    width: 40%;
+    bottom: 100px;
+  }
+  .parallax__reverse {
+    max-height: 120px;
+    width: 150px;
+    top: 60px;
   }
   .counters {
     gap: 16px;
