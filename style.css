@@ -1106,5 +1106,51 @@ body.dark-theme .btn-logout:hover {
   }
 }
 #theme-switch {
-  margin-right: 30px;
+  margin-right: 40px;
+  padding: 6px 10px;
+  font-size: 18px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+#theme-switch:hover {
+  background: rgba(108, 123, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
+}
+
+/* Стили для мобильной кнопки переключения темы */
+#mobile-theme-btn {
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+#mobile-theme-btn:hover {
+  background: rgba(108, 123, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 123, 255, 0.3);
+}
+
+/* Стили для контейнера мобильной кнопки темы */
+.control-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.control-item span {
+  font-weight: 600;
+  color: var(--nav-text);
+  font-size: 14px;
 }
