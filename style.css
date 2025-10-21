@@ -200,6 +200,7 @@ button[type='submit']:disabled {
 }
 
 /* Современные стили для кнопки избранного */
+/* Обновлено: убрана звездочка для btn-secondary */
 .btn[data-action='fav'],
 .btn-secondary[data-action='fav'] {
   background: linear-gradient(135deg, #ff6b6b, #ee5a52);
@@ -210,84 +211,76 @@ button[type='submit']:disabled {
   font-size: 14px;
   color: white;
   cursor: pointer;
-  transition: all 0.383s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-width: 120px;
   justify-content: center;
+  will-change: transform, background;
 }
 
 .btn[data-action='fav']:hover,
 .btn-secondary[data-action='fav']:hover {
   background: linear-gradient(135deg, #ff5252, #e53935);
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
 }
 
 .btn[data-action='fav']:active,
 .btn-secondary[data-action='fav']:active {
   transform: translateY(0) scale(0.98);
-  transition: all 0.1s ease;
+  transition: all 0.15s ease;
 }
 
 .btn[data-action='fav']::before,
 .btn-secondary[data-action='fav']::before {
   content: '♡';
   font-size: 16px;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   display: inline-block;
+  will-change: transform, content;
 }
 
 .btn[data-action='fav']:hover::before,
 .btn-secondary[data-action='fav']:hover::before {
   content: '♥';
   color: #fff;
-  transform: scale(1.2);
-  animation: heartBeat 0.6s ease-in-out;
-}
-
-@keyframes heartBeat {
-  0% {
-    transform: scale(1.2);
-  }
-  50% {
-    transform: scale(1.4);
-  }
-  100% {
-    transform: scale(1.2);
-  }
+  transform: scale(1.1);
 }
 
 /* Эффект пульсации при добавлении в избранное */
 .btn[data-action='fav'].added,
 .btn-secondary[data-action='fav'].added {
-  background: linear-gradient(135deg, #4caf50, #45a049);
-  animation: favoriteAdded 0.6s ease-out;
+  background: linear-gradient(135deg, #4caf50, #45a049) !important;
+  animation: favoriteAdded 0.8s ease-out forwards;
+  pointer-events: none;
 }
 
 .btn[data-action='fav'].added::before,
 .btn-secondary[data-action='fav'].added::before {
-  content: '♥';
-  color: #fff;
-  animation: heartPulse 0.6s ease-out;
+  content: '♥' !important;
+  color: #fff !important;
+  animation: heartPulse 0.8s ease-out forwards;
 }
 
 @keyframes favoriteAdded {
   0% {
     transform: scale(1);
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
   }
-  50% {
-    transform: scale(1.1);
-    box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
+  30% {
+    transform: scale(1.15);
+    background: linear-gradient(135deg, #ff5252, #e53935);
+  }
+  70% {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #4caf50, #45a049);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    background: linear-gradient(135deg, #4caf50, #45a049);
   }
 }
 
@@ -295,8 +288,11 @@ button[type='submit']:disabled {
   0% {
     transform: scale(1);
   }
-  50% {
-    transform: scale(1.3);
+  30% {
+    transform: scale(1.4);
+  }
+  70% {
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);
@@ -1192,21 +1188,95 @@ button[data-modal='mapModal']:hover {
   }
 }
 
-/* Эффект свечения при наведении на кнопки */
-.product-details-actions .btn:hover {
-  animation: buttonGlow 0.15s ease-out;
+/* Стили для кнопки "В корзину" в модальном окне */
+.product-details-actions .btn {
+  background: var(--primary-color) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  padding: 10px 16px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: white !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  flex: 1 !important;
+  min-width: 120px !important;
+  text-align: center !important;
+  width: auto !important;
+  margin-top: 0 !important;
+  transform: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
-@keyframes buttonGlow {
-  0% {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  }
-  50% {
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
-  }
-  100% {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  }
+.product-details-actions .btn:hover {
+  background: #4a90e2 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Стили для кнопки "В избранное" в модальном окне (как в каталоге) */
+.product-details-actions .btn-secondary[data-action='fav'] {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: white !important;
+  cursor: pointer !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-width: 120px !important;
+  justify-content: center !important;
+  will-change: transform, background !important;
+  flex: 1 !important;
+  text-align: center !important;
+  width: auto !important;
+  margin-top: 0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.product-details-actions .btn-secondary[data-action='fav']:hover {
+  background: linear-gradient(135deg, #ff5252, #e53935) !important;
+  transform: translateY(-2px) scale(1.05) !important;
+}
+
+.product-details-actions .btn-secondary[data-action='fav']:active {
+  transform: translateY(0) scale(0.98) !important;
+  transition: all 0.15s ease !important;
+}
+
+.product-details-actions .btn-secondary[data-action='fav']::before {
+  content: '♡' !important;
+  font-size: 16px !important;
+  transition: all 0.25s ease !important;
+  display: inline-block !important;
+  will-change: transform, content !important;
+}
+
+.product-details-actions .btn-secondary[data-action='fav']:hover::before {
+  content: '♥' !important;
+  color: #fff !important;
+  transform: scale(1.1) !important;
+}
+
+/* Эффект пульсации при добавлении в избранное */
+.product-details-actions .btn-secondary[data-action='fav'].added {
+  background: linear-gradient(135deg, #4caf50, #45a049) !important;
+  animation: favoriteAdded 0.8s ease-out forwards !important;
+  pointer-events: none !important;
+}
+
+.product-details-actions .btn-secondary[data-action='fav'].added::before {
+  content: '♥' !important;
+  color: #fff !important;
+  animation: heartPulse 0.8s ease-out forwards !important;
 }
 
 .modal__head {
@@ -1572,53 +1642,6 @@ button[data-modal='mapModal']:hover {
   margin-top: 20px;
 }
 
-.product-details-actions .btn {
-  flex: 1;
-  min-width: 120px;
-  padding: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.product-details-actions .btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.product-details-actions .btn:hover::before {
-  left: 100%;
-}
-
-.product-details-actions .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.product-details-actions .btn-secondary {
-  background: #95a5a6;
-  color: #fff;
-}
-
-.product-details-actions .btn-secondary:hover {
-  background: #7f8c8d;
-  transform: translateY(-2px);
-}
-
 /* Адаптивность для модального окна */
 @media (max-width: 768px) {
   .product-details-container {
@@ -1694,23 +1717,6 @@ button[data-modal='mapModal']:hover {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.dark-theme .product-details-actions .btn {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.dark-theme .product-details-actions .btn:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-}
-
-.dark-theme .product-details-actions .btn-secondary {
-  background: #6c757d;
-  color: #fff;
-}
-
-.dark-theme .product-details-actions .btn-secondary:hover {
-  background: #5a6268;
-}
-
 /* Дополнительные стили для улучшения контрастности */
 .dark-theme .product-details-image {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
@@ -1730,33 +1736,6 @@ button[data-modal='mapModal']:hover {
 .light-theme .product-details-price {
   color: #27ae60;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .product-details-actions .btn {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.light-theme .product-details-actions .btn:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Светлая тема для кнопки избранного */
-.light-theme .btn[data-action='fav'],
-.light-theme .btn-secondary[data-action='fav'] {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-}
-
-.light-theme .btn[data-action='fav']:hover,
-.light-theme .btn-secondary[data-action='fav']:hover {
-  background: linear-gradient(135deg, #ff5252, #e53935);
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
-}
-
-.light-theme .btn[data-action='fav'].added,
-.light-theme .btn-secondary[data-action='fav'].added {
-  background: linear-gradient(135deg, #4caf50, #45a049);
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .light-theme .product-details-image {
@@ -2561,19 +2540,41 @@ body.dark-theme .btn[data-action='cart']:hover {
 body.dark-theme .btn[data-action='fav'],
 body.dark-theme .btn-secondary[data-action='fav'] {
   background: linear-gradient(135deg, #e91e63, #c2185b);
-  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
 }
 
 body.dark-theme .btn[data-action='fav']:hover,
 body.dark-theme .btn-secondary[data-action='fav']:hover {
   background: linear-gradient(135deg, #f06292, #ad1457);
-  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
 }
 
 body.dark-theme .btn[data-action='fav'].added,
 body.dark-theme .btn-secondary[data-action='fav'].added {
-  background: linear-gradient(135deg, #66bb6a, #4caf50);
-  box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);
+  background: linear-gradient(135deg, #66bb6a, #4caf50) !important;
+}
+
+/* Дополнительная анимация для темной темы */
+body.dark-theme .btn[data-action='fav'].added,
+body.dark-theme .btn-secondary[data-action='fav'].added {
+  animation: favoriteAddedDark 0.8s ease-out forwards;
+}
+
+@keyframes favoriteAddedDark {
+  0% {
+    transform: scale(1);
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+  }
+  30% {
+    transform: scale(1.15);
+    background: linear-gradient(135deg, #f06292, #ad1457);
+  }
+  70% {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #66bb6a, #4caf50);
+  }
+  100% {
+    transform: scale(1);
+    background: linear-gradient(135deg, #66bb6a, #4caf50);
+  }
 }
 
 /* Hover эффект для кнопки "открыть карту в окне" в темной теме */

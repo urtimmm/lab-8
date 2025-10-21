@@ -374,13 +374,102 @@ function openProductDetails(p) {
       </div>
     </div>`;
   const close = openModal({ title: '📦 Детали товара', body });
-  document.getElementById('pdAdd').addEventListener('click', () => {
-    toast.success('Товар добавлен в корзину');
-    close();
+
+  // Обработчик для кнопки "В корзину"
+  document.getElementById('pdAdd').addEventListener('click', async (e) => {
+    // Проверяем авторизацию
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!currentUser.id) {
+      toast.error('Нужна авторизация для добавления в корзину');
+      return;
+    }
+
+    try {
+      // Получаем корзину из localStorage
+      const allCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existingItem = allCart.find(
+        (item) => item.userId === currentUser.id && item.productId === p.id
+      );
+
+      if (existingItem) {
+        // Увеличиваем количество
+        existingItem.quantity += 1;
+      } else {
+        // Добавляем новый товар
+        const cartItem = {
+          id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+          userId: currentUser.id,
+          productId: p.id,
+          title: p.title,
+          price: p.price,
+          image: p.image,
+          quantity: 1,
+          addedAt: new Date().toISOString(),
+        };
+        allCart.push(cartItem);
+      }
+
+      // Сохраняем в localStorage
+      localStorage.setItem('cart', JSON.stringify(allCart));
+
+      // Показываем уведомление
+      toast.success('Товар добавлен в корзину');
+
+      // Закрываем модальное окно
+      close();
+    } catch (error) {
+      console.error('Ошибка добавления в корзину:', error);
+      toast.error('Ошибка добавления в корзину');
+    }
   });
-  document.getElementById('pdFav').addEventListener('click', () => {
-    toast.info('Добавлено в избранное');
-    close();
+
+  // Обработчик для кнопки "В избранное"
+  document.getElementById('pdFav').addEventListener('click', async (e) => {
+    // Проверяем авторизацию
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (!currentUser.id) {
+      toast.error('Нужна авторизация для добавления в избранное');
+      return;
+    }
+
+    try {
+      // Получаем избранное из localStorage
+      const allFavorites = JSON.parse(
+        localStorage.getItem('favorites') || '[]'
+      );
+      const existingItem = allFavorites.find(
+        (item) => item.userId === currentUser.id && item.productId === p.id
+      );
+
+      if (existingItem) {
+        toast.info('Товар уже в избранном');
+        return;
+      }
+
+      // Добавляем новый товар в избранное
+      const favItem = {
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
+        userId: currentUser.id,
+        productId: p.id,
+        title: p.title,
+        price: p.price,
+        image: p.image,
+        addedAt: new Date().toISOString(),
+      };
+      allFavorites.push(favItem);
+
+      // Сохраняем в localStorage
+      localStorage.setItem('favorites', JSON.stringify(allFavorites));
+
+      // Показываем уведомление
+      toast.success('Добавлено в избранное');
+
+      // Закрываем модальное окно
+      close();
+    } catch (error) {
+      console.error('Ошибка добавления в избранное:', error);
+      toast.error('Ошибка добавления в избранное');
+    }
   });
 }
 

@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${getI18n('cart-btn', '🛒 В корзину')}
         </button>
         <button class="btn-secondary" data-action="fav" data-id="${p.id}">
-          ${getI18n('fav-btn', '☆ В избранное')}
+          ${getI18n('fav-btn', 'В избранное')}
         </button>
       </div>
     </div>
@@ -449,9 +449,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // Добавляем визуальную обратную связь
           btn.classList.add('added');
+          // Убираем класс через время завершения анимации
           setTimeout(() => {
             btn.classList.remove('added');
-          }, 2000);
+          }, 800);
         }
       } catch (err) {
         console.error(err);
