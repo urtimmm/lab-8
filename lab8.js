@@ -322,23 +322,19 @@ function openProductForm({ mode = 'create', data = null, onSubmit }) {
 /* Детали товара */
 function openProductDetails(p) {
   const body = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
-      <img src="${p.image}" alt="${
-    p.title
-  }" style="width:100%;border-radius:12px;object-fit:cover"/>
-      <div>
-        <h3 style="margin:0 0 8px">${p.title}</h3>
-        <p>${p.description}</p>
-        <p class="price" style="margin:10px 0 16px">${(p.price || 0).toFixed(
-          2
-        )} BYN</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn" id="pdAdd">В корзину</button>
-          <button class="btn-secondary" id="pdFav">В избранное</button>
+    <div class="product-details-container">
+      <img src="${p.image}" alt="${p.title}" class="product-details-image"/>
+      <div class="product-details-content">
+        <h3 class="product-details-title">${p.title}</h3>
+        <p class="product-details-description">${p.description}</p>
+        <p class="product-details-price">${(p.price || 0).toFixed(2)} BYN</p>
+        <div class="product-details-actions">
+          <button class="btn" id="pdAdd">🛒 В корзину</button>
+          <button class="btn-secondary" id="pdFav">⭐ В избранное</button>
         </div>
       </div>
     </div>`;
-  const close = openModal({ title: 'Детали товара', body });
+  const close = openModal({ title: '📦 Детали товара', body });
   document.getElementById('pdAdd').addEventListener('click', () => {
     toast.success('Товар добавлен в корзину');
     close();

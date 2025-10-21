@@ -199,6 +199,110 @@ button[type='submit']:disabled {
   background: #7f8c8d;
 }
 
+/* Современные стили для кнопки избранного */
+.btn[data-action='fav'],
+.btn-secondary[data-action='fav'] {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.383s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn[data-action='fav']:hover,
+.btn-secondary[data-action='fav']:hover {
+  background: linear-gradient(135deg, #ff5252, #e53935);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+.btn[data-action='fav']:active,
+.btn-secondary[data-action='fav']:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.btn[data-action='fav']::before,
+.btn-secondary[data-action='fav']::before {
+  content: '♡';
+  font-size: 16px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn[data-action='fav']:hover::before,
+.btn-secondary[data-action='fav']:hover::before {
+  content: '♥';
+  color: #fff;
+  transform: scale(1.2);
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* Эффект пульсации при добавлении в избранное */
+.btn[data-action='fav'].added,
+.btn-secondary[data-action='fav'].added {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  animation: favoriteAdded 0.6s ease-out;
+}
+
+.btn[data-action='fav'].added::before,
+.btn-secondary[data-action='fav'].added::before {
+  content: '♥';
+  color: #fff;
+  animation: heartPulse 0.6s ease-out;
+}
+
+@keyframes favoriteAdded {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  }
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .btn-danger {
   background: #e74c3c;
 }
@@ -707,6 +811,19 @@ button[data-modal='mapModal']:hover {
     min-width: 100px;
   }
 
+  /* Мобильные стили для кнопки избранного */
+  .btn[data-action='fav'],
+  .btn-secondary[data-action='fav'] {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 100px;
+  }
+
+  .btn[data-action='fav']::before,
+  .btn-secondary[data-action='fav']::before {
+    font-size: 14px;
+  }
+
   .form {
     padding: 20px;
   }
@@ -782,6 +899,19 @@ button[data-modal='mapModal']:hover {
   .actions button {
     width: 100%;
     min-width: auto;
+  }
+
+  /* Компактные стили для кнопки избранного на очень маленьких экранах */
+  .btn[data-action='fav'],
+  .btn-secondary[data-action='fav'] {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-width: 80px;
+  }
+
+  .btn[data-action='fav']::before,
+  .btn-secondary[data-action='fav']::before {
+    font-size: 12px;
   }
 
   .stats-grid {
@@ -958,6 +1088,413 @@ button[data-modal='mapModal']:hover {
     padding: 8px 12px;
   }
 }
+/* ===== СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ДЕТАЛЕЙ ТОВАРА ===== */
+
+/* Улучшенные стили для модального окна */
+.modal__card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  max-width: 90vw;
+  max-height: 90vh;
+  width: calc(100% - 32px);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Дополнительные анимации для модального окна */
+.modal {
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* Анимация появления элементов внутри модального окна */
+.product-details-container {
+  animation: contentSlideIn 0.4s ease-out 0.1s both;
+}
+
+@keyframes contentSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-details-image {
+  animation: imageZoomIn 0.5s ease-out 0.2s both;
+}
+
+@keyframes imageZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.product-details-content {
+  animation: contentFadeIn 0.6s ease-out 0.3s both;
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Эффект пульсации для кнопок */
+.product-details-actions .btn {
+  animation: buttonPulse 0.8s ease-out 0.5s both;
+}
+
+@keyframes buttonPulse {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Эффект свечения при наведении на кнопки */
+.product-details-actions .btn:hover {
+  animation: buttonGlow 0.3s ease-out;
+}
+
+@keyframes buttonGlow {
+  0% {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+  }
+  100% {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.modal__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  color: #fff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal__head strong {
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.modal__body {
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Специальные стили для контента модального окна с товаром */
+.product-details-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  padding: 24px;
+  background: var(--card-bg);
+}
+
+.product-details-image {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.product-details-image:hover {
+  transform: scale(1.02);
+}
+
+.product-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.product-details-title {
+  margin: 0 0 12px;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1.3;
+}
+
+.product-details-description {
+  color: var(--text-color);
+  line-height: 1.7;
+  font-size: 1.1em;
+  background: var(--background-color);
+  padding: 16px;
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-color);
+  margin: 0;
+}
+
+.product-details-price {
+  color: #27ae60;
+  font-weight: 700;
+  font-size: 1.6em;
+  margin: 16px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-details-price::before {
+  content: '💰';
+  font-size: 0.9em;
+}
+
+.product-details-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.product-details-actions .btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-details-actions .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.product-details-actions .btn:hover::before {
+  left: 100%;
+}
+
+.product-details-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-details-actions .btn-secondary {
+  background: #95a5a6;
+  color: #fff;
+}
+
+.product-details-actions .btn-secondary:hover {
+  background: #7f8c8d;
+  transform: translateY(-2px);
+}
+
+/* Адаптивность для модального окна */
+@media (max-width: 768px) {
+  .product-details-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .product-details-image {
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  .product-details-actions {
+    flex-direction: column;
+  }
+
+  .product-details-actions .btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal__card {
+    max-width: 95vw;
+    margin: 10px;
+  }
+
+  .product-details-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .product-details-title {
+    font-size: 1.3em;
+  }
+
+  .product-details-description {
+    font-size: 1em;
+    padding: 12px;
+  }
+
+  .product-details-price {
+    font-size: 1.4em;
+  }
+}
+
+/* Темная тема для модального окна */
+.dark-theme .modal__card {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .modal__head {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+}
+
+.dark-theme .product-details-description {
+  background: var(--background-color);
+  color: var(--text-color);
+  border-left-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .product-details-title {
+  color: var(--heading-color);
+}
+
+.dark-theme .product-details-price {
+  color: #2ecc71;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .product-details-actions .btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .product-details-actions .btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .product-details-actions .btn-secondary {
+  background: #6c757d;
+  color: #fff;
+}
+
+.dark-theme .product-details-actions .btn-secondary:hover {
+  background: #5a6268;
+}
+
+/* Дополнительные стили для улучшения контрастности */
+.dark-theme .product-details-image {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .product-details-image:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Светлая тема - дополнительные улучшения */
+.light-theme .product-details-description {
+  background: #f8f9fa;
+  border-left-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.light-theme .product-details-price {
+  color: #27ae60;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .product-details-actions .btn {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .product-details-actions .btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Светлая тема для кнопки избранного */
+.light-theme .btn[data-action='fav'],
+.light-theme .btn-secondary[data-action='fav'] {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.light-theme .btn[data-action='fav']:hover,
+.light-theme .btn-secondary[data-action='fav']:hover {
+  background: linear-gradient(135deg, #ff5252, #e53935);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
+.light-theme .btn[data-action='fav'].added,
+.light-theme .btn-secondary[data-action='fav'].added {
+  background: linear-gradient(135deg, #4caf50, #45a049);
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.light-theme .product-details-image {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .product-details-image:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
 /* ===== СТИЛИ ДЛЯ КНОПОК АВТОРИЗАЦИИ ===== */
 
 /* Контейнер пользовательских контролов */
@@ -1053,6 +1590,25 @@ body.dark-theme button[type='submit']:hover {
 body.dark-theme .btn[data-action='details']:hover,
 body.dark-theme .btn[data-action='cart']:hover {
   background: #4a90e2; /* Более темный синий для темной темы */
+}
+
+/* Темная тема для кнопки избранного */
+body.dark-theme .btn[data-action='fav'],
+body.dark-theme .btn-secondary[data-action='fav'] {
+  background: linear-gradient(135deg, #e91e63, #c2185b);
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+body.dark-theme .btn[data-action='fav']:hover,
+body.dark-theme .btn-secondary[data-action='fav']:hover {
+  background: linear-gradient(135deg, #f06292, #ad1457);
+  box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+}
+
+body.dark-theme .btn[data-action='fav'].added,
+body.dark-theme .btn-secondary[data-action='fav'].added {
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  box-shadow: 0 4px 15px rgba(102, 187, 106, 0.3);
 }
 
 /* Hover эффект для кнопки "открыть карту в окне" в темной теме */

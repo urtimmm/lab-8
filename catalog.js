@@ -433,6 +433,12 @@ document.addEventListener('DOMContentLoaded', () => {
           allFavorites.push(favItem);
           saveFavoritesToStorage(allFavorites);
           notify.ok(getI18n('fav-added', 'Добавлено в избранное'));
+
+          // Добавляем визуальную обратную связь
+          btn.classList.add('added');
+          setTimeout(() => {
+            btn.classList.remove('added');
+          }, 2000);
         }
       } catch (err) {
         console.error(err);
