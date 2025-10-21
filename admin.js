@@ -35,7 +35,7 @@ function updateLoginButtonVisibility() {
     if (loginLink) loginLink.style.display = 'none';
     if (mobileLoginLink) mobileLoginLink.style.display = 'none';
 
-    // Скрываем ссылки на регистрацию для авторизованных пользователей
+    // Скрываем ссылки на регистрацию для авторизованных пользователей (включая админов)
     registerLinks.forEach((link) => {
       link.style.display = 'none';
     });
@@ -81,13 +81,16 @@ function checkAdminAccess() {
 }
 
 // Выход
-logoutLink.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (confirm('Выйти из системы?')) {
-    localStorage.removeItem('currentUser');
-    window.location.href = 'login.html';
-  }
-});
+const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm('Выйти из системы?')) {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    }
+  });
+}
 
 // Загрузка товаров
 async function loadProducts() {
@@ -349,10 +352,12 @@ async function deleteUser(id) {
 }
 
 // Инициализация
-updateLoginButtonVisibility();
-if (checkAdminAccess()) {
-  loadProducts();
-  loadFeedback();
-  loadUsers();
-  loadOrderStats();
-}
+document.addEventListener('DOMContentLoaded', function () {
+  updateLoginButtonVisibility();
+  if (checkAdminAccess()) {
+    loadProducts();
+    loadFeedback();
+    loadUsers();
+    loadOrderStats();
+  }
+});
