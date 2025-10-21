@@ -1,4 +1,3 @@
-const ordersAPI = 'http://localhost:3001/orders';
 const ordersDiv = document.getElementById('orders');
 
 // ===== Прелоадер =====
@@ -78,7 +77,13 @@ function checkAuth() {
   return true;
 }
 
-async function loadOrders() {
+// Функции для работы с LocalStorage
+function getOrdersFromStorage() {
+  const orders = localStorage.getItem('orders');
+  return orders ? JSON.parse(orders) : [];
+}
+
+function loadOrders() {
   if (!checkAuth()) {
     updateLoginButtonVisibility();
     return;
@@ -86,13 +91,16 @@ async function loadOrders() {
   updateLoginButtonVisibility();
 
   try {
-    const res = await fetch(
-      `${ordersAPI}?userId=${currentUser.id}&_sort=date&_order=desc`
+    const allOrders = getOrdersFromStorage();
+    const userOrders = allOrders.filter(
+      (order) => order.userId === currentUser.id
     );
-    const data = await res.json();
 
-    ordersDiv.innerHTML = data.length
-      ? data
+    // Сортируем по дате (новые сначала)
+    userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    ordersDiv.innerHTML = userOrders.length
+      ? userOrders
           .map(
             (order) => `
       <div class="card">
