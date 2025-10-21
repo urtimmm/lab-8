@@ -124,8 +124,12 @@ function loadCart() {
               p.price * p.quantity
             ).toFixed(2)} BYN</b></p>
         <div class="actions">
-          <button onclick="changeQty('${p.id}', ${p.quantity + 1})">+</button>
-          <button onclick="changeQty('${p.id}', ${p.quantity - 1})">-</button>
+          <button onclick="changeQty('${p.id}', ${
+              p.quantity + 1
+            })" class="qty-btn qty-plus" title="Увеличить количество">+</button>
+          <button onclick="changeQty('${p.id}', ${
+              p.quantity - 1
+            })" class="qty-btn qty-minus" title="Уменьшить количество">-</button>
           <button onclick="removeCart('${
             p.id
           }')" class="btn-danger">Удалить</button>
@@ -154,6 +158,16 @@ function changeQty(id, qty) {
     if (itemIndex !== -1) {
       allCart[itemIndex].quantity = qty;
       saveCartToStorage(allCart);
+
+      // Добавляем анимацию пульсации к кнопке
+      const clickedButton = event.target;
+      if (clickedButton && clickedButton.classList.contains('qty-btn')) {
+        clickedButton.classList.add('pulse');
+        setTimeout(() => {
+          clickedButton.classList.remove('pulse');
+        }, 600);
+      }
+
       loadCart();
     }
   } catch (error) {
@@ -166,6 +180,15 @@ function removeCart(id) {
   if (!confirm('Удалить товар из корзины?')) return;
 
   try {
+    // Добавляем анимацию пульсации к кнопке удаления
+    const deleteButton = event.target;
+    if (deleteButton && deleteButton.classList.contains('btn-danger')) {
+      deleteButton.classList.add('pulse');
+      setTimeout(() => {
+        deleteButton.classList.remove('pulse');
+      }, 600);
+    }
+
     const allCart = getCartFromStorage();
     const updatedCart = allCart.filter((item) => item.id !== id);
     saveCartToStorage(updatedCart);

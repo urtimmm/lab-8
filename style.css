@@ -131,7 +131,7 @@ h3 {
   padding: 12px;
   margin-top: 5px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 14px;
   background: var(--card-bg);
   color: var(--text-color);
@@ -165,7 +165,7 @@ button[type='submit'] {
   margin-top: 15px;
   padding: 14px;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--primary-color);
   color: #fff;
   font-size: 16px;
@@ -193,6 +193,7 @@ button[type='submit']:disabled {
   margin-top: 10px;
   padding: 8px 16px;
   font-size: 14px;
+  border-radius: 12px;
 }
 
 .btn-secondary:hover {
@@ -299,12 +300,98 @@ button[type='submit']:disabled {
   }
 }
 
+/* Современные стили для кнопки "Удалить" */
 .btn-danger {
-  background: #e74c3c;
+  background: linear-gradient(145deg, #ff4757, #ff3742);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 71, 87, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
 }
 
 .btn-danger:hover {
-  background: #c0392b;
+  background: linear-gradient(145deg, #ff3742, #ff2f3a);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  filter: drop-shadow(0 0 8px rgba(255, 71, 87, 0.6));
+}
+
+.btn-danger:active {
+  transform: translateY(0) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* Эффект волны при клике */
+.btn-danger::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.3) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.btn-danger:active::before {
+  width: 150px;
+  height: 150px;
+}
+
+/* Иконка корзины для кнопки удаления */
+.btn-danger::after {
+  content: '🗑️';
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover::after {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Анимация пульсации при удалении */
+.btn-danger.pulse {
+  animation: deleteButtonPulse 0.6s ease-out;
+}
+
+@keyframes deleteButtonPulse {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+  50% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  75% {
+    transform: scale(1.02) rotate(-0.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
 }
 
 .btn-edit {
@@ -424,6 +511,232 @@ button[data-modal='mapModal']:hover {
   margin-top: 0;
   padding: 10px;
   font-size: 14px;
+  border-radius: 12px;
+}
+
+/* Современные стили для кнопок изменения количества в корзине */
+.actions .qty-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  flex: none;
+  padding: 0;
+  border: none;
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  color: #495057;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.actions .qty-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.actions .qty-btn:active {
+  transform: translateY(-1px) scale(1.02);
+  transition: all 0.1s ease;
+}
+
+/* Эффект волны при клике */
+.actions .qty-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.4) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.actions .qty-btn:active::before {
+  width: 120px;
+  height: 120px;
+}
+
+/* Современные стили для кнопки "+" */
+.actions .qty-btn.qty-plus {
+  background: linear-gradient(145deg, #00d4aa, #00b894);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 212, 170, 0.2);
+}
+
+.actions .qty-btn.qty-plus:hover {
+  background: linear-gradient(145deg, #00b894, #00a085);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.actions .qty-btn.qty-plus:active {
+  background: linear-gradient(145deg, #00a085, #008f7a);
+}
+
+/* Современные стили для кнопки "-" */
+.actions .qty-btn.qty-minus {
+  background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.actions .qty-btn.qty-minus:hover {
+  background: linear-gradient(145deg, #ee5a52, #e74c3c);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.actions .qty-btn.qty-minus:active {
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
+}
+
+/* Современная анимация пульсации для кнопок */
+.actions .qty-btn.pulse {
+  animation: modernQtyPulse 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modernQtyPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  25% {
+    transform: scale(1.15) rotate(2deg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+  50% {
+    transform: scale(1.1) rotate(-1deg);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+  75% {
+    transform: scale(1.05) rotate(0.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+}
+
+/* Дополнительные современные эффекты */
+.actions .qty-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+  pointer-events: none;
+}
+
+.actions .qty-btn:hover::after {
+  transform: translateX(100%);
+}
+
+/* Эффект свечения для кнопок */
+.actions .qty-btn.qty-plus:hover {
+  filter: drop-shadow(0 0 8px rgba(0, 212, 170, 0.6));
+}
+
+.actions .qty-btn.qty-minus:hover {
+  filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.6));
+}
+
+/* Современная тёмная тема для кнопок количества */
+.dark-theme .actions .qty-btn {
+  background: linear-gradient(145deg, #2d3748, #1a202c);
+  color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .actions .qty-btn:hover {
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.dark-theme .actions .qty-btn.qty-plus {
+  background: linear-gradient(145deg, #00d4aa, #00b894);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.dark-theme .actions .qty-btn.qty-plus:hover {
+  background: linear-gradient(145deg, #00b894, #00a085);
+  filter: drop-shadow(0 0 12px rgba(0, 212, 170, 0.8));
+  box-shadow: 0 8px 25px rgba(0, 212, 170, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.dark-theme .actions .qty-btn.qty-minus {
+  background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.dark-theme .actions .qty-btn.qty-minus:hover {
+  background: linear-gradient(145deg, #ee5a52, #e74c3c);
+  filter: drop-shadow(0 0 12px rgba(255, 107, 107, 0.8));
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Тёмная тема для кнопки "Удалить" */
+.dark-theme .btn-danger {
+  background: linear-gradient(145deg, #ff4757, #ff3742);
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.dark-theme .btn-danger:hover {
+  background: linear-gradient(145deg, #ff3742, #ff2f3a);
+  filter: drop-shadow(0 0 12px rgba(255, 71, 87, 0.8));
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Ошибки */
@@ -505,7 +818,7 @@ button[data-modal='mapModal']:hover {
   min-width: 200px;
   padding: 10px;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--card-bg);
   color: var(--text-color);
 }
@@ -521,7 +834,7 @@ button[data-modal='mapModal']:hover {
 .categories button {
   padding: 8px 16px;
   border: 1px solid var(--primary-color);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--card-bg);
   color: var(--primary-color);
   cursor: pointer;
@@ -555,7 +868,7 @@ button[data-modal='mapModal']:hover {
   background: var(--card-bg);
   color: var(--text-color);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
@@ -805,6 +1118,15 @@ button[data-modal='mapModal']:hover {
 
   .actions button {
     min-width: 100px;
+    border-radius: 12px;
+  }
+
+  /* Современные адаптивные стили для кнопок количества на планшетах */
+  .actions .qty-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 10px;
   }
 
   /* Мобильные стили для кнопки избранного */
@@ -895,6 +1217,16 @@ button[data-modal='mapModal']:hover {
   .actions button {
     width: 100%;
     min-width: auto;
+    border-radius: 12px;
+  }
+
+  /* Современные адаптивные стили для кнопок количества на мобильных */
+  .actions .qty-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    min-width: 36px;
+    border-radius: 8px;
   }
 
   /* Компактные стили для кнопки избранного на очень маленьких экранах */
@@ -2455,7 +2787,7 @@ button[data-modal='mapModal']:hover {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
   text-decoration: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -2476,7 +2808,7 @@ button[data-modal='mapModal']:hover {
   background: #5a5e62;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
@@ -2600,7 +2932,7 @@ body.dark-theme button[data-modal='mapModal']:hover {
   color: #fff;
   text-decoration: none;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
   margin-bottom: 10px;
@@ -2618,7 +2950,7 @@ body.dark-theme button[data-modal='mapModal']:hover {
   background: #e74c3c;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;

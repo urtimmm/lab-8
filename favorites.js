@@ -118,7 +118,7 @@ function loadFavorites() {
         <h3>${p.title}</h3>
         <p class="price">${p.price} BYN</p>
         <div class="actions">
-          <button onclick="removeFav('${p.id}')" class="btn-danger">Удалить</button>
+          <button onclick="removeFav('${p.id}')" class="btn-secondary" data-action="fav">Удалить</button>
           <button onclick="addToCart('${p.productId}')" class="btn">🛒 В корзину</button>
         </div>
       </div>

@@ -29,19 +29,28 @@ async function loadFeedback() {
   try {
     const res = await fetch('http://localhost:3001/feedback');
     const data = await res.json();
-    feedbackList.innerHTML = data.length
-      ? data
+
+    // Фильтруем отзывы только для текущего пользователя
+    const userFeedback = data.filter((f) => f.userId === currentUser.id);
+
+    feedbackList.innerHTML = userFeedback.length
+      ? userFeedback
           .map(
             (f) => `
       <div class="card">
-        <h3>${f.name}</h3>
-        <p>${f.message}</p>
+        <h3>${f.userName || f.name || 'Анонимный пользователь'}</h3>
+        <p>${f.text || f.message || 'Текст отзыва не указан'}</p>
+        ${
+          f.productTitle
+            ? `<small><strong>Товар:</strong> ${f.productTitle}</small><br>`
+            : ''
+        }
         <small>${new Date(f.date).toLocaleString()}</small>
       </div>
     `
           )
           .join('')
-      : '<p>Пока отзывов нет</p>';
+      : '<p>У вас пока нет отзывов</p>';
   } catch (error) {
     console.error('Ошибка загрузки отзывов:', error);
     feedbackList.innerHTML = '<p>Ошибка загрузки отзывов</p>';
@@ -108,6 +117,14 @@ function updateLoginButtonVisibility() {
 // Инициализация
 if (checkAuth()) {
   loadFeedback();
+  // Автоматически заполняем имя пользователя
+  if (nameInput) {
+    nameInput.value =
+      getUserName(currentUser) ||
+      currentUser.nickname ||
+      currentUser.email ||
+      '';
+  }
 }
 updateLoginButtonVisibility();
 
@@ -130,11 +147,15 @@ if (formFb) {
     }
 
     const feedback = {
+      id: Date.now().toString(), // Генерируем уникальный ID
       name: nameInput.value,
-      message: messageInput.value,
+      text: messageInput.value, // Используем 'text' для соответствия структуре в db.json
+      message: messageInput.value, // Оставляем и 'message' для совместимости
       date: new Date().toISOString(),
-      userId: currentUser.id,
-      userName: currentUser.nickname || currentUser.name || currentUser.email,
+      userId: currentUser.id, // Используем строковый ID
+      userName:
+        currentUser.nickname || getUserName(currentUser) || currentUser.email,
+      rating: 5, // Добавляем рейтинг по умолчанию
     };
 
     try {

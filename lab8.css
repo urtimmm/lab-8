@@ -380,7 +380,7 @@ body.locked {
   color: #fff;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  border-radius: 12px;
   cursor: pointer;
   z-index: 2;
 }
@@ -403,7 +403,7 @@ body.locked {
 .slider__dots button {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 12px;
   border: 0;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
@@ -514,7 +514,7 @@ body.locked {
   right: 12px;
   bottom: 12px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px 14px;
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
@@ -580,6 +580,7 @@ body.locked {
   background: transparent;
   color: #fff;
   cursor: pointer;
+  border-radius: 12px;
 }
 @keyframes toast-in {
   from {
@@ -648,6 +649,7 @@ body.locked {
   color: #fff;
   font-size: 20px;
   cursor: pointer;
+  border-radius: 12px;
 }
 
 /* Reveal-анимация */
