@@ -1,52 +1,135 @@
-const favAPI = 'http://localhost:3001/favorites';
 const favDiv = document.getElementById('favorites');
 
-async function loadFavorites() {
-  const res = await fetch(favAPI);
-  const data = await res.json();
-  favDiv.innerHTML = data.length
-    ? data
-        .map(
-          (p) => `
-    <div class="card">
-      <img src="${p.image}">
-      <h3>${p.title}</h3>
-      <p class="price">${p.price} BYN</p>
-      <div class="actions">
-        <button onclick="removeFav(${p.id})" class="btn-danger">Удалить</button>
-        <button onclick="addToCart(${p.id})" class="btn">🛒 В корзину</button>
+let currentUser = null;
+
+// Проверка авторизации
+function checkAuth() {
+  const userData = localStorage.getItem('currentUser');
+  if (!userData) {
+    favDiv.innerHTML =
+      "<p>⚠️ Для просмотра избранного необходимо <a href='login.html'>авторизоваться</a></p>";
+    return false;
+  }
+  currentUser = JSON.parse(userData);
+  return true;
+}
+
+// Функции для работы с LocalStorage
+function getFavoritesFromStorage() {
+  const favorites = localStorage.getItem('favorites');
+  return favorites ? JSON.parse(favorites) : [];
+}
+
+function saveFavoritesToStorage(favorites) {
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+}
+
+function getCartFromStorage() {
+  const cart = localStorage.getItem('cart');
+  return cart ? JSON.parse(cart) : [];
+}
+
+function saveCartToStorage(cart) {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function loadFavorites() {
+  if (!checkAuth()) {
+    return;
+  }
+
+  try {
+    const allFavorites = getFavoritesFromStorage();
+    const userFavorites = allFavorites.filter(
+      (fav) => fav.userId === currentUser.id
+    );
+
+    favDiv.innerHTML = userFavorites.length
+      ? userFavorites
+          .map(
+            (p) => `
+      <div class="card">
+        <img src="${p.image}" alt="${p.title}">
+        <h3>${p.title}</h3>
+        <p class="price">${p.price} BYN</p>
+        <div class="actions">
+          <button onclick="removeFav('${p.id}')" class="btn-secondary" data-action="fav">Удалить</button>
+          <button onclick="addToCart('${p.productId}')" class="btn">🛒 В корзину</button>
+        </div>
       </div>
-    </div>
-  `
-        )
-        .join('')
-    : '<p>❌ Избранное пусто</p>';
+    `
+          )
+          .join('')
+      : '<p>❌ Избранное пусто</p>';
+  } catch (error) {
+    favDiv.innerHTML = '<p>Ошибка загрузки избранного</p>';
+    console.error(error);
+  }
 }
 
-async function removeFav(id) {
-  await fetch(`${favAPI}/${id}`, { method: 'DELETE' });
-  loadFavorites();
+function removeFav(id) {
+  if (!confirm('Удалить из избранного?')) return;
+
+  try {
+    const allFavorites = getFavoritesFromStorage();
+    const updatedFavorites = allFavorites.filter((fav) => fav.id !== id);
+    saveFavoritesToStorage(updatedFavorites);
+    loadFavorites();
+  } catch (error) {
+    alert('❌ Ошибка при удалении');
+    console.error(error);
+  }
 }
 
-async function addToCart(id) {
-  const res = await fetch(`${favAPI}/${id}`);
-  const product = await res.json();
+function addToCart(productId) {
+  if (!currentUser) return;
 
-  const item = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    image: product.image,
-    quantity: 1,
-  };
+  try {
+    const allFavorites = getFavoritesFromStorage();
+    const allCart = getCartFromStorage();
 
-  await fetch('http://localhost:3001/cart', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(item),
-  });
+    // Находим товар в избранном
+    const favItem = allFavorites.find(
+      (fav) => fav.userId === currentUser.id && fav.productId === productId
+    );
 
-  alert('✅ Добавлено в корзину!');
+    if (!favItem) {
+      alert('❌ Товар не найден в избранном');
+      return;
+    }
+
+    // Проверяем, есть ли товар уже в корзине
+    const existingCartItem = allCart.find(
+      (item) => item.userId === currentUser.id && item.productId === productId
+    );
+
+    if (existingCartItem) {
+      // Увеличиваем количество
+      existingCartItem.quantity += 1;
+      saveCartToStorage(allCart);
+      alert('✅ Количество товара в корзине увеличено!');
+      return;
+    }
+
+    // Добавляем новый товар в корзину
+    const cartItem = {
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 4), // Генерируем уникальный ID
+      userId: currentUser.id,
+      productId: favItem.productId,
+      title: favItem.title,
+      price: favItem.price,
+      image: favItem.image,
+      quantity: 1,
+      addedAt: new Date().toISOString(),
+    };
+
+    allCart.push(cartItem);
+    saveCartToStorage(allCart);
+    alert('✅ Добавлено в корзину!');
+  } catch (error) {
+    alert('❌ Ошибка при добавлении в корзину');
+    console.error(error);
+  }
 }
 
 // Инициализация при загрузке страницы
