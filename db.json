@@ -124,15 +124,6 @@
       "image": "./img/products/SonyWH-1000XM5.jpg"
     },
     {
-      "id": "4",
-      "title": "Men's Winter Jacket",
-      "description": "Warm and stylish jacket",
-      "price": 299,
-      "category": "Clothing",
-      "rating": 4.3,
-      "image": "./img/products/hooded-jacket.jpg"
-    },
-    {
       "id": "5",
       "title": "Book: Master and Margarita",
       "description": "Classic of Russian literature",
@@ -155,7 +146,7 @@
     {
       "id": "6444",
       "userId": "508d",
-      "productId": "4",
+      "productId": null,
       "title": "Куртка зимняя мужская",
       "price": 299,
       "image": "./img/products/hooded-jacket.jpg",
@@ -177,7 +168,7 @@
     {
       "id": "c08f",
       "userId": "508d",
-      "productId": "4",
+      "productId": null,
       "title": "Куртка зимняя мужская",
       "price": 299,
       "image": "./img/products/hooded-jacket.jpg",

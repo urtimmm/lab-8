@@ -110,12 +110,12 @@ async function loadProducts() {
           <small>Категория: ${p.category} | Рейтинг: ${p.rating || 0}</small>
         </div>
         <div class="actions">
-          <button onclick="editProduct(${
+          <button onclick="editProduct('${
             p.id
-          })" class="btn-edit">Редактировать</button>
-          <button onclick="deleteProduct(${
+          }')" class="btn-edit">Редактировать</button>
+          <button onclick="deleteProduct('${
             p.id
-          })" class="btn-danger">Удалить</button>
+          }')" class="btn-danger">Удалить</button>
         </div>
       </div>
     `
@@ -143,9 +143,9 @@ async function loadFeedback() {
         )}</small>
           <small>Дата: ${new Date(f.date).toLocaleDateString('ru-RU')}</small>
         </div>
-        <button onclick="deleteFeedback(${
+        <button onclick="deleteFeedback('${
           f.id
-        })" class="btn-danger">Удалить</button>
+        }')" class="btn-danger">Удалить</button>
       </div>
     `
       )
@@ -183,14 +183,14 @@ async function loadUsers() {
           }</strong></small>
         </div>
         <div class="actions">
-          <button onclick="toggleRole(${u.id}, '${
+          <button onclick="toggleRole('${u.id}', '${
           u.role || 'user'
         }')" class="btn-edit">
             ${u.role === 'admin' ? 'Сделать пользователем' : 'Сделать админом'}
           </button>
-          <button onclick="deleteUser(${
+          <button onclick="deleteUser('${
             u.id
-          })" class="btn-danger">Удалить</button>
+          }')" class="btn-danger">Удалить</button>
         </div>
       </div>
     `
