@@ -199,7 +199,7 @@ function removeCart(id) {
   }
 }
 
-function checkout() {
+window.checkout = function checkout() {
   if (!currentUser) {
     alert('Необходима авторизация!');
     return;
@@ -252,9 +252,17 @@ function checkout() {
     alert('❌ Ошибка при оформлении заказа');
     console.error(error);
   }
-}
+};
 
 loadCart();
+
+// Добавляем обработчик события для кнопки "Оформить заказ"
+document.addEventListener('DOMContentLoaded', function () {
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', checkout);
+  }
+});
 
 // Функция для получения имени пользователя
 function getUserName(user) {
