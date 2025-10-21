@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
 
 let currentUser = null;
 
-// Функция управления видимостью кнопки "войти" и админ-ссылки
+// Функция управления видимостью кнопки "войти", админ-ссылки и регистрации
 function updateLoginButtonVisibility() {
   const loginLink = document.getElementById('login-link');
   const mobileLoginLink = document.getElementById('mobile-login-link');
@@ -19,10 +19,18 @@ function updateLoginButtonVisibility() {
   const adminLink = document.getElementById('admin-link');
   const mobileAdminLink = document.getElementById('mobile-admin-link');
 
+  // Находим ссылки на регистрацию в десктопном и мобильном меню
+  const registerLinks = document.querySelectorAll('a[href="register.html"]');
+
   if (currentUser) {
     // Пользователь авторизован - скрываем кнопку "войти"
     if (loginLink) loginLink.style.display = 'none';
     if (mobileLoginLink) mobileLoginLink.style.display = 'none';
+
+    // Скрываем ссылки на регистрацию для авторизованных пользователей
+    registerLinks.forEach((link) => {
+      link.style.display = 'none';
+    });
 
     // Показываем элементы для авторизованного пользователя
     if (userIcon) userIcon.style.display = 'block';
@@ -41,6 +49,11 @@ function updateLoginButtonVisibility() {
     // Пользователь не авторизован - показываем кнопку "войти"
     if (loginLink) loginLink.style.display = 'inline-block';
     if (mobileLoginLink) mobileLoginLink.style.display = 'block';
+
+    // Показываем ссылки на регистрацию для неавторизованных пользователей
+    registerLinks.forEach((link) => {
+      link.style.display = 'inline-block';
+    });
 
     // Скрываем элементы для авторизованного пользователя
     if (userIcon) userIcon.style.display = 'none';

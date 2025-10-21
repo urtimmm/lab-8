@@ -16,13 +16,16 @@ window.addEventListener('load', () => {
   if (p) setTimeout(() => p.setAttribute('hidden', ''), 250); // короткая задержка для красоты
 });
 
-// Функция управления видимостью кнопки "войти"
+// Функция управления видимостью кнопки "войти" и регистрации
 function updateLoginButtonVisibility() {
   const loginLink = document.getElementById('login-link');
   const mobileLoginLink = document.getElementById('mobile-login-link');
   const userIcon = document.getElementById('user-icon');
   const logoutBtn = document.getElementById('logout-btn');
   const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+  // Находим ссылки на регистрацию в десктопном и мобильном меню
+  const registerLinks = document.querySelectorAll('a[href="register.html"]');
 
   const userData = localStorage.getItem('currentUser');
   const currentUser = userData ? JSON.parse(userData) : null;
@@ -32,6 +35,11 @@ function updateLoginButtonVisibility() {
     if (loginLink) loginLink.style.display = 'none';
     if (mobileLoginLink) mobileLoginLink.style.display = 'none';
 
+    // Скрываем ссылки на регистрацию для авторизованных пользователей
+    registerLinks.forEach((link) => {
+      link.style.display = 'none';
+    });
+
     // Показываем элементы для авторизованного пользователя
     if (userIcon) userIcon.style.display = 'block';
     if (logoutBtn) logoutBtn.style.display = 'block';
@@ -40,6 +48,11 @@ function updateLoginButtonVisibility() {
     // Пользователь не авторизован - показываем кнопку "войти"
     if (loginLink) loginLink.style.display = 'inline-block';
     if (mobileLoginLink) mobileLoginLink.style.display = 'block';
+
+    // Показываем ссылки на регистрацию для неавторизованных пользователей
+    registerLinks.forEach((link) => {
+      link.style.display = 'inline-block';
+    });
 
     // Скрываем элементы для авторизованного пользователя
     if (userIcon) userIcon.style.display = 'none';
