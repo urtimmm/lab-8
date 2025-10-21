@@ -52,13 +52,23 @@ var i18ObjLocal = {
     // Профиль
     logout: 'Выйти',
     'profile-title': 'Профиль',
+    'profile-subtitle': 'Управление настройками аккаунта',
     name: 'Имя',
     email: 'Email',
     nickname: 'Ник',
+    'name-placeholder': 'Введите ваше имя',
+    'email-placeholder': 'Введите ваш email',
+    'nickname-placeholder': 'Введите ваш ник',
     save: 'Сохранить',
+    saving: 'Сохранение...',
     cancel: 'Отмена',
     reset: 'Сброс настроек',
-    'profile-updated': 'Профиль обновлён',
+    'reset-confirm-title': 'Подтверждение сброса',
+    'reset-confirm-message':
+      'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.',
+    'reset-confirm': 'Да, сбросить',
+    resetting: 'Сброс настроек...',
+    'profile-updated': 'Профиль успешно обновлён!',
 
     // Логин (НОВОЕ)
     'login-title': 'Авторизация',
@@ -132,13 +142,23 @@ var i18ObjLocal = {
     // Profile
     logout: 'Logout',
     'profile-title': 'Profile',
+    'profile-subtitle': 'Manage your account settings',
     name: 'Name',
     email: 'Email',
     nickname: 'Nickname',
+    'name-placeholder': 'Enter your name',
+    'email-placeholder': 'Enter your email',
+    'nickname-placeholder': 'Enter your nickname',
     save: 'Save',
+    saving: 'Saving...',
     cancel: 'Cancel',
     reset: 'Reset Settings',
-    'profile-updated': 'Profile updated',
+    'reset-confirm-title': 'Confirm Reset',
+    'reset-confirm-message':
+      'Are you sure you want to reset all settings? This action cannot be undone.',
+    'reset-confirm': 'Yes, reset',
+    resetting: 'Resetting settings...',
+    'profile-updated': 'Profile successfully updated!',
 
     // Login (NEW)
     'login-title': 'Login',

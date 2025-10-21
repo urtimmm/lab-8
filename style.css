@@ -1088,7 +1088,7 @@ button[data-modal='mapModal']:hover {
     padding: 8px 12px;
   }
 }
-/* ===== СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ДЕТАЛЕЙ ТОВАРА ===== */
+у/* ===== СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ДЕТАЛЕЙ ТОВАРА ===== */
 
 /* Улучшенные стили для модального окна */
 .modal__card {
@@ -1493,6 +1493,588 @@ button[data-modal='mapModal']:hover {
 
 .light-theme .product-details-image:hover {
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== СТИЛИ ДЛЯ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ ===== */
+
+/* Стили для модального окна профиля */
+.profile-modal {
+  background: var(--card-bg);
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90vw;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  animation: profileSlideIn 0.4s ease-out;
+}
+
+@keyframes profileSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Заголовок профиля */
+.profile-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  color: #fff;
+  padding: 25px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: profileShine 3s ease-in-out infinite;
+}
+
+@keyframes profileShine {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
+.profile-title {
+  font-size: 1.8em;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.profile-subtitle {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin-top: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Тело профиля */
+.profile-body {
+  padding: 30px;
+  background: var(--card-bg);
+}
+
+/* Форма профиля */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-form-group {
+  position: relative;
+}
+
+.profile-form-label {
+  display: block;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+  font-size: 0.95em;
+  transition: color 0.3s ease;
+}
+
+.profile-form-input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 16px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.profile-form-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  transform: translateY(-2px);
+}
+
+.profile-form-input:invalid:not(:placeholder-shown) {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.profile-form-input:valid:not(:placeholder-shown) {
+  border-color: #27ae60;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+/* Кнопки профиля */
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.profile-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.profile-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.profile-btn-secondary {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.profile-btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+}
+
+.profile-btn-danger {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.profile-btn-danger:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+}
+
+/* Эффект волны при клике */
+.profile-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.profile-btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Анимация загрузки */
+.profile-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.profile-btn.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: profileSpin 1s linear infinite;
+}
+
+@keyframes profileSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Уведомления профиля */
+.profile-notification {
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: profileNotificationSlide 0.5s ease-out;
+}
+
+@keyframes profileNotificationSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.profile-notification-success {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.profile-notification-error {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.profile-notification-warning {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+/* Адаптивность профиля */
+@media (max-width: 768px) {
+  .profile-modal {
+    max-width: 95vw;
+    margin: 10px;
+  }
+
+  .profile-header {
+    padding: 20px 25px;
+  }
+
+  .profile-title {
+    font-size: 1.5em;
+  }
+
+  .profile-body {
+    padding: 25px 20px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+  .profile-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 15px 20px;
+  }
+
+  .profile-title {
+    font-size: 1.3em;
+  }
+
+  .profile-body {
+    padding: 20px 15px;
+  }
+
+  .profile-form-input {
+    padding: 12px 15px;
+    font-size: 16px; /* Предотвращает зум на iOS */
+  }
+
+  .profile-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* Темная тема для профиля */
+.dark-theme .profile-modal {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .profile-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+}
+
+.dark-theme .profile-form-input {
+  background: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .profile-form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(93, 156, 236, 0.2);
+}
+
+.dark-theme .profile-form-label {
+  color: var(--heading-color);
+}
+
+.dark-theme .profile-btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+  box-shadow: 0 4px 15px rgba(93, 156, 236, 0.4);
+}
+
+.dark-theme .profile-btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(93, 156, 236, 0.5);
+}
+
+.dark-theme .profile-btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+}
+
+.dark-theme .profile-btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Дополнительные стили для улучшения UX профиля */
+.profile-form-input:focus + .profile-form-label {
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Валидация в реальном времени */
+.profile-form-input.valid {
+  border-color: #27ae60;
+  box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.profile-form-input.invalid {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Анимация появления полей */
+.profile-form-group {
+  animation: profileFieldSlideIn 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+.profile-form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.profile-form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.profile-form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes profileFieldSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Анимация появления кнопок */
+.profile-actions {
+  animation: profileActionsSlideIn 0.6s ease-out 0.4s both;
+}
+
+@keyframes profileActionsSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Эффект пульсации для важных элементов */
+.profile-btn-danger {
+  animation: profileDangerPulse 2s ease-in-out infinite;
+}
+
+@keyframes profileDangerPulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.5);
+  }
+}
+
+/* Улучшенные стили для уведомлений */
+.profile-notification {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-notification::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: profileNotificationShine 2s ease-in-out infinite;
+}
+
+@keyframes profileNotificationShine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Стили для модального окна подтверждения */
+.modal .modal__card {
+  animation: modalConfirmSlideIn 0.3s ease-out;
+}
+
+@keyframes modalConfirmSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Улучшенные стили для кнопок в модальном окне */
+.modal .profile-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.modal .profile-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+.modal .profile-btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Стили для аватара пользователя (если будет добавлен) */
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2em;
+  color: #fff;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+  animation: profileAvatarFloat 3s ease-in-out infinite;
+}
+
+@keyframes profileAvatarFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Стили для статистики профиля (если будет добавлена) */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.profile-stat-item {
+  text-align: center;
+  padding: 15px;
+  background: var(--background-color);
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.profile-stat-item:hover {
+  transform: translateY(-3px);
+}
+
+.profile-stat-value {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.profile-stat-label {
+  font-size: 0.9em;
+  color: var(--text-color);
+  opacity: 0.8;
 }
 
 /* ===== СТИЛИ ДЛЯ КНОПОК АВТОРИЗАЦИИ ===== */

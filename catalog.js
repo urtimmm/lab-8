@@ -514,6 +514,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Функция для получения имени пользователя
+  function getUserName(user) {
+    if (!user) return '';
+
+    // Если fio - объект, собираем полное имя
+    if (user.fio && typeof user.fio === 'object') {
+      const { first = '', last = '', middle = '' } = user.fio;
+      const nameParts = [first, middle, last].filter(
+        (part) => part && part.trim()
+      );
+      return nameParts.join(' ').trim();
+    }
+
+    // Если fio - строка
+    if (user.fio && typeof user.fio === 'string') {
+      return user.fio;
+    }
+
+    // Если есть name
+    if (user.name) {
+      return user.name;
+    }
+
+    return '';
+  }
+
   userIcon?.addEventListener('click', () => {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
@@ -521,49 +547,199 @@ document.addEventListener('DOMContentLoaded', () => {
       openModal({
         title: getI18n('profile-title', 'Профиль'),
         body: `
-        <form id="user-form">
-          <label>${getI18n('name', 'Имя')}: <input id="user-name" value="${
-          user.fio || user.name || ''
-        }"></label>
-          <label>${getI18n('email', 'Email')}: <input id="user-email" value="${
-          user.email || ''
-        }"></label>
-          <label>${getI18n(
-            'nickname',
-            'Ник'
-          )}: <input id="user-nickname" value="${user.nickname || ''}"></label>
-          <button type="submit">${getI18n('save', 'Сохранить')}</button>
-          <button type="button" id="reset-settings">${getI18n(
-            'reset',
-            'Сброс настроек'
-          )}</button>
-        </form>
+        <div class="profile-modal">
+          <div class="profile-header">
+            <h2 class="profile-title">${getI18n(
+              'profile-title',
+              'Профиль'
+            )}</h2>
+            <p class="profile-subtitle">${getI18n(
+              'profile-subtitle',
+              'Управление настройками аккаунта'
+            )}</p>
+          </div>
+          <div class="profile-body">
+            <form id="user-form" class="profile-form">
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-name">${getI18n(
+                  'name',
+                  'Имя'
+                )}</label>
+                <input 
+                  id="user-name" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${getUserName(user)}"
+                  placeholder="${getI18n(
+                    'name-placeholder',
+                    'Введите ваше имя'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-email">${getI18n(
+                  'email',
+                  'Email'
+                )}</label>
+                <input 
+                  id="user-email" 
+                  class="profile-form-input" 
+                  type="email" 
+                  value="${user.email || ''}"
+                  placeholder="${getI18n(
+                    'email-placeholder',
+                    'Введите ваш email'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-nickname">${getI18n(
+                  'nickname',
+                  'Ник'
+                )}</label>
+                <input 
+                  id="user-nickname" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${user.nickname || ''}"
+                  placeholder="${getI18n(
+                    'nickname-placeholder',
+                    'Введите ваш ник'
+                  )}"
+                >
+              </div>
+              <div class="profile-actions">
+                <button type="submit" class="profile-btn profile-btn-primary">
+                  ${getI18n('save', 'Сохранить')}
+                </button>
+                <button type="button" id="reset-settings" class="profile-btn profile-btn-danger">
+                  ${getI18n('reset', 'Сброс настроек')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       `,
       });
 
       document.getElementById('user-form').addEventListener('submit', (e) => {
         e.preventDefault();
-        const updated = {
-          ...user,
-          fio: document.getElementById('user-name').value,
-          email: document.getElementById('user-email').value,
-          nickname: document.getElementById('user-nickname').value,
-        };
-        localStorage.setItem('currentUser', JSON.stringify(updated));
-        currentUser = updated;
-        if (window.toast) {
-          toast.success(getI18n('profile-updated', 'Профиль обновлён'));
-        }
-        if (window.closeModal) closeModal();
+
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+
+        // Добавляем анимацию загрузки
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = getI18n('saving', 'Сохранение...');
+
+        // Имитируем задержку для лучшего UX
+        setTimeout(() => {
+          const nameValue = document.getElementById('user-name').value;
+          const updated = {
+            ...user,
+            fio: nameValue, // Сохраняем как строку
+            email: document.getElementById('user-email').value,
+            nickname: document.getElementById('user-nickname').value,
+          };
+
+          localStorage.setItem('currentUser', JSON.stringify(updated));
+          currentUser = updated;
+
+          // Показываем уведомление об успехе
+          const notification = document.createElement('div');
+          notification.className =
+            'profile-notification profile-notification-success';
+          notification.innerHTML = `
+            <span>✅</span>
+            <span>${getI18n(
+              'profile-updated',
+              'Профиль успешно обновлён!'
+            )}</span>
+          `;
+
+          const profileBody = document.querySelector('.profile-body');
+          profileBody.insertBefore(notification, profileBody.firstChild);
+
+          // Убираем уведомление через 3 секунды
+          setTimeout(() => {
+            notification.remove();
+          }, 3000);
+
+          // Восстанавливаем кнопку
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = originalText;
+
+          // Закрываем модальное окно через небольшую задержку
+          setTimeout(() => {
+            if (window.closeModal) closeModal();
+          }, 1000);
+        }, 800);
       });
 
       document
         .getElementById('reset-settings')
         ?.addEventListener('click', () => {
-          if (confirm(getI18n('reset', 'Сброс настроек'))) {
-            localStorage.clear();
-            location.reload();
-          }
+          // Создаем кастомное модальное окно подтверждения
+          const confirmModal = document.createElement('div');
+          confirmModal.className = 'modal';
+          confirmModal.style.display = 'flex';
+          confirmModal.innerHTML = `
+            <div class="modal__card" style="max-width: 400px;">
+              <div class="modal__head">
+                <strong>⚠️ ${getI18n(
+                  'reset-confirm-title',
+                  'Подтверждение сброса'
+                )}</strong>
+              </div>
+              <div class="modal__body" style="padding: 20px;">
+                <p style="margin-bottom: 20px; color: var(--text-color);">
+                  ${getI18n(
+                    'reset-confirm-message',
+                    'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
+                  )}
+                </p>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                  <button id="reset-cancel" class="profile-btn profile-btn-secondary" style="flex: 0;">
+                    ${getI18n('cancel', 'Отмена')}
+                  </button>
+                  <button id="reset-confirm" class="profile-btn profile-btn-danger" style="flex: 0;">
+                    ${getI18n('reset-confirm', 'Да, сбросить')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          document.body.appendChild(confirmModal);
+
+          // Обработчики для кнопок подтверждения
+          document
+            .getElementById('reset-cancel')
+            .addEventListener('click', () => {
+              document.body.removeChild(confirmModal);
+            });
+
+          document
+            .getElementById('reset-confirm')
+            .addEventListener('click', () => {
+              // Показываем уведомление о сбросе
+              const notification = document.createElement('div');
+              notification.className =
+                'profile-notification profile-notification-warning';
+              notification.innerHTML = `
+              <span>🔄</span>
+              <span>${getI18n('resetting', 'Сброс настроек...')}</span>
+            `;
+
+              const profileBody = document.querySelector('.profile-body');
+              profileBody.insertBefore(notification, profileBody.firstChild);
+
+              // Сброс через небольшую задержку
+              setTimeout(() => {
+                localStorage.clear();
+                location.reload();
+              }, 1000);
+            });
         });
     } else {
       alert(
