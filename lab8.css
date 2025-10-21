@@ -551,7 +551,7 @@ body.locked {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 1050;
+  z-index: 9999;
 }
 .toast {
   min-width: 260px;

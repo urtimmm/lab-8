@@ -1,7 +1,7 @@
 const formFb = document.getElementById('feedbackForm');
-const productSelect = document.getElementById('productSelect');
-const reviewText = document.getElementById('reviewText');
-const reviewError = document.getElementById('reviewError');
+const nameInput = document.getElementById('name');
+const messageInput = document.getElementById('message');
+const feedbackList = document.getElementById('feedbackList');
 
 let currentUser = null;
 
@@ -25,12 +25,27 @@ function checkAuth() {
   return true;
 }
 
-async function loadProducts() {
-  const res = await fetch('http://localhost:3001/products');
-  const data = await res.json();
-  productSelect.innerHTML = data
-    .map((p) => `<option value="${p.id}">${p.title}</option>`)
-    .join('');
+async function loadFeedback() {
+  try {
+    const res = await fetch('http://localhost:3001/feedback');
+    const data = await res.json();
+    feedbackList.innerHTML = data.length
+      ? data
+          .map(
+            (f) => `
+      <div class="card">
+        <h3>${f.name}</h3>
+        <p>${f.message}</p>
+        <small>${new Date(f.date).toLocaleString()}</small>
+      </div>
+    `
+          )
+          .join('')
+      : '<p>Пока отзывов нет</p>';
+  } catch (error) {
+    console.error('Ошибка загрузки отзывов:', error);
+    feedbackList.innerHTML = '<p>Ошибка загрузки отзывов</p>';
+  }
 }
 
 // Функция управления видимостью кнопки "войти", админ-ссылки и регистрации
@@ -92,36 +107,283 @@ function updateLoginButtonVisibility() {
 
 // Инициализация
 if (checkAuth()) {
-  loadProducts();
+  loadFeedback();
 }
 updateLoginButtonVisibility();
 
-reviewText.addEventListener('input', () => {
-  reviewError.textContent =
-    reviewText.value.length < 20 ? 'Минимум 20 символов!' : '';
-});
+// Обработчик валидации сообщения
+if (messageInput) {
+  messageInput.addEventListener('input', () => {
+    const errorMsg =
+      messageInput.value.length < 10 ? 'Минимум 10 символов!' : '';
+    // Можно добавить отображение ошибки, если нужно
+  });
+}
 
-formFb.addEventListener('submit', async (e) => {
-  e.preventDefault();
+// Обработчик отправки формы
+if (formFb) {
+  formFb.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  if (!checkAuth()) {
-    return;
+    if (!checkAuth()) {
+      return;
+    }
+
+    const feedback = {
+      name: nameInput.value,
+      message: messageInput.value,
+      date: new Date().toISOString(),
+      userId: currentUser.id,
+      userName: currentUser.nickname || currentUser.name || currentUser.email,
+    };
+
+    try {
+      await fetch('http://localhost:3001/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(feedback),
+      });
+
+      // Показываем уведомление об успехе
+      if (window.toast && window.toast.success) {
+        window.toast.success('Спасибо за отзыв!');
+      } else {
+        alert('Спасибо за отзыв!');
+      }
+
+      formFb.reset();
+      loadFeedback(); // Перезагружаем список отзывов
+    } catch (error) {
+      console.error('Ошибка отправки отзыва:', error);
+      if (window.toast && window.toast.error) {
+        window.toast.error('Ошибка отправки отзыва');
+      } else {
+        alert('Ошибка отправки отзыва');
+      }
+    }
+  });
+}
+
+// Функция для получения имени пользователя
+function getUserName(user) {
+  if (!user) return '';
+
+  // Если fio - объект, собираем полное имя
+  if (user.fio && typeof user.fio === 'object') {
+    const { first = '', last = '', middle = '' } = user.fio;
+    const nameParts = [first, middle, last].filter(
+      (part) => part && part.trim()
+    );
+    return nameParts.join(' ').trim();
   }
 
-  const feedback = {
-    productId: productSelect.value,
-    text: reviewText.value,
-    userId: currentUser.id,
-    userName: currentUser.nickname || currentUser.name || currentUser.email,
-  };
-  await fetch('http://localhost:3001/feedback', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(feedback),
+  // Если fio - строка
+  if (user.fio && typeof user.fio === 'string') {
+    return user.fio;
+  }
+
+  // Если есть name
+  if (user.name) {
+    return user.name;
+  }
+
+  return '';
+}
+
+// Функция получения перевода из window.i18Obj
+function getI18n(key, fallback = '') {
+  const currentLang = window.lang || 'ru';
+  return window.i18Obj?.[currentLang]?.[key] || fallback;
+}
+
+// Обработчик иконки пользователя
+const userIcon = document.getElementById('user-icon');
+if (userIcon) {
+  userIcon.addEventListener('click', () => {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    if (window.openModal) {
+      openModal({
+        title: '', // Убираем заголовок, так как у профиля есть свой profile-header
+        actions: [], // Явно указываем пустой массив действий
+        body: `
+        <div class="profile-modal">
+          <div class="profile-header">
+            <button class="profile-close" aria-label="Закрыть">×</button>
+            <h2 class="profile-title">${getI18n(
+              'profile-title',
+              'Профиль'
+            )}</h2>
+            <p class="profile-subtitle">${getI18n(
+              'profile-subtitle',
+              'Управление настройками аккаунта'
+            )}</p>
+          </div>
+          <div class="profile-body">
+            <div class="profile-form-container">
+              <form id="user-form" class="profile-form">
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-name">${getI18n(
+                  'name',
+                  'Имя'
+                )}</label>
+                <input 
+                  id="user-name" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${getUserName(user)}"
+                  placeholder="${getI18n(
+                    'name-placeholder',
+                    'Введите ваше имя'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-email">${getI18n(
+                  'email',
+                  'Email'
+                )}</label>
+                <input 
+                  id="user-email" 
+                  class="profile-form-input" 
+                  type="email" 
+                  value="${user.email || ''}"
+                  placeholder="${getI18n(
+                    'email-placeholder',
+                    'Введите ваш email'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-nickname">${getI18n(
+                  'nickname',
+                  'Ник'
+                )}</label>
+                <input 
+                  id="user-nickname" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${user.nickname || ''}"
+                  placeholder="${getI18n(
+                    'nickname-placeholder',
+                    'Введите ваш ник'
+                  )}"
+                >
+              </div>
+              <div class="profile-actions">
+                <button type="submit" class="profile-btn profile-btn-primary">
+                  ${getI18n('save', 'Сохранить')}
+                </button>
+                <button type="button" id="reset-settings" class="profile-btn profile-btn-danger">
+                  ${getI18n('reset', 'Сброс настроек')}
+                </button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      `,
+      });
+
+      // Добавляем обработчик для кнопки закрытия профиля
+      const profileCloseBtn = document.querySelector('.profile-close');
+      if (profileCloseBtn) {
+        profileCloseBtn.addEventListener('click', () => {
+          // Закрываем модальное окно
+          const modal = document.querySelector('.modal.open');
+          if (modal) {
+            modal.classList.remove('open');
+            setTimeout(() => modal.remove(), 150);
+          }
+        });
+      }
+
+      document.getElementById('user-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+
+        // Добавляем анимацию загрузки
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = getI18n('saving', 'Сохранение...');
+
+        // Имитируем задержку для лучшего UX
+        setTimeout(() => {
+          const nameValue = document.getElementById('user-name').value;
+          const updated = {
+            ...user,
+            fio: nameValue, // Сохраняем как строку
+            email: document.getElementById('user-email').value,
+            nickname: document.getElementById('user-nickname').value,
+          };
+
+          localStorage.setItem('currentUser', JSON.stringify(updated));
+          currentUser = updated;
+
+          // Показываем уведомление об успехе через toast
+          if (window.toast && window.toast.success) {
+            window.toast.success(
+              getI18n('profile-updated', 'Профиль успешно обновлён!')
+            );
+          }
+
+          // Восстанавливаем кнопку
+          submitBtn.classList.remove('loading');
+          submitBtn.textContent = originalText;
+
+          // Закрываем модальное окно через небольшую задержку
+          setTimeout(() => {
+            if (window.closeModal) closeModal();
+          }, 1000);
+        }, 800);
+      });
+
+      // Обработчик кнопки сброса настроек
+      const resetBtn = document.getElementById('reset-settings');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          // Используем существующую систему модальных окон
+          const closeModal = window.openConfirm({
+            title: `⚠️ ${getI18n(
+              'reset-confirm-title',
+              'Подтверждение сброса'
+            )}`,
+            message: getI18n(
+              'reset-confirm-message',
+              'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
+            ),
+            onConfirm: () => {
+              // Показываем уведомление о сбросе через toast
+              if (window.toast && window.toast.info) {
+                window.toast.info(getI18n('resetting', 'Сброс настроек...'));
+              }
+
+              // Сброс через небольшую задержку
+              setTimeout(() => {
+                // Очищаем все данные localStorage
+                localStorage.clear();
+
+                // Устанавливаем значения по умолчанию
+                localStorage.setItem('lang', 'ru');
+                localStorage.setItem('theme', 'light');
+
+                // Перезагружаем страницу
+                location.reload();
+              }, 1000);
+            },
+          });
+        });
+      }
+    } else {
+      alert(
+        `${getI18n('profile-title', 'Профиль')}\n${getI18n('name', 'Имя')}: ${
+          user.fio || user.name || ''
+        }\n${getI18n('email', 'Email')}: ${user.email || ''}`
+      );
+    }
   });
-  alert('Спасибо за отзыв!');
-  formFb.reset();
-});
+}
 
 // Обработчик кнопки выхода
 const logoutBtn = document.getElementById('logout-btn');

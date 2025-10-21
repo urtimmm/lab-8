@@ -248,23 +248,31 @@ function openModal({
     ? `<div class="modal__head ${headerClass}"><strong>${title}</strong><button class="modal__close" aria-label="Закрыть">×</button></div>`
     : '';
 
+  // Создаем modal__foot только если есть действия
+  const footHTML =
+    actions.length > 0 ? `<div class="modal__foot ${footClass}"></div>` : '';
+
   m.innerHTML = `
     <div class="modal__card ${modalClass}" role="dialog" aria-modal="true">
       ${headerHTML}
       <div class="modal__body ${bodyClass}">${body}</div>
-      <div class="modal__foot ${footClass}"></div>
+      ${footHTML}
     </div>`;
-  const foot = m.querySelector('.modal__foot');
-  actions.forEach((a) => {
-    const b = document.createElement('button');
-    b.className = a.class || 'btn';
-    b.textContent = a.text || 'OK';
-    b.addEventListener('click', () => {
-      a.onClick?.();
-      close();
+
+  // Добавляем действия только если есть modal__foot
+  if (actions.length > 0) {
+    const foot = m.querySelector('.modal__foot');
+    actions.forEach((a) => {
+      const b = document.createElement('button');
+      b.className = a.class || 'btn';
+      b.textContent = a.text || 'OK';
+      b.addEventListener('click', () => {
+        a.onClick?.();
+        close();
+      });
+      foot.appendChild(b);
     });
-    foot.appendChild(b);
-  });
+  }
   const close = () => {
     m.classList.remove('open');
     setTimeout(() => m.remove(), 150);
@@ -356,8 +364,12 @@ function openProductDetails(p) {
         <p class="product-details-description">${p.description}</p>
         <p class="product-details-price">${(p.price || 0).toFixed(2)} BYN</p>
         <div class="product-details-actions">
-          <button class="btn" data-action="cart" id="pdAdd">🛒 В корзину</button>
-          <button class="btn-secondary" data-action="fav" id="pdFav">⭐ В избранное</button>
+          <button class="btn" data-action="cart" data-id="${
+            p.id
+          }" id="pdAdd">🛒 В корзину</button>
+          <button class="btn-secondary" data-action="fav" data-id="${
+            p.id
+          }" id="pdFav">В избранное</button>
         </div>
       </div>
     </div>`;

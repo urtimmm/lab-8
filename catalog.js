@@ -546,6 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.openModal) {
       openModal({
         title: '', // Убираем заголовок, так как у профиля есть свой profile-header
+        actions: [], // Явно указываем пустой массив действий
         body: `
         <div class="profile-modal">
           <div class="profile-header">
@@ -661,25 +662,12 @@ document.addEventListener('DOMContentLoaded', () => {
           localStorage.setItem('currentUser', JSON.stringify(updated));
           currentUser = updated;
 
-          // Показываем уведомление об успехе
-          const notification = document.createElement('div');
-          notification.className =
-            'profile-notification profile-notification-success';
-          notification.innerHTML = `
-            <span>✅</span>
-            <span>${getI18n(
-              'profile-updated',
-              'Профиль успешно обновлён!'
-            )}</span>
-          `;
-
-          const profileBody = document.querySelector('.profile-body');
-          profileBody.insertBefore(notification, profileBody.firstChild);
-
-          // Убираем уведомление через 3 секунды
-          setTimeout(() => {
-            notification.remove();
-          }, 3000);
+          // Показываем уведомление об успехе через toast
+          if (window.toast && window.toast.success) {
+            window.toast.success(
+              getI18n('profile-updated', 'Профиль успешно обновлён!')
+            );
+          }
 
           // Восстанавливаем кнопку
           submitBtn.classList.remove('loading');
@@ -707,18 +695,9 @@ document.addEventListener('DOMContentLoaded', () => {
               'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
             ),
             onConfirm: () => {
-              // Показываем уведомление о сбросе
-              const notification = document.createElement('div');
-              notification.className =
-                'profile-notification profile-notification-warning';
-              notification.innerHTML = `
-                <span>🔄</span>
-                <span>${getI18n('resetting', 'Сброс настроек...')}</span>
-              `;
-
-              const profileBody = document.querySelector('.profile-body');
-              if (profileBody) {
-                profileBody.insertBefore(notification, profileBody.firstChild);
+              // Показываем уведомление о сбросе через toast
+              if (window.toast && window.toast.info) {
+                window.toast.info(getI18n('resetting', 'Сброс настроек...'));
               }
 
               // Сброс через небольшую задержку
