@@ -100,7 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const categoriesEl = document.getElementById('categories');
   const paginationEl = document.getElementById('pagination');
   const searchEl = document.getElementById('search');
-  const sortEl = document.getElementById('sort');
+  const sortButton = document.getElementById('sort-button');
+  const sortDropdown = document.getElementById('sort-dropdown');
+  const sortOptions = document.querySelectorAll('.sort-option');
 
   // Состояние
   let allProducts = [];
@@ -108,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let page = 1;
   const perPage = 8;
   let currentCategory = '';
+  let currentSort = '';
 
   // Авторизация
   let currentUser = null;
@@ -280,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return byCat && byText;
     });
 
-    const s = sortEl?.value || '';
+    const s = currentSort || '';
     if (s === 'price') {
       view.sort((a, b) => a.price - b.price);
     }
@@ -297,6 +300,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     page = 1;
     render();
+  }
+
+  // Функции для работы с выпадающим меню сортировки
+  function toggleSortDropdown() {
+    if (!sortDropdown) return;
+
+    const isOpen = sortDropdown.classList.contains('show');
+    if (isOpen) {
+      closeSortDropdown();
+    } else {
+      openSortDropdown();
+    }
+  }
+
+  function openSortDropdown() {
+    if (!sortDropdown || !sortButton) return;
+
+    sortDropdown.classList.add('show');
+    sortButton.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeSortDropdown() {
+    if (!sortDropdown || !sortButton) return;
+
+    sortDropdown.classList.remove('show');
+    sortButton.setAttribute('aria-expanded', 'false');
+  }
+
+  function selectSortOption(value, optionElement) {
+    currentSort = value;
+
+    // Обновляем текст кнопки
+    const sortText = sortButton?.querySelector('.sort-text');
+    if (sortText && optionElement) {
+      sortText.textContent = optionElement.textContent;
+    }
+
+    // Обновляем активную опцию
+    sortOptions.forEach((opt) => opt.classList.remove('active'));
+    if (optionElement) {
+      optionElement.classList.add('active');
+    }
+
+    // Применяем фильтры
+    applyFilters();
   }
 
   // Рендер каталога
@@ -482,7 +530,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Обработчики поиска и сортировки
   searchEl?.addEventListener('input', () => applyFilters());
-  sortEl?.addEventListener('change', () => applyFilters());
+
+  // Обработчики для новой кнопки сортировки
+  sortButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleSortDropdown();
+  });
+
+  // Закрытие выпадающего меню при клике вне его
+  document.addEventListener('click', (e) => {
+    if (!sortButton?.contains(e.target) && !sortDropdown?.contains(e.target)) {
+      closeSortDropdown();
+    }
+  });
+
+  // Обработчики для опций сортировки (делегирование событий)
+  sortDropdown?.addEventListener('click', (e) => {
+    const option = e.target.closest('.sort-option');
+    if (!option) return;
+
+    e.stopPropagation();
+    const value = option.getAttribute('data-value');
+    selectSortOption(value, option);
+    closeSortDropdown();
+  });
 
   // КРИТИЧЕСКИ ВАЖНО: Функция для перерендера после смены языка
   window.reRenderCatalog = function () {
@@ -490,6 +561,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (allProducts.length > 0) {
       renderCategories();
       render(); // Перерисовываем товары с новыми переводами
+
+      // Обновляем текст кнопки сортировки
+      const activeOption = document.querySelector('.sort-option.active');
+      if (activeOption && sortButton) {
+        const sortText = sortButton.querySelector('.sort-text');
+        if (sortText) {
+          sortText.textContent = activeOption.textContent;
+        }
+      }
     }
   };
 

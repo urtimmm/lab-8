@@ -101,12 +101,43 @@
           data-i18n-placeholder="search-placeholder"
           placeholder="Поиск..."
         />
-        <select id="sort">
-          <option value="" data-i18n="sort-default">Сортировка</option>
-          <option value="price" data-i18n="sort-price">По цене</option>
-          <option value="title" data-i18n="sort-title">По названию</option>
-          <option value="rating" data-i18n="sort-rating">По рейтингу</option>
-        </select>
+        <div class="sort-container">
+          <button
+            class="sort-button"
+            id="sort-button"
+            aria-expanded="false"
+            aria-haspopup="true"
+          >
+            <span class="sort-text" data-i18n="sort-default">Сортировка</span>
+            <span class="sort-icon">▼</span>
+          </button>
+          <div class="sort-dropdown" id="sort-dropdown">
+            <button class="sort-option" data-value="" data-i18n="sort-default">
+              Сортировка
+            </button>
+            <button
+              class="sort-option"
+              data-value="price"
+              data-i18n="sort-price"
+            >
+              По цене
+            </button>
+            <button
+              class="sort-option"
+              data-value="title"
+              data-i18n="sort-title"
+            >
+              По названию
+            </button>
+            <button
+              class="sort-option"
+              data-value="rating"
+              data-i18n="sort-rating"
+            >
+              По рейтингу
+            </button>
+          </div>
+        </div>
         <div id="categories" class="categories"></div>
       </div>
 

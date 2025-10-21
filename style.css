@@ -810,17 +810,33 @@ button[data-modal='mapModal']:hover {
   margin-bottom: 25px;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
 }
 
-.controls input,
-.controls select {
+.controls input {
   flex: 1;
   min-width: 200px;
-  padding: 10px;
-  border: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   background: var(--card-bg);
   color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.controls input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  transform: translateY(-1px);
+}
+
+.controls input:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* Категории */
@@ -828,7 +844,8 @@ button[data-modal='mapModal']:hover {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .categories button {
@@ -1103,9 +1120,13 @@ button[data-modal='mapModal']:hover {
     flex-direction: column;
   }
 
-  .controls input,
-  .controls select {
+  .controls input {
     width: 100%;
+  }
+
+  .sort-container {
+    width: 100%;
+    min-width: auto;
   }
 
   .admin-card {
@@ -3070,4 +3091,179 @@ body.dark-theme button[data-modal='mapModal']:hover {
   font-weight: 600;
   color: var(--nav-text);
   font-size: 14px;
+}
+
+/* Современные стили для кнопки сортировки */
+.sort-container {
+  position: relative;
+  display: inline-block;
+  min-width: 200px;
+}
+
+.sort-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.sort-button:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.sort-button:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.sort-button[aria-expanded='true'] {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.sort-icon {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  color: var(--primary-color);
+}
+
+.sort-button[aria-expanded='true'] .sort-icon {
+  transform: rotate(180deg);
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(20px);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.sort-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sort-option {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sort-option:last-child {
+  border-bottom: none;
+}
+
+.sort-option:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateX(4px);
+}
+
+.sort-option:focus {
+  outline: none;
+  background: var(--primary-color);
+  color: white;
+}
+
+.sort-option.active {
+  background: var(--primary-color);
+  color: white;
+  font-weight: 600;
+}
+
+/* Анимация для появления опций */
+.sort-option {
+  animation: slideInFromTop 0.3s ease forwards;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Темная тема для кнопки сортировки */
+.dark-theme .sort-button {
+  background: rgba(30, 30, 30, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+}
+
+.dark-theme .sort-button:hover {
+  border-color: var(--primary-color);
+  background: rgba(40, 40, 40, 0.95);
+}
+
+.dark-theme .sort-dropdown {
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.dark-theme .sort-option {
+  color: var(--text-color);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-theme .sort-option:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .sort-container {
+    min-width: 150px;
+  }
+
+  .sort-button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .sort-option {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }
