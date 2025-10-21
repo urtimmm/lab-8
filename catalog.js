@@ -116,13 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (u) currentUser = JSON.parse(u);
   })();
 
-  // Функция управления видимостью кнопки "войти"
+  // Функция управления видимостью кнопки "войти" и админ-ссылки
   function updateLoginButtonVisibility() {
     const loginLink = document.getElementById('login-link');
     const mobileLoginLink = document.getElementById('mobile-login-link');
     const userIcon = document.getElementById('user-icon');
     const logoutBtn = document.getElementById('logout-btn');
     const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    const adminLink = document.getElementById('admin-link');
+    const mobileAdminLink = document.getElementById('mobile-admin-link');
 
     if (currentUser) {
       // Пользователь авторизован - скрываем кнопку "войти"
@@ -133,6 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (userIcon) userIcon.style.display = 'block';
       if (logoutBtn) logoutBtn.style.display = 'block';
       if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'block';
+
+      // Показываем админ-ссылку только для администраторов
+      if (currentUser.role === 'admin') {
+        if (adminLink) adminLink.style.display = 'inline-block';
+        if (mobileAdminLink) mobileAdminLink.style.display = 'block';
+      } else {
+        if (adminLink) adminLink.style.display = 'none';
+        if (mobileAdminLink) mobileAdminLink.style.display = 'none';
+      }
     } else {
       // Пользователь не авторизован - показываем кнопку "войти"
       if (loginLink) loginLink.style.display = 'inline-block';
@@ -142,6 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (userIcon) userIcon.style.display = 'none';
       if (logoutBtn) logoutBtn.style.display = 'none';
       if (mobileLogoutBtn) mobileLogoutBtn.style.display = 'none';
+
+      // Скрываем админ-ссылку для неавторизованных пользователей
+      if (adminLink) adminLink.style.display = 'none';
+      if (mobileAdminLink) mobileAdminLink.style.display = 'none';
     }
   }
 

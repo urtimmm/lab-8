@@ -78,8 +78,9 @@ form.addEventListener('submit', async (e) => {
     phone: document.getElementById('phone').value,
     birthdate: birthInput.value,
     nickname: nickname.value,
-    role: 'client',
+    role: 'user',
     password: password.value,
+    registeredAt: new Date().toISOString(),
   };
   await fetch('http://localhost:3001/users', {
     method: 'POST',

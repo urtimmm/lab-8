@@ -26,7 +26,7 @@
       "phone": "+375297654321",
       "birthdate": "1995-05-20",
       "nickname": "maruser321",
-      "role": "client",
+      "role": "user",
       "password": "User123!",
       "registeredAt": "2025-01-15T12:00:00.000Z"
     },
@@ -34,25 +34,65 @@
       "id": "8914",
       "name": "Сергей",
       "email": "log@mail.ru",
-      "password": "123456"
+      "password": "123456",
+      "role": "user",
+      "fio": {
+        "first": "Сергей",
+        "last": "Пользователь",
+        "middle": ""
+      },
+      "phone": "+375291234567",
+      "birthdate": "1990-01-01",
+      "nickname": "loguser",
+      "registeredAt": "2025-01-01T10:00:00.000Z"
     },
     {
       "id": "385a",
       "name": "Сергей",
       "email": "s.chikita@mail.ru",
-      "password": "1234"
+      "password": "1234",
+      "role": "user",
+      "fio": {
+        "first": "Сергей",
+        "last": "Пользователь",
+        "middle": ""
+      },
+      "phone": "+375291234567",
+      "birthdate": "1990-01-01",
+      "nickname": "s.chikita",
+      "registeredAt": "2025-01-01T10:00:00.000Z"
     },
     {
       "id": "8ac0",
       "name": "maruser321",
       "email": "user@example.com",
-      "password": "User123!"
+      "password": "User123!",
+      "role": "user",
+      "fio": {
+        "first": "Мария",
+        "last": "Пользователь",
+        "middle": ""
+      },
+      "phone": "+375291234567",
+      "birthdate": "1990-01-01",
+      "nickname": "maruser321",
+      "registeredAt": "2025-01-01T10:00:00.000Z"
     },
     {
       "id": "508d",
       "name": "test",
       "email": "uteleviz@gmail.com",
-      "password": "qwerty12345"
+      "password": "qwerty12345",
+      "role": "user",
+      "fio": {
+        "first": "Тест",
+        "last": "Пользователь",
+        "middle": ""
+      },
+      "phone": "+375291234567",
+      "birthdate": "1990-01-01",
+      "nickname": "test",
+      "registeredAt": "2025-01-01T10:00:00.000Z"
     }
   ],
   "products": [

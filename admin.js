@@ -58,7 +58,7 @@ function checkAdminAccess() {
   }
 
   const user = JSON.parse(userData);
-  if (user.role !== 'admin') {
+  if (!user.role || user.role !== 'admin') {
     alert('Доступ запрещен! Только для администраторов.');
     window.location.href = 'catalog.html';
     return false;
@@ -149,16 +149,28 @@ async function loadUsers() {
         (u) => `
       <div class="card">
         <div>
-          <h4>${u.nickname || u.email}</h4>
-          <p>${u.fio.last} ${u.fio.first} ${u.fio.middle || ''}</p>
-          <small>Email: ${u.email} | Телефон: ${u.phone}</small><br>
+          <h4>${u.nickname || u.name || u.email}</h4>
+          <p>${
+            u.fio
+              ? `${u.fio.last} ${u.fio.first} ${u.fio.middle || ''}`
+              : u.name || 'Пользователь'
+          }</p>
+          <small>Email: ${u.email} | Телефон: ${
+          u.phone || 'Не указан'
+        }</small><br>
           <small>Роль: <strong>${
-            u.role === 'admin' ? 'Администратор' : 'Клиент'
+            u.role === 'admin'
+              ? 'Администратор'
+              : u.role === 'user'
+              ? 'Пользователь'
+              : 'Не определена'
           }</strong></small>
         </div>
         <div class="actions">
-          <button onclick="toggleRole(${u.id}, '${u.role}')" class="btn-edit">
-            ${u.role === 'admin' ? 'Сделать клиентом' : 'Сделать админом'}
+          <button onclick="toggleRole(${u.id}, '${
+          u.role || 'user'
+        }')" class="btn-edit">
+            ${u.role === 'admin' ? 'Сделать пользователем' : 'Сделать админом'}
           </button>
           <button onclick="deleteUser(${
             u.id
@@ -282,12 +294,12 @@ async function deleteFeedback(id) {
 
 // Смена роли пользователя
 async function toggleRole(id, currentRole) {
-  const newRole = currentRole === 'admin' ? 'client' : 'admin';
+  const newRole = currentRole === 'admin' ? 'user' : 'admin';
 
   if (
     !confirm(
       `Изменить роль пользователя на "${
-        newRole === 'admin' ? 'Администратор' : 'Клиент'
+        newRole === 'admin' ? 'Администратор' : 'Пользователь'
       }"?`
     )
   )
