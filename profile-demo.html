@@ -113,54 +113,59 @@
     <div id="profile-modal" class="modal" style="display: none">
       <div class="modal__card profile-modal">
         <div class="profile-header">
+          <button class="profile-close" aria-label="Закрыть">×</button>
           <h2 class="profile-title">Профиль</h2>
           <p class="profile-subtitle">Управление настройками аккаунта</p>
         </div>
         <div class="profile-body">
-          <form id="user-form" class="profile-form">
-            <div class="profile-form-group">
-              <label class="profile-form-label" for="user-name">Имя</label>
-              <input
-                id="user-name"
-                class="profile-form-input"
-                type="text"
-                value="Иван Иванов"
-                placeholder="Введите ваше имя"
-              />
-            </div>
-            <div class="profile-form-group">
-              <label class="profile-form-label" for="user-email">Email</label>
-              <input
-                id="user-email"
-                class="profile-form-input"
-                type="email"
-                value="ivan@example.com"
-                placeholder="Введите ваш email"
-              />
-            </div>
-            <div class="profile-form-group">
-              <label class="profile-form-label" for="user-nickname">Ник</label>
-              <input
-                id="user-nickname"
-                class="profile-form-input"
-                type="text"
-                value="ivan_user"
-                placeholder="Введите ваш ник"
-              />
-            </div>
-            <div class="profile-actions">
-              <button type="submit" class="profile-btn profile-btn-primary">
-                Сохранить
-              </button>
-              <button
-                type="button"
-                id="reset-settings"
-                class="profile-btn profile-btn-danger"
-              >
-                Сброс настроек
-              </button>
-            </div>
-          </form>
+          <div class="profile-form-container">
+            <form id="user-form" class="profile-form">
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-name">Имя</label>
+                <input
+                  id="user-name"
+                  class="profile-form-input"
+                  type="text"
+                  value="Иван Иванов"
+                  placeholder="Введите ваше имя"
+                />
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-email">Email</label>
+                <input
+                  id="user-email"
+                  class="profile-form-input"
+                  type="email"
+                  value="ivan@example.com"
+                  placeholder="Введите ваш email"
+                />
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-nickname"
+                  >Ник</label
+                >
+                <input
+                  id="user-nickname"
+                  class="profile-form-input"
+                  type="text"
+                  value="ivan_user"
+                  placeholder="Введите ваш ник"
+                />
+              </div>
+              <div class="profile-actions">
+                <button type="submit" class="profile-btn profile-btn-primary">
+                  Сохранить
+                </button>
+                <button
+                  type="button"
+                  id="reset-settings"
+                  class="profile-btn profile-btn-danger"
+                >
+                  Сброс настроек
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -267,6 +272,14 @@
             }, 1500);
           }
         });
+
+        // Обработчик для кнопки закрытия
+        const profileCloseBtn = document.querySelector('.profile-close');
+        if (profileCloseBtn) {
+          profileCloseBtn.addEventListener('click', () => {
+            document.getElementById('profile-modal').style.display = 'none';
+          });
+        }
 
         // Закрытие модального окна по клику вне его
         document

@@ -230,15 +230,29 @@ const toast = (() => {
 
 /* ===== Базовая система модалок ===== */
 const modalsHost = document.getElementById('modals');
-function openModal({ title = '', body = '', actions = [] }) {
+function openModal({
+  title = '',
+  body = '',
+  actions = [],
+  modalClass = '',
+  headerClass = '',
+  bodyClass = '',
+  footClass = '',
+}) {
   if (!modalsHost) return () => {};
   const m = document.createElement('div');
   m.className = 'modal open';
+
+  // Создаем заголовок только если title не пустой
+  const headerHTML = title
+    ? `<div class="modal__head ${headerClass}"><strong>${title}</strong><button class="modal__close" aria-label="Закрыть">×</button></div>`
+    : '';
+
   m.innerHTML = `
-    <div class="modal__card" role="dialog" aria-modal="true">
-      <div class="modal__head"><strong>${title}</strong><button class="modal__close" aria-label="Закрыть">×</button></div>
-      <div class="modal__body">${body}</div>
-      <div class="modal__foot"></div>
+    <div class="modal__card ${modalClass}" role="dialog" aria-modal="true">
+      ${headerHTML}
+      <div class="modal__body ${bodyClass}">${body}</div>
+      <div class="modal__foot ${footClass}"></div>
     </div>`;
   const foot = m.querySelector('.modal__foot');
   actions.forEach((a) => {
@@ -258,7 +272,13 @@ function openModal({ title = '', body = '', actions = [] }) {
   m.addEventListener('click', (e) => {
     if (e.target === m) close();
   });
-  m.querySelector('.modal__close').addEventListener('click', close);
+
+  // Добавляем обработчик для кнопки закрытия только если она существует
+  const closeBtn = m.querySelector('.modal__close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', close);
+  }
+
   modalsHost.appendChild(m);
   return close;
 }
@@ -276,6 +296,10 @@ function openConfirm({
       { text: 'Отмена', class: 'btn-secondary' },
       { text: 'ОК', class: 'btn', onClick: onConfirm },
     ],
+    modalClass: 'confirm-modal',
+    headerClass: 'confirm-header',
+    bodyClass: 'confirm-body',
+    footClass: 'confirm-foot',
   });
 }
 
@@ -332,8 +356,8 @@ function openProductDetails(p) {
         <p class="product-details-description">${p.description}</p>
         <p class="product-details-price">${(p.price || 0).toFixed(2)} BYN</p>
         <div class="product-details-actions">
-          <button class="btn" id="pdAdd">🛒 В корзину</button>
-          <button class="btn-secondary" id="pdFav">⭐ В избранное</button>
+          <button class="btn" data-action="cart" id="pdAdd">🛒 В корзину</button>
+          <button class="btn-secondary" data-action="fav" id="pdFav">⭐ В избранное</button>
         </div>
       </div>
     </div>`;

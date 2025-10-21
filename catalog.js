@@ -545,10 +545,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.openModal) {
       openModal({
-        title: getI18n('profile-title', 'Профиль'),
+        title: '', // Убираем заголовок, так как у профиля есть свой profile-header
         body: `
         <div class="profile-modal">
           <div class="profile-header">
+            <button class="profile-close" aria-label="Закрыть">×</button>
             <h2 class="profile-title">${getI18n(
               'profile-title',
               'Профиль'
@@ -559,7 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
             )}</p>
           </div>
           <div class="profile-body">
-            <form id="user-form" class="profile-form">
+            <div class="profile-form-container">
+              <form id="user-form" class="profile-form">
               <div class="profile-form-group">
                 <label class="profile-form-label" for="user-name">${getI18n(
                   'name',
@@ -617,10 +619,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       `,
       });
+
+      // Добавляем обработчик для кнопки закрытия профиля
+      const profileCloseBtn = document.querySelector('.profile-close');
+      if (profileCloseBtn) {
+        profileCloseBtn.addEventListener('click', () => {
+          // Закрываем модальное окно
+          const modal = document.querySelector('.modal.open');
+          if (modal) {
+            modal.classList.remove('open');
+            setTimeout(() => modal.remove(), 150);
+          }
+        });
+      }
 
       document.getElementById('user-form').addEventListener('submit', (e) => {
         e.preventDefault();

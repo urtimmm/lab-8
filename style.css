@@ -1231,6 +1231,278 @@ button[data-modal='mapModal']:hover {
   overflow-y: auto;
 }
 
+/* Стили для централизации текста подтверждения */
+.modal__body p {
+  text-align: center;
+  padding: 20px 24px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+/* Стили для модального окна подтверждения в стиле профиля */
+.modal__card.confirm-modal {
+  max-width: 500px;
+  width: 100%;
+  max-height: auto;
+  height: auto;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  animation: profileSlideIn 0.4s ease-out;
+}
+
+/* Заголовок модального окна подтверждения */
+.modal__head.confirm-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  color: #fff;
+  padding: 20px 25px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.confirm-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: confirmShimmer 3s ease-in-out infinite;
+}
+
+@keyframes confirmShimmer {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+}
+
+.confirm-header strong {
+  font-size: 1.4em;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Тело модального окна подтверждения */
+.modal__body.confirm-body {
+  padding: 25px;
+  background: var(--card-bg);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-body p {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  max-width: 400px;
+}
+
+/* Подвал модального окна подтверждения */
+.modal__foot.confirm-foot {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 25px;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+/* Кнопки в стиле профиля */
+.confirm-foot .btn,
+.confirm-foot .btn-secondary {
+  flex: 1;
+  min-width: 120px;
+  max-width: 150px;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confirm-foot .btn {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.confirm-foot .btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+}
+
+.confirm-foot .btn-secondary {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+}
+
+.confirm-foot .btn-secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+}
+
+/* Эффект волны при клике */
+.confirm-foot .btn::before,
+.confirm-foot .btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.confirm-foot .btn:active::before,
+.confirm-foot .btn-secondary:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Адаптивные стили для модального окна подтверждения */
+@media (max-width: 768px) {
+  .modal__card.confirm-modal {
+    max-width: 95vw;
+    margin: 10px;
+  }
+
+  .confirm-header {
+    padding: 18px 22px;
+  }
+
+  .confirm-header strong {
+    font-size: 1.3em;
+  }
+
+  .confirm-body {
+    padding: 22px 18px;
+  }
+
+  .confirm-foot {
+    padding: 22px 18px;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .confirm-foot .btn,
+  .confirm-foot .btn-secondary {
+    width: auto;
+    min-width: auto;
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal__card.confirm-modal {
+    max-width: 95vw;
+    margin: 5px;
+  }
+
+  .confirm-header {
+    padding: 15px 18px;
+  }
+
+  .confirm-header strong {
+    font-size: 1.2em;
+  }
+
+  .confirm-body {
+    padding: 18px 15px;
+  }
+
+  .confirm-body p {
+    font-size: 15px;
+  }
+
+  .confirm-foot {
+    padding: 18px 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirm-foot .btn,
+  .confirm-foot .btn-secondary {
+    padding: 12px 20px;
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+/* Темная тема для модального окна подтверждения */
+.dark-theme .modal__card.confirm-modal {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .confirm-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+}
+
+.dark-theme .confirm-body {
+  background: var(--card-bg);
+}
+
+.dark-theme .confirm-body p {
+  color: var(--text-color);
+}
+
+.dark-theme .confirm-foot {
+  background: var(--card-bg);
+  border-top-color: var(--border-color);
+}
+
+.dark-theme .confirm-foot .btn {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
+  box-shadow: 0 4px 15px rgba(93, 156, 236, 0.4);
+}
+
+.dark-theme .confirm-foot .btn:hover {
+  box-shadow: 0 8px 25px rgba(93, 156, 236, 0.5);
+}
+
+.dark-theme .confirm-foot .btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+}
+
+.dark-theme .confirm-foot .btn-secondary:hover {
+  box-shadow: 0 8px 25px rgba(108, 117, 125, 0.5);
+}
+
 /* Специальные стили для контента модального окна с товаром */
 .product-details-container {
   display: grid;
@@ -1302,9 +1574,9 @@ button[data-modal='mapModal']:hover {
 
 .product-details-actions .btn {
   flex: 1;
-  min-width: 140px;
-  padding: 12px 20px;
-  font-size: 15px;
+  min-width: 120px;
+  padding: 10px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 10px;
   transition: all 0.3s ease;
@@ -1499,13 +1771,32 @@ button[data-modal='mapModal']:hover {
 
 /* Стили для модального окна профиля */
 .profile-modal {
-  background: var(--card-bg);
-  border-radius: 20px;
-  max-width: 500px;
-  width: 90vw;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  border: 1px solid var(--border-color);
+  /* Убираем дублирующиеся стили - они уже есть в modal__card */
+  max-width: 100%;
+  width: 100%;
+  animation: profileSlideIn 0.4s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Специальные стили для modal__card содержащего profile-modal */
+.modal__card.profile-modal {
+  max-width: 100%;
+  width: 100%;
+  max-height: auto;
+  height: auto;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  /* Убираем дублирующиеся стили - они уже есть в базовом .modal__card */
+}
+
+/* Стили для profile-modal внутри modal__body */
+.modal__body .profile-modal {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  /* Убираем дублирующиеся стили - они уже есть в modal__card */
   animation: profileSlideIn 0.4s ease-out;
 }
 
@@ -1524,10 +1815,37 @@ button[data-modal='mapModal']:hover {
 .profile-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
   color: #fff;
-  padding: 25px 30px;
+  padding: 20px 25px;
   text-align: center;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Кнопка закрытия в профиле */
+.profile-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.profile-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
 .profile-header::before {
@@ -1574,15 +1892,25 @@ button[data-modal='mapModal']:hover {
 
 /* Тело профиля */
 .profile-body {
-  padding: 30px;
+  padding: 25px;
   background: var(--card-bg);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* Контейнер для формы профиля */
+.profile-form-container {
+  max-width: 400px;
+  width: 100%;
 }
 
 /* Форма профиля */
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
 }
 
 .profile-form-group {
@@ -1630,9 +1958,8 @@ button[data-modal='mapModal']:hover {
 /* Кнопки профиля */
 .profile-actions {
   display: flex;
-  gap: 15px;
-  margin-top: 25px;
-  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .profile-btn {
@@ -1655,6 +1982,7 @@ button[data-modal='mapModal']:hover {
   background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
   color: #fff;
   box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  flex: 0 0 40%;
 }
 
 .profile-btn-primary:hover {
@@ -1677,6 +2005,7 @@ button[data-modal='mapModal']:hover {
   background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: #fff;
   box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  flex: 0 0 60%;
 }
 
 .profile-btn-danger:hover {
@@ -1775,36 +2104,62 @@ button[data-modal='mapModal']:hover {
 
 /* Адаптивность профиля */
 @media (max-width: 768px) {
-  .profile-modal {
+  .modal__card.profile-modal {
     max-width: 95vw;
     margin: 10px;
   }
 
+  .modal__body .profile-modal {
+    max-width: 95vw;
+    margin: 10px auto;
+  }
+
+  .profile-form-container {
+    max-width: 100%;
+  }
+
   .profile-header {
-    padding: 20px 25px;
+    padding: 18px 22px;
   }
 
   .profile-title {
-    font-size: 1.5em;
+    font-size: 1.4em;
   }
 
   .profile-body {
-    padding: 25px 20px;
+    padding: 22px 18px;
   }
 
   .profile-actions {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .profile-btn {
-    width: 100%;
+    width: auto;
     min-width: auto;
+  }
+
+  /* Адаптивные стили для уведомлений профиля */
+  .profile-notification {
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 15px;
   }
 }
 
 @media (max-width: 480px) {
+  .modal__card.profile-modal {
+    max-width: 95vw;
+    margin: 5px;
+  }
+
+  .modal__body .profile-modal {
+    max-width: 95vw;
+    margin: 5px auto;
+  }
+
   .profile-header {
-    padding: 15px 20px;
+    padding: 15px 18px;
   }
 
   .profile-title {
@@ -1812,7 +2167,7 @@ button[data-modal='mapModal']:hover {
   }
 
   .profile-body {
-    padding: 20px 15px;
+    padding: 18px 15px;
   }
 
   .profile-form-input {
@@ -1824,14 +2179,18 @@ button[data-modal='mapModal']:hover {
     padding: 12px 20px;
     font-size: 14px;
   }
+
+  /* Адаптивные стили для уведомлений профиля на маленьких экранах */
+  .profile-notification {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
 }
 
 /* Темная тема для профиля */
-.dark-theme .profile-modal {
-  background: var(--card-bg);
-  border-color: var(--border-color);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
-}
+/* Убираем дублирующиеся стили - они уже есть в .dark-theme .modal__card */
 
 .dark-theme .profile-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, #4a90e2 100%);
@@ -1869,6 +2228,25 @@ button[data-modal='mapModal']:hover {
 .dark-theme .profile-btn-danger {
   background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Стили уведомлений в темной теме */
+.dark-theme .profile-notification-success {
+  background: linear-gradient(135deg, #1e3a1e 0%, #2d5a2d 100%);
+  color: #a8e6a8;
+  border-left: 4px solid #28a745;
+}
+
+.dark-theme .profile-notification-error {
+  background: linear-gradient(135deg, #3a1e1e 0%, #5a2d2d 100%);
+  color: #ffb3b3;
+  border-left: 4px solid #dc3545;
+}
+
+.dark-theme .profile-notification-warning {
+  background: linear-gradient(135deg, #3a3a1e 0%, #5a5a2d 100%);
+  color: #fff3a0;
+  border-left: 4px solid #ffc107;
 }
 
 /* Дополнительные стили для улучшения UX профиля */
