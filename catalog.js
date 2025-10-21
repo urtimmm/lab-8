@@ -504,6 +504,14 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('currentUser');
       location.reload();
     });
+
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        location.reload();
+      });
+    }
   }
 
   userIcon?.addEventListener('click', () => {

@@ -198,3 +198,21 @@ function addToCart(productId) {
 }
 
 loadFavorites();
+
+// Обработчик кнопки выхода
+const logoutBtn = document.getElementById('logout-btn');
+const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    location.reload();
+  });
+}
+
+if (mobileLogoutBtn) {
+  mobileLogoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('currentUser');
+    location.reload();
+  });
+}
