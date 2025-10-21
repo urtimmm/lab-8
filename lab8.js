@@ -279,6 +279,9 @@ function openConfirm({
   });
 }
 
+// Делаем функцию глобальной
+window.openConfirm = openConfirm;
+
 /* Форма товара (create/edit) */
 function openProductForm({ mode = 'create', data = null, onSubmit }) {
   const isEdit = mode === 'edit';

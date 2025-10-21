@@ -239,10 +239,33 @@
 
         // Обработчик сброса настроек
         resetBtn.addEventListener('click', () => {
-          showNotification('Настройки сброшены!', 'warning');
-          setTimeout(() => {
-            document.getElementById('profile-modal').style.display = 'none';
-          }, 1000);
+          // Используем простой confirm для демо
+          if (
+            confirm(
+              '⚠️ Подтверждение сброса\n\nВы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
+            )
+          ) {
+            // Показываем уведомление о сбросе
+            showNotification('Сброс настроек...', 'warning');
+
+            // Закрываем модальное окно профиля
+            setTimeout(() => {
+              document.getElementById('profile-modal').style.display = 'none';
+            }, 1000);
+
+            // Сброс через небольшую задержку
+            setTimeout(() => {
+              // Очищаем все данные localStorage
+              localStorage.clear();
+
+              // Устанавливаем значения по умолчанию
+              localStorage.setItem('lang', 'ru');
+              localStorage.setItem('theme', 'light');
+
+              // Перезагружаем страницу
+              location.reload();
+            }, 1500);
+          }
         });
 
         // Закрытие модального окна по клику вне его

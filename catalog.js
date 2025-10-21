@@ -676,71 +676,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 800);
       });
 
-      document
-        .getElementById('reset-settings')
-        ?.addEventListener('click', () => {
-          // Создаем кастомное модальное окно подтверждения
-          const confirmModal = document.createElement('div');
-          confirmModal.className = 'modal';
-          confirmModal.style.display = 'flex';
-          confirmModal.innerHTML = `
-            <div class="modal__card" style="max-width: 400px;">
-              <div class="modal__head">
-                <strong>⚠️ ${getI18n(
-                  'reset-confirm-title',
-                  'Подтверждение сброса'
-                )}</strong>
-              </div>
-              <div class="modal__body" style="padding: 20px;">
-                <p style="margin-bottom: 20px; color: var(--text-color);">
-                  ${getI18n(
-                    'reset-confirm-message',
-                    'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
-                  )}
-                </p>
-                <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                  <button id="reset-cancel" class="profile-btn profile-btn-secondary" style="flex: 0;">
-                    ${getI18n('cancel', 'Отмена')}
-                  </button>
-                  <button id="reset-confirm" class="profile-btn profile-btn-danger" style="flex: 0;">
-                    ${getI18n('reset-confirm', 'Да, сбросить')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-
-          document.body.appendChild(confirmModal);
-
-          // Обработчики для кнопок подтверждения
-          document
-            .getElementById('reset-cancel')
-            .addEventListener('click', () => {
-              document.body.removeChild(confirmModal);
-            });
-
-          document
-            .getElementById('reset-confirm')
-            .addEventListener('click', () => {
+      // Обработчик кнопки сброса настроек
+      const resetBtn = document.getElementById('reset-settings');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          // Используем существующую систему модальных окон
+          const closeModal = window.openConfirm({
+            title: `⚠️ ${getI18n(
+              'reset-confirm-title',
+              'Подтверждение сброса'
+            )}`,
+            message: getI18n(
+              'reset-confirm-message',
+              'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
+            ),
+            onConfirm: () => {
               // Показываем уведомление о сбросе
               const notification = document.createElement('div');
               notification.className =
                 'profile-notification profile-notification-warning';
               notification.innerHTML = `
-              <span>🔄</span>
-              <span>${getI18n('resetting', 'Сброс настроек...')}</span>
-            `;
+                <span>🔄</span>
+                <span>${getI18n('resetting', 'Сброс настроек...')}</span>
+              `;
 
               const profileBody = document.querySelector('.profile-body');
-              profileBody.insertBefore(notification, profileBody.firstChild);
+              if (profileBody) {
+                profileBody.insertBefore(notification, profileBody.firstChild);
+              }
 
               // Сброс через небольшую задержку
               setTimeout(() => {
+                // Очищаем все данные localStorage
                 localStorage.clear();
+
+                // Устанавливаем значения по умолчанию
+                localStorage.setItem('lang', 'ru');
+                localStorage.setItem('theme', 'light');
+
+                // Перезагружаем страницу
                 location.reload();
               }, 1000);
-            });
+            },
+          });
         });
+      }
     } else {
       alert(
         `${getI18n('profile-title', 'Профиль')}\n${getI18n('name', 'Имя')}: ${
