@@ -597,8 +597,13 @@ body.locked {
 .modals {
   position: fixed;
   inset: 0;
-  z-index: 1100;
+  z-index: 100000; /* Высокий z-index для модальных окон */
   pointer-events: none;
+}
+
+/* Специальный z-index для модального окна профиля пользователя */
+.modals .modal__card.profile-modal {
+  z-index: 100000;
 }
 .modal {
   position: fixed;
