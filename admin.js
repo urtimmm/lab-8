@@ -119,6 +119,18 @@ if (logoutBtn) {
   });
 }
 
+// Выход из мобильного меню
+const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+if (mobileLogoutBtn) {
+  mobileLogoutBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm('Выйти из системы?')) {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    }
+  });
+}
+
 // Загрузка товаров
 async function loadProducts() {
   try {
