@@ -3055,6 +3055,13 @@ body.dark-theme button[data-modal='mapModal']:hover {
   transition: all 0.1s ease;
 }
 
+/* Скрываем кнопку смены темы при ширине меньше 1000px */
+@media (max-width: 999px) {
+  #theme-switch {
+    display: none;
+  }
+}
+
 /* Стили для мобильной кнопки переключения темы */
 #mobile-theme-btn {
   width: 40px;

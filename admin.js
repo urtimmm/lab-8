@@ -9,6 +9,33 @@ const feedbackList = document.getElementById('feedbackList');
 const usersList = document.getElementById('usersList');
 const orderStats = document.getElementById('orderStats');
 const logoutLink = document.getElementById('logoutLink');
+const userIcon = document.getElementById('user-icon');
+
+// Функция получения перевода из window.i18Obj
+function getI18n(key, fallback = '') {
+  const currentLang = window.lang || 'ru';
+  return window.i18Obj?.[currentLang]?.[key] || fallback;
+}
+
+// Функция для получения имени пользователя
+function getUserName(user) {
+  if (!user) return '';
+
+  // Если fio - объект, собираем полное имя
+  if (user.fio && typeof user.fio === 'object') {
+    const { first = '', last = '', middle = '' } = user.fio;
+    const nameParts = [first, middle, last].filter(Boolean);
+    return nameParts.join(' ');
+  }
+
+  // Если fio - строка, возвращаем как есть
+  if (user.fio && typeof user.fio === 'string') {
+    return user.fio;
+  }
+
+  // Возвращаем name или nickname как fallback
+  return user.name || user.nickname || '';
+}
 
 // ===== Прелоадер =====
 window.addEventListener('load', () => {
@@ -350,6 +377,188 @@ async function deleteUser(id) {
     alert('❌ Ошибка при удалении');
   }
 }
+
+userIcon?.addEventListener('click', () => {
+  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+  if (window.openModal) {
+    openModal({
+      title: '', // Убираем заголовок, так как у профиля есть свой profile-header
+      actions: [], // Явно указываем пустой массив действий
+      body: `
+        <div class="profile-modal">
+          <div class="profile-header">
+            <button class="profile-close" aria-label="Закрыть">×</button>
+            <h2 class="profile-title">${getI18n(
+              'profile-title',
+              'Профиль'
+            )}</h2>
+            <p class="profile-subtitle">${getI18n(
+              'profile-subtitle',
+              'Управление настройками аккаунта'
+            )}</p>
+          </div>
+          <div class="profile-body">
+            <div class="profile-form-container">
+              <form id="user-form" class="profile-form">
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-name">${getI18n(
+                  'name',
+                  'Имя'
+                )}</label>
+                <input 
+                  id="user-name" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${getUserName(user)}"
+                  placeholder="${getI18n(
+                    'name-placeholder',
+                    'Введите ваше имя'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-email">${getI18n(
+                  'email',
+                  'Email'
+                )}</label>
+                <input 
+                  id="user-email" 
+                  class="profile-form-input" 
+                  type="email" 
+                  value="${user.email || ''}"
+                  placeholder="${getI18n(
+                    'email-placeholder',
+                    'Введите ваш email'
+                  )}"
+                >
+              </div>
+              <div class="profile-form-group">
+                <label class="profile-form-label" for="user-nickname">${getI18n(
+                  'nickname',
+                  'Ник'
+                )}</label>
+                <input 
+                  id="user-nickname" 
+                  class="profile-form-input" 
+                  type="text" 
+                  value="${user.nickname || ''}"
+                  placeholder="${getI18n(
+                    'nickname-placeholder',
+                    'Введите ваш ник'
+                  )}"
+                >
+              </div>
+              <div class="profile-actions">
+                <button type="submit" class="profile-btn profile-btn-primary">
+                  ${getI18n('save', 'Сохранить')}
+                </button>
+                <button type="button" id="reset-settings" class="profile-btn profile-btn-danger">
+                  ${getI18n('reset', 'Сброс настроек')}
+                </button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      `,
+    });
+
+    // Добавляем обработчик для кнопки закрытия профиля
+    const profileCloseBtn = document.querySelector('.profile-close');
+    if (profileCloseBtn) {
+      profileCloseBtn.addEventListener('click', () => {
+        // Закрываем модальное окно
+        const modal = document.querySelector('.modal.open');
+        if (modal) {
+          modal.classList.remove('open');
+          setTimeout(() => modal.remove(), 150);
+        }
+      });
+    }
+
+    document.getElementById('user-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+
+      // Добавляем анимацию загрузки
+      submitBtn.classList.add('loading');
+      submitBtn.textContent = getI18n('saving', 'Сохранение...');
+
+      // Имитируем задержку для лучшего UX
+      setTimeout(() => {
+        const nameValue = document.getElementById('user-name').value;
+        const updated = {
+          ...user,
+          fio: nameValue, // Сохраняем как строку
+          email: document.getElementById('user-email').value,
+          nickname: document.getElementById('user-nickname').value,
+        };
+
+        localStorage.setItem('currentUser', JSON.stringify(updated));
+        currentUser = updated;
+
+        // Показываем уведомление об успехе через toast
+        if (window.toast && window.toast.success) {
+          window.toast.success(
+            getI18n('profile-updated', 'Профиль успешно обновлён!')
+          );
+        }
+
+        // Восстанавливаем кнопку
+        submitBtn.classList.remove('loading');
+        submitBtn.textContent = originalText;
+
+        // Закрываем модальное окно через небольшую задержку
+        setTimeout(() => {
+          if (window.closeModal) closeModal();
+        }, 1000);
+      }, 800);
+    });
+
+    // Обработчик кнопки сброса настроек
+    const resetBtn = document.getElementById('reset-settings');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        // Используем существующую систему модальных окон
+        const closeModal = window.openConfirm({
+          title: `⚠️ ${getI18n('reset-confirm-title', 'Подтверждение сброса')}`,
+          message: getI18n(
+            'reset-confirm-message',
+            'Вы уверены, что хотите сбросить все настройки? Это действие нельзя отменить.'
+          ),
+          onConfirm: () => {
+            // Показываем уведомление о сбросе через toast
+            if (window.toast && window.toast.info) {
+              window.toast.info(getI18n('resetting', 'Сброс настроек...'));
+            }
+
+            // Сброс через небольшую задержку
+            setTimeout(() => {
+              // Очищаем все данные localStorage
+              localStorage.clear();
+
+              // Устанавливаем значения по умолчанию
+              localStorage.setItem('lang', 'ru');
+              localStorage.setItem('theme', 'light');
+
+              // Перезагружаем страницу
+              location.reload();
+            }, 1000);
+          },
+        });
+      });
+    }
+  } else {
+    alert(
+      `${getI18n('profile-title', 'Профиль')}\n${getI18n('name', 'Имя')}: ${
+        user.fio || user.name || ''
+      }\n${getI18n('email', 'Email')}: ${user.email || ''}`
+    );
+  }
+});
 
 // Инициализация
 document.addEventListener('DOMContentLoaded', function () {
