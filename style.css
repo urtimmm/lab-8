@@ -2138,9 +2138,9 @@ button[data-modal='mapModal']:hover {
 .modal__body .profile-modal {
   max-width: 100%;
   width: 100%;
-  margin: 0 auto;
-  /* Убираем дублирующиеся стили - они уже есть в modal__card */
-  animation: profileSlideIn 0.4s ease-out;
+  height: 70vh;
+  margin: 0px auto;
+  animation: 0.4s ease-out profileSlideIn;
 }
 
 @keyframes profileSlideIn {

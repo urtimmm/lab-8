@@ -551,7 +551,7 @@ body.locked {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  z-index: 9999;
+  z-index: 999999;
 }
 .toast {
   min-width: 260px;
@@ -565,6 +565,7 @@ body.locked {
   grid-template-columns: 1fr auto;
   gap: 8px;
   animation: toast-in 0.2s ease;
+  z-index: 999999;
 }
 .toast--success {
   background: #1f6f4a;
